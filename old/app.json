@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Interval Fire",
+    "slug": "interval-fire",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0d0d0d",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.intervalfire.app",
+      "infoPlist": {
+        "UIBackgroundModes": ["audio", "fetch", "processing"]
+      }
+    },
+    "android": {
+      "package": "com.intervalfire.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0d0d0d"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-av"
+    ],
+    "scheme": "intervalfire",
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
