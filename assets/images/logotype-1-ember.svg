@@ -1,0 +1,39 @@
+<svg width="300" height="90" viewBox="0 0 300 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="90" fill="#0d0d0d"/>
+
+  <defs>
+    <linearGradient id="ember-grad" x1="0" y1="1" x2="0" y2="0" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#ffc300"/>
+      <stop offset="65%" stop-color="#ff3d3d"/>
+    </linearGradient>
+    <linearGradient id="ember-flame" x1="12" y1="34" x2="12" y2="2" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffc300"/>
+      <stop offset="65%" stop-color="#ff3d3d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- INTERVAL — light weight, muted -->
+  <text
+    x="16" y="36"
+    font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+    font-weight="300"
+    font-size="20"
+    letter-spacing="3"
+    fill="#e0e0e0">INTERVAL</text>
+
+  <!-- FIRE — bold, gradient fill -->
+  <text
+    x="14" y="74"
+    font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+    font-weight="700"
+    font-size="42"
+    letter-spacing="1"
+    fill="url(#ember-grad)">FIRE</text>
+
+  <!-- Flame mark — positioned right of FIRE text (~x=117) -->
+  <g transform="translate(117, 38)">
+    <path d="M12,34 C6,30 2,22 4,14 C5,8 9,10 9,16 C10,9 13,2 15,7 C14,11 17,14 17,20 C19,15 20,11 21,13 C22,21 19,27 16,32 C18,29 20,27 22,29 C20,36 14,38 12,34 Z"
+      fill="url(#ember-flame)"/>
+  </g>
+</svg>

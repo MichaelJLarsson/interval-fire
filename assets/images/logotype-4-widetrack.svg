@@ -1,0 +1,31 @@
+<svg width="300" height="90" viewBox="0 0 300 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="90" fill="#0d0d0d"/>
+
+  <!--
+    Wide Track concept: "INTERVAL" gets generous letter-spacing so its total
+    rendered width flushes with the wider "FIRE" block, creating a clean
+    rectangular typographic unit. No flame — minimal, architectural.
+  -->
+
+  <!-- INTERVAL — light weight, wide tracking, muted gray -->
+  <text
+    x="16" y="36"
+    font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+    font-weight="300"
+    font-size="20"
+    letter-spacing="9.5"
+    fill="#666666">INTERVAL</text>
+
+  <!-- Thin rule between the two lines -->
+  <line x1="16" y1="44" x2="159" y2="44" stroke="#2a2a2a" stroke-width="1"/>
+
+  <!-- FIRE — heavy, red, tight tracking to fill same block width -->
+  <text
+    x="14" y="76"
+    font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+    font-weight="900"
+    font-size="44"
+    letter-spacing="18"
+    fill="#ff3d3d">FIRE</text>
+</svg>

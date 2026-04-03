@@ -1,0 +1,38 @@
+<svg width="340" height="60" viewBox="0 0 340 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="340" height="60" fill="#0d0d0d"/>
+
+  <defs>
+    <linearGradient id="horiz-flame" x1="12" y1="28" x2="12" y2="2" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffc300"/>
+      <stop offset="65%" stop-color="#ff3d3d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- INTERVAL — small, muted, aligned to FIRE baseline -->
+  <text
+    x="16" y="42"
+    font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+    font-weight="300"
+    font-size="15"
+    letter-spacing="4"
+    fill="#888888">INTERVAL</text>
+
+  <!-- Dot separator -->
+  <circle cx="121" cy="38" r="2.5" fill="#555555"/>
+
+  <!-- FIRE — large, bold, white -->
+  <text
+    x="130" y="46"
+    font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+    font-weight="700"
+    font-size="34"
+    letter-spacing="1"
+    fill="#f0f0f0">FIRE</text>
+
+  <!-- Flame mark — right of FIRE (~x=220) -->
+  <g transform="translate(222, 16)">
+    <path d="M12,28 C7,24 3,18 5,11 C6,6 9,8 9,13 C10,7 13,2 14,6 C13,9 16,12 16,17 C17,12 18,9 19,11 C20,17 18,22 15,26 C17,23 18,21 20,23 C18,30 12,32 12,28 Z"
+      fill="url(#horiz-flame)"/>
+  </g>
+</svg>
