@@ -1,6 +1,7 @@
 import PresetCarousel from '@/components/home/PresetCarousel';
 import FireIcon from '@/components/shared/FireIcon';
 import CTAButton from '@/components/shared/CTAButton';
+import GradientScreen from '@/components/shared/GradientScreen';
 import SectionLabel from '@/components/shared/SectionLabel';
 import StreakPill from '@/components/shared/StreakPill';
 import HistoryRow from '@/components/shared/HistoryRow';
@@ -11,7 +12,6 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -32,7 +32,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <GradientScreen>
       <ScrollView
         style={styles.scroll}
         showsVerticalScrollIndicator={false}
@@ -77,12 +77,11 @@ export default function HomeScreen() {
         )}
         <View style={{ height: 20 }} />
       </ScrollView>
-    </SafeAreaView>
+    </GradientScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  safe:   { flex: 1, backgroundColor: Colors.bg },
   scroll: { flex: 1 },
 
   header: {

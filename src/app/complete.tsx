@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Animated, {
   useSharedValue, useAnimatedStyle,
   withDelay, withTiming, withSpring,
@@ -8,6 +8,7 @@ import Svg, { Circle, Path } from 'react-native-svg';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Colors, Fonts, Spacing } from '@/constants/theme';
 import { useHistoryStore, computeStreak } from '@/store/historyStore';
+import GradientScreen from '@/components/shared/GradientScreen';
 import SummaryCard from '@/components/shared/SummaryCard';
 import StreakBanner from '@/components/shared/StreakBanner';
 import CTAButton from '@/components/shared/CTAButton';
@@ -44,8 +45,7 @@ export default function CompleteScreen() {
   const contentStyle = useAnimatedStyle(() => ({ opacity: contentOpacity.value }));
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <View style={styles.inner}>
+    <GradientScreen style={styles.inner}>
         {/* Checkmark */}
         <Animated.View style={[styles.checkWrap, checkStyle]}>
           <Svg width={90} height={90} viewBox="0 0 90 90">
@@ -76,13 +76,11 @@ export default function CompleteScreen() {
             <CTAButton label="Home" onPress={() => router.replace('/(tabs)/')} style={styles.ctaHalf} />
           </View>
         </Animated.View>
-      </View>
-    </SafeAreaView>
+    </GradientScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  safe:  { flex: 1, backgroundColor: Colors.bg },
   inner: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: Spacing.screenH },
 
   checkWrap: { marginBottom: 24 },

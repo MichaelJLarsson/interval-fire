@@ -9,6 +9,7 @@ import { useChromeVisibility } from '@/hooks/useChromeVisibility';
 import TimerRing, { PHASE_COLORS, CIRCUMFERENCE } from '@/components/timer/TimerRing';
 import ChromeOverlay from '@/components/timer/ChromeOverlay';
 import FlashOverlay from '@/components/shared/FlashOverlay';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Preset } from '@/constants/presets';
 import { Colors } from '@/constants/theme';
 
@@ -74,6 +75,11 @@ export default function TimerScreen() {
   const handleTap = () => showChrome();
 
   return (
+    <LinearGradient
+      colors={[Colors.gradientStart, Colors.gradientEnd]}
+      locations={[0, 0.22]}
+      style={styles.gradient}
+    >
     <Pressable style={styles.screen} onPress={handleTap}>
       {/* Always-visible core */}
       <View style={styles.core} pointerEvents="none">
@@ -115,11 +121,13 @@ export default function TimerScreen() {
       {/* Phase change flash */}
       <FlashOverlay phase={flashPhase} />
     </Pressable>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center' },
+  gradient: { flex: 1 },
+  screen: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   core:   { alignItems: 'center', justifyContent: 'center' },
   countdown: {
     position: 'absolute',

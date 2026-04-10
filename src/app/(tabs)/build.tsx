@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {
-  View, Text, ScrollView, Pressable, TextInput, StyleSheet, SafeAreaView, Switch,
+  View, Text, ScrollView, Pressable, TextInput, StyleSheet, Switch,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Colors, Fonts, Spacing, Radii } from '@/constants/theme';
+import { Colors, Spacing, Radii } from '@/constants/theme';
 import {
-  Preset, WorkoutType, TYPE_LABELS, stepTime, stepWarmup, formatTime, totalSecs,
+  Preset, WorkoutType, stepTime, stepWarmup, formatTime, totalSecs,
 } from '@/constants/presets';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useSettingsStore } from '@/store/settingsStore';
@@ -14,6 +14,7 @@ import ScreenTitle from '@/components/shared/ScreenTitle';
 import SectionLabel from '@/components/shared/SectionLabel';
 import SummaryCard from '@/components/shared/SummaryCard';
 import CTAButton from '@/components/shared/CTAButton';
+import GradientScreen from '@/components/shared/GradientScreen';
 import TypeChip from '@/components/shared/TypeChip';
 
 const DEFAULT: Preset = {
@@ -53,7 +54,7 @@ export default function BuildScreen() {
   const activeMins = Math.floor((p.rounds * p.workSecs) / 60);
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <GradientScreen>
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.headerWrap}>
@@ -169,12 +170,11 @@ export default function BuildScreen() {
           <CTAButton label="Ready to go?" onPress={handleSaveStart} style={styles.ctaHalf} />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </GradientScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  safe:   { flex: 1, backgroundColor: Colors.bg },
   scroll: { flex: 1 },
 
   headerWrap: {

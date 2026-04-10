@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
-import { Colors, Fonts, Spacing, Radii } from '@/constants/theme';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { Colors, Spacing, Radii } from '@/constants/theme';
 import { useHistoryStore, computeStreak, weeklyMinutes } from '@/store/historyStore';
+import GradientScreen from '@/components/shared/GradientScreen';
 import ScreenTitle from '@/components/shared/ScreenTitle';
 import SectionLabel from '@/components/shared/SectionLabel';
 import SummaryCard from '@/components/shared/SummaryCard';
@@ -22,7 +23,7 @@ export default function StatsScreen() {
   const totalKcal = records.reduce((s, r) => s + r.kcalBurned, 0);
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <GradientScreen>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.headerWrap}>
           <ScreenTitle line1="Your" line2="Stats" />
@@ -102,13 +103,11 @@ export default function StatsScreen() {
         </View>
         <View style={{ height: 24 }} />
       </ScrollView>
-    </SafeAreaView>
+    </GradientScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Colors.bg },
-
   headerWrap: {
     paddingHorizontal: Spacing.screenH,
     paddingTop: Spacing.screenV,
