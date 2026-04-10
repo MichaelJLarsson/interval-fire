@@ -1,13 +1,19 @@
+import PresetCarousel from '@/components/home/PresetCarousel';
+import FireIcon from '@/components/shared/FireIcon';
+import { PRESETS, Preset } from '@/constants/presets';
+import { Colors, Radii, Spacing } from '@/constants/theme';
+import { computeStreak, useHistoryStore } from '@/store/historyStore';
+import { useWorkoutStore } from '@/store/workoutStore';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  View, Text, ScrollView, Pressable, StyleSheet, SafeAreaView,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Colors, Spacing, Radii } from '@/constants/theme';
-import { PRESETS, Preset } from '@/constants/presets';
-import { useWorkoutStore } from '@/store/workoutStore';
-import { useHistoryStore, computeStreak } from '@/store/historyStore';
-import PresetCarousel from '@/components/home/PresetCarousel';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -31,7 +37,7 @@ export default function HomeScreen() {
       >
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>INTERVAL{'\n'}<Text style={styles.titleAccent}>FIRE</Text><Text style={styles.flame}> 🔥</Text></Text>
+          <FireIcon size={64} color={Colors.work} strokeColor={Colors.bg} />
           {streak > 0 && (
             <View style={styles.streakBadge}>
               <Text style={styles.streakText}>{streak}-day streak</Text>
@@ -85,9 +91,6 @@ const styles = StyleSheet.create({
   scroll: { flex: 1 },
 
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', paddingHorizontal: Spacing.screenH, paddingTop: 40, paddingBottom: 24 },
-  title:  { fontFamily: 'BarlowCondensed_900Black', fontSize: 36, textTransform: 'uppercase', lineHeight: 34, color: Colors.textHi },
-  titleAccent: { color: Colors.work },
-  flame:  { fontSize: 28 },
   streakBadge: { backgroundColor: '#ff3d3d22', borderWidth: 1, borderColor: '#ff3d3d55', paddingHorizontal: 11, paddingVertical: 6, borderRadius: Radii.full },
   streakText:  { color: '#ff6a6a', fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
 
