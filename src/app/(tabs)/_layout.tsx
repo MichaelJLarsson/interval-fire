@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   tabLabel: {
-    fontFamily: 'BarlowCondensed_900Black',
+    fontFamily: 'BarlowSemiCondensed_800ExtraBold',
     fontSize: 16,
     textTransform: 'uppercase',
     letterSpacing: 1.5,

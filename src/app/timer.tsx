@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // Sits on top of ring but is NOT inside pulsing element
   },
-  countdownNum: { fontFamily: 'BarlowCondensed_900Black', fontSize: 82, lineHeight: 82, letterSpacing: -2 },
+  countdownNum: { fontFamily: 'BarlowSemiCondensed_800ExtraBold', fontSize: 82, lineHeight: 82, letterSpacing: -2 },
   countdownLbl: { fontSize: 13, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 2, color: Colors.textMuted, marginTop: 4 },
   nextText: { marginTop: 14, fontSize: 12, color: '#999', fontWeight: '500' },
 });

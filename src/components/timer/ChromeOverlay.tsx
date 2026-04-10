@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
   },
   headLeft:    { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  workoutName: { fontFamily: 'BarlowCondensed_700Bold', fontSize: 17, color: Colors.textMuted, textTransform: 'uppercase', letterSpacing: 1 },
+  workoutName: { fontFamily: 'BarlowSemiCondensed_700Bold', fontSize: 17, color: Colors.textMuted, textTransform: 'uppercase', letterSpacing: 1 },
   badge:       { paddingHorizontal: 12, paddingVertical: 5, borderRadius: 20 },
   badgeText:   { fontSize: 10, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
 

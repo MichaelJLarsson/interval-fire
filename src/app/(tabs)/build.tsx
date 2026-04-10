@@ -3,13 +3,18 @@ import {
   View, Text, ScrollView, Pressable, TextInput, StyleSheet, SafeAreaView, Switch,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Colors, Spacing, Radii } from '@/constants/theme';
+import { Colors, Fonts, Spacing, Radii } from '@/constants/theme';
 import {
   Preset, WorkoutType, TYPE_LABELS, stepTime, stepWarmup, formatTime, totalSecs,
 } from '@/constants/presets';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useSettingsStore } from '@/store/settingsStore';
 import Stepper from '@/components/build/Stepper';
+import ScreenTitle from '@/components/shared/ScreenTitle';
+import SectionLabel from '@/components/shared/SectionLabel';
+import SummaryCard from '@/components/shared/SummaryCard';
+import CTAButton from '@/components/shared/CTAButton';
+import TypeChip from '@/components/shared/TypeChip';
 
 const DEFAULT: Preset = {
   id: 'custom',
@@ -19,11 +24,11 @@ const DEFAULT: Preset = {
   prepSecs: 10, warmupSecs: 0, cooldownSecs: 0,
 };
 
-const TYPES: { key: WorkoutType; label: string; color: string }[] = [
-  { key: 'hiit',     label: 'HIIT',     color: Colors.workLight },
-  { key: 'running',  label: 'Run',      color: Colors.rest },
-  { key: 'cardio',   label: 'Cardio',   color: Colors.prep },
-  { key: 'strength', label: 'Strength', color: '#b388ff' },
+const TYPES: { key: WorkoutType; label: string }[] = [
+  { key: 'hiit',     label: 'HIIT' },
+  { key: 'running',  label: 'Running' },
+  { key: 'cardio',   label: 'Cardio' },
+  { key: 'strength', label: 'Strength' },
 ];
 
 export default function BuildScreen() {
@@ -41,139 +46,127 @@ export default function BuildScreen() {
     router.push('/timer');
   };
 
-  const intervalSecs = p.rounds * (p.workSecs + p.restSecs);
   const totalS = totalSecs(p);
   const mm = Math.floor(totalS / 60);
   const ss = totalS % 60;
   const totalLabel = `${mm}:${String(ss).padStart(2, '0')}`;
+  const activeMins = Math.floor((p.rounds * p.workSecs) / 60);
 
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.headerWrap}>
-          <Text style={styles.title}>Build{'\n'}Workout</Text>
-          <Text style={styles.subtitle}>Customize your interval structure</Text>
+          <ScreenTitle line1="Build" line2="Workout" />
         </View>
 
         {/* Type selector */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>Type</Text>
+          <SectionLabel style={styles.sectionLabelSpacing}>Type</SectionLabel>
           <View style={styles.typeGrid}>
-            {TYPES.map(({ key, label, color }) => (
-              <Pressable
+            {TYPES.map(({ key, label }) => (
+              <TypeChip
                 key={key}
-                style={[styles.typeBtn, p.type === key && { borderColor: Colors.work, backgroundColor: '#ff3d3d18' }]}
+                label={label}
+                selected={p.type === key}
                 onPress={() => update({ type: key })}
-              >
-                <Text style={[styles.typeBtnLabel, p.type === key && { color }]}>{label}</Text>
-              </Pressable>
+              />
             ))}
           </View>
         </View>
 
-        {/* Primary steppers */}
-        <View style={styles.steppers}>
-          <Stepper label="Work" sublabel="Active interval"
-            value={formatTime(p.workSecs)}
-            onDecrement={() => update({ workSecs: Math.max(5, stepTime(p.workSecs, -1)) })}
-            onIncrement={() => update({ workSecs: stepTime(p.workSecs, 1) })} />
-          <Stepper label="Rest" sublabel="Recovery interval"
-            value={p.restSecs === 0 ? 'Off' : formatTime(p.restSecs)}
-            onDecrement={() => update({ restSecs: Math.max(0, stepTime(p.restSecs, -1)) })}
-            onIncrement={() => update({ restSecs: stepTime(p.restSecs, 1) })} />
-          <Stepper label="Rounds" sublabel="Sets to complete"
-            value={String(p.rounds)}
-            onDecrement={() => update({ rounds: Math.max(1, p.rounds - 1) })}
-            onIncrement={() => update({ rounds: Math.min(30, p.rounds + 1) })} />
+        {/* Interval settings */}
+        <View style={styles.section}>
+          <SectionLabel style={styles.sectionLabelSpacing}>Interval settings</SectionLabel>
+          <View style={styles.steppers}>
+            <Stepper label="Work" sublabel="Active interval"
+              value={formatTime(p.workSecs)}
+              onDecrement={() => update({ workSecs: Math.max(5, stepTime(p.workSecs, -1)) })}
+              onIncrement={() => update({ workSecs: stepTime(p.workSecs, 1) })} />
+            <Stepper label="Rest" sublabel="Recovery interval"
+              value={p.restSecs === 0 ? 'Off' : formatTime(p.restSecs)}
+              onDecrement={() => update({ restSecs: Math.max(0, stepTime(p.restSecs, -1)) })}
+              onIncrement={() => update({ restSecs: stepTime(p.restSecs, 1) })} />
+            <Stepper label="Rounds" sublabel="Sets to complete"
+              value={String(p.rounds)}
+              onDecrement={() => update({ rounds: Math.max(1, p.rounds - 1) })}
+              onIncrement={() => update({ rounds: Math.min(30, p.rounds + 1) })} />
+          </View>
         </View>
-
-        <Text style={styles.intervalTotal}>Intervals: {formatTime(intervalSecs)}</Text>
 
         {/* More options toggle */}
         <Pressable style={styles.moreToggle} onPress={() => setShowMore(!showMore)}>
-          <Text style={styles.moreLabel}>{showMore ? 'Fewer options' : 'More options'}</Text>
+          <Text style={styles.moreLabel}>Optional settings</Text>
           <Text style={styles.moreChev}>{showMore ? '▲' : '▼'}</Text>
         </Pressable>
 
         {showMore && (
           <View style={styles.moreSection}>
-            {/* Name */}
-            <View style={styles.section}>
-              <Text style={styles.sectionLabel}>Workout name</Text>
-              <TextInput
-                style={styles.nameInput}
-                value={p.name}
-                onChangeText={(t) => update({ name: t })}
-                placeholder="MY WORKOUT"
-                placeholderTextColor="#666"
-                maxLength={24}
-              />
-            </View>
-
-            {/* Warmup */}
+            {/* Additional settings */}
+            <SectionLabel style={styles.sectionLabelSpacing}>Additional settings</SectionLabel>
             <Stepper label="Warmup" sublabel="Easy pace before intervals"
-              size="small"
               value={p.warmupSecs === 0 ? 'Off' : formatTime(p.warmupSecs)}
               onDecrement={() => update({ warmupSecs: Math.max(0, stepWarmup(p.warmupSecs, -1)) })}
               onIncrement={() => update({ warmupSecs: stepWarmup(p.warmupSecs, 1) })} />
-
-            {/* Cooldown */}
             <Stepper label="Cooldown" sublabel="Easy pace after intervals"
-              size="small"
               value={p.cooldownSecs === 0 ? 'Off' : formatTime(p.cooldownSecs)}
               onDecrement={() => update({ cooldownSecs: Math.max(0, stepWarmup(p.cooldownSecs, -1)) })}
               onIncrement={() => update({ cooldownSecs: stepWarmup(p.cooldownSecs, 1) })} />
-
-            {/* Prep time */}
-            <Stepper label="Prep time" sublabel="Countdown before start"
-              size="small"
+            <Stepper label="Countdown" sublabel="Prep time before workout"
               value={p.prepSecs === 0 ? 'Off' : formatTime(p.prepSecs)}
               onDecrement={() => update({ prepSecs: Math.max(0, stepTime(p.prepSecs, -1)) })}
               onIncrement={() => update({ prepSecs: stepTime(p.prepSecs, 1) })} />
 
-            {/* Sound toggles */}
-            <View style={styles.section}>
-              <Text style={styles.sectionLabel}>Sound &amp; Voice</Text>
-              {[
-                { label: 'Audio cues', sub: 'Beep at each interval change', val: audioEnabled, set: setAudio },
-                { label: 'Voice announcements', sub: '"Work!" / "Rest!" callouts', val: voiceEnabled, set: setVoice },
-                { label: '3-second warning', sub: 'Alert before each switch', val: warningEnabled, set: setWarning },
-              ].map(({ label, sub, val, set }) => (
-                <View key={label} style={styles.toggleRow}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.toggleLabel}>{label}</Text>
-                    <Text style={styles.toggleSub}>{sub}</Text>
-                  </View>
-                  <Switch
-                    value={val}
-                    onValueChange={set}
-                    trackColor={{ false: '#2c2c2c', true: Colors.work }}
-                    thumbColor={val ? Colors.white : '#ccc'}
-                  />
+            {/* Sound & voice */}
+            <SectionLabel style={[styles.sectionLabelSpacing, { marginTop: Spacing.xxl }]}>Sound & voice</SectionLabel>
+            {[
+              { label: 'Audio cues', sub: 'Beep at each interval change', val: audioEnabled, set: setAudio },
+              { label: 'Voice Announcements', sub: '"Work!", "Rest" callouts', val: voiceEnabled, set: setVoice },
+              { label: 'Three second warning', sub: 'Alert before each switch', val: warningEnabled, set: setWarning },
+            ].map(({ label, sub, val, set }) => (
+              <View key={label} style={styles.toggleRow}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.toggleLabel}>{label}</Text>
+                  <Text style={styles.toggleSub}>{sub}</Text>
                 </View>
-              ))}
-            </View>
+                <Switch
+                  value={val}
+                  onValueChange={set}
+                  trackColor={{ false: '#2c2c2c', true: Colors.work }}
+                  thumbColor={Colors.white}
+                />
+              </View>
+            ))}
+
+            {/* Workout name */}
+            <SectionLabel style={[styles.sectionLabelSpacing, { marginTop: Spacing.xxl }]}>Give your workout a name</SectionLabel>
+            <TextInput
+              style={styles.nameInput}
+              value={p.name}
+              onChangeText={(t) => update({ name: t })}
+              placeholder="MY HOT HIIT"
+              placeholderTextColor={Colors.inputPlaceholder}
+              maxLength={24}
+            />
           </View>
         )}
 
-        {/* Summary card */}
-        <View style={styles.summary}>
-          <View style={styles.summaryLeft}>
-            <Text style={styles.summaryName}>{p.name.toUpperCase()}</Text>
-            <Text style={styles.summaryType}>{TYPE_LABELS[p.type]}</Text>
+        {/* Summary grid */}
+        <View style={styles.summaryGrid}>
+          <View style={styles.summaryRow}>
+            <SummaryCard label="Intervals" value={String(p.rounds)} style={styles.summaryItem} />
+            <SummaryCard label="Total workout time" value={`${mm} min`} variant="eucalyptus" style={styles.summaryItem} />
           </View>
-          <View style={styles.summaryRight}>
-            <Text style={styles.summaryTime}>{totalLabel}</Text>
-            <Text style={styles.summaryTimeLabel}>total</Text>
+          <View style={styles.summaryRow}>
+            <SummaryCard label="Kcal" value={String(Math.round(totalS * 0.15))} style={styles.summaryItem} />
+            <SummaryCard label="Active phase" value={`${activeMins} min`} variant="eucalyptus" style={styles.summaryItem} />
           </View>
         </View>
 
-        {/* Save & start */}
-        <View style={styles.ctaWrap}>
-          <Pressable style={styles.cta} onPress={handleSaveStart}>
-            <Text style={styles.ctaText}>Save &amp; start</Text>
-          </Pressable>
+        {/* Action buttons */}
+        <View style={styles.ctaRow}>
+          <CTAButton label="Cancel" variant="outline" onPress={() => router.back()} style={styles.ctaHalf} />
+          <CTAButton label="Ready to go?" onPress={handleSaveStart} style={styles.ctaHalf} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -184,44 +177,95 @@ const styles = StyleSheet.create({
   safe:   { flex: 1, backgroundColor: Colors.bg },
   scroll: { flex: 1 },
 
-  headerWrap: { paddingHorizontal: Spacing.screenH, paddingTop: 36, paddingBottom: 20 },
-  title:      { fontFamily: 'BarlowCondensed_900Black', fontSize: 28, textTransform: 'uppercase', color: Colors.textHi, lineHeight: 28 },
-  subtitle:   { fontSize: 12, color: '#999', marginTop: 4 },
-
-  section:      { paddingHorizontal: Spacing.screenH, marginBottom: 16 },
-  sectionLabel: { fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1, color: Colors.textLo, marginBottom: 8 },
-
-  typeGrid:     { flexDirection: 'row', gap: 8 },
-  typeBtn:      { flex: 1, backgroundColor: Colors.surfaceLo, borderWidth: 2, borderColor: Colors.border, borderRadius: Radii.md, paddingVertical: 10, alignItems: 'center' },
-  typeBtnLabel: { fontSize: 10, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5, color: '#999' },
-
-  steppers:      { paddingHorizontal: Spacing.screenH, gap: 10, marginBottom: 10 },
-  intervalTotal: { textAlign: 'center', fontSize: 14, fontWeight: '600', color: Colors.textMuted, paddingVertical: 6 },
-
-  moreToggle: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 14 },
-  moreLabel:  { fontSize: 12, fontWeight: '600', color: Colors.textMuted, textTransform: 'uppercase', letterSpacing: 1 },
-  moreChev:   { fontSize: 10, color: Colors.textMuted },
-  moreSection: { gap: 10, paddingHorizontal: Spacing.screenH },
-
-  nameInput: {
-    backgroundColor: Colors.surfaceLo, borderWidth: 2, borderColor: Colors.border,
-    borderRadius: Radii.md, padding: 12,
-    fontFamily: 'BarlowCondensed_700Bold', fontSize: 22, color: Colors.textHi, letterSpacing: 1,
+  headerWrap: {
+    paddingHorizontal: Spacing.screenH,
+    paddingTop: Spacing.screenV,
+    paddingBottom: Spacing.xxl,
   },
 
-  toggleRow:   { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceLo, borderRadius: Radii.md, padding: 13, marginBottom: 8 },
-  toggleLabel: { fontSize: 13, fontWeight: '600', color: Colors.textMid },
-  toggleSub:   { fontSize: 11, color: '#999', marginTop: 1 },
+  section: {
+    paddingHorizontal: Spacing.screenH,
+    marginBottom: Spacing.xxl,
+  },
+  sectionLabelSpacing: { marginBottom: 7 },
 
-  summary:      { marginHorizontal: Spacing.screenH, marginTop: 24, backgroundColor: Colors.surface, borderRadius: Radii.lg, padding: 14, borderWidth: 1.5, borderColor: Colors.borderHi, flexDirection: 'row', alignItems: 'center', gap: 12 },
-  summaryLeft:  { flex: 1 },
-  summaryName:  { fontFamily: 'BarlowCondensed_900Black', fontSize: 19, textTransform: 'uppercase', color: Colors.textHi, letterSpacing: 1 },
-  summaryType:  { fontSize: 11, color: Colors.textMuted, marginTop: 3 },
-  summaryRight: { alignItems: 'flex-end' },
-  summaryTime:  { fontFamily: 'BarlowCondensed_900Black', fontSize: 26, color: Colors.work },
-  summaryTimeLabel: { fontSize: 10, color: Colors.textDim, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 3 },
+  typeGrid: { flexDirection: 'row', gap: Spacing.sm },
 
-  ctaWrap: { padding: Spacing.screenH, paddingTop: 12 },
-  cta:     { backgroundColor: Colors.textHi, borderRadius: Radii.lg, paddingVertical: 16, alignItems: 'center' },
-  ctaText: { fontFamily: 'BarlowCondensed_900Black', fontSize: 20, color: '#111', textTransform: 'uppercase', letterSpacing: 0.5 },
+  steppers: { gap: 10 },
+
+  moreToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 2,
+    paddingVertical: 14,
+    marginBottom: Spacing.xxl,
+  },
+  moreLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: Colors.textHi,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  moreChev: { fontSize: 10, color: Colors.textHi },
+
+  moreSection: {
+    gap: 10,
+    paddingHorizontal: Spacing.screenH,
+    marginBottom: Spacing.xxl,
+  },
+
+  toggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.planeBlack,
+    borderRadius: Radii.xl,
+    paddingHorizontal: 18,
+    paddingVertical: 16,
+    height: 68,
+  },
+  toggleLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.textMid,
+  },
+  toggleSub: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: Colors.textLo,
+    marginTop: 1,
+  },
+
+  nameInput: {
+    backgroundColor: Colors.planeBlack,
+    borderWidth: 1,
+    borderColor: '#7c7c7c',
+    borderRadius: Radii.md,
+    height: 46,
+    paddingHorizontal: 17,
+    fontWeight: '500',
+    fontSize: 15,
+    color: Colors.textHi,
+    textTransform: 'uppercase',
+  },
+
+  summaryGrid: {
+    paddingHorizontal: Spacing.screenH,
+    gap: 10,
+    marginBottom: Spacing.xxl,
+  },
+  summaryRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  summaryItem: { flex: 1 },
+
+  ctaRow: {
+    flexDirection: 'row',
+    gap: 16,
+    paddingHorizontal: Spacing.screenH,
+    paddingBottom: Spacing.screenV,
+  },
+  ctaHalf: { flex: 1 },
 });

@@ -11,7 +11,7 @@ const TYPE_COLORS: Record<string, string> = {
   hiit:     Colors.workLight,
   running:  Colors.rest,
   cardio:   Colors.prep,
-  strength: '#b388ff',
+  strength: Colors.strength,
 };
 
 interface Props {
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   cardSelected: { borderColor: Colors.work },
   typeLabel: { fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1.5, marginBottom: 8 },
-  name:      { fontFamily: 'BarlowCondensed_900Black', fontSize: 32, textTransform: 'uppercase', lineHeight: 32, color: Colors.textHi, marginBottom: 14 },
+  name:      { fontFamily: 'BarlowSemiCondensed_800ExtraBold', fontSize: 32, textTransform: 'uppercase', lineHeight: 32, color: Colors.textHi, marginBottom: 14 },
   tags:      { flexDirection: 'row', gap: 8, flexWrap: 'wrap', marginBottom: 12 },
   tagWork:   { backgroundColor: '#ff3d3d28', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
   tagWorkText: { fontSize: 11, fontWeight: '700', color: '#ff7070', textTransform: 'uppercase' },

@@ -97,7 +97,7 @@ G| `textLo`           | `#aaa`    | Secondary text (sub-labels, metadata)      |
 | `condensed` | Barlow Semi Condensed   | Display headings, timer digits, CTAs |
 | `body`      | Inter                   | Body text, labels, sub-labels        |
 
-> Note: Figma uses "Barlow Semi Condensed" while the codebase currently loads "Barlow Condensed". Verify which is correct and align.
+> Resolved: Codebase now uses `@expo-google-fonts/barlow-semi-condensed` to match Figma. Font tokens: `BarlowSemiCondensed_800ExtraBold`, `BarlowSemiCondensed_700Bold`, `BarlowSemiCondensed_500Medium`.
 
 ### Type Scale
 
@@ -577,39 +577,32 @@ All screens share:
 
 | Design Component       | Code File                              | Status  |
 | ---------------------- | -------------------------------------- | ------- |
-| Color tokens           | `src/constants/theme.ts`               | Partial |
-| Spacing / Radii        | `src/constants/theme.ts`               | Partial |
-| Timer Ring             | `src/components/timer/TimerRing.tsx`   | Exists  |
-| Chrome Overlay         | `src/components/timer/ChromeOverlay.tsx`| Exists  |
-| Preset Carousel        | `src/components/home/PresetCarousel.tsx`| Exists  |
-| Stepper                | `src/components/build/Stepper.tsx`     | Exists  |
-| Flash Overlay          | `src/components/shared/FlashOverlay.tsx`| Exists  |
-| Fire Icon              | `src/components/shared/FireIcon.tsx`   | Exists  |
-| Summary Card           | --                                     | Missing |
-| Setting Row            | --                                     | Missing |
-| CTA Button             | --                                     | Missing |
-| Ghost Button           | --                                     | Missing |
-| Streak Pill            | --                                     | Missing |
-| Phase Pill             | --                                     | Missing |
-| Section Label          | --                                     | Missing |
-| History Row            | --                                     | Missing |
-| Personal Best Row      | --                                     | Missing |
-| Type Chip              | --                                     | Missing |
-| Text Input             | --                                     | Missing |
-| Streak Banner          | --                                     | Missing |
-| Screen Title           | --                                     | Missing |
+| Color tokens           | `src/constants/theme.ts`                     | Done    |
+| Spacing / Radii        | `src/constants/theme.ts`                     | Done    |
+| Timer Ring             | `src/components/timer/TimerRing.tsx`         | Done    |
+| Chrome Overlay         | `src/components/timer/ChromeOverlay.tsx`     | Done    |
+| Preset Carousel        | `src/components/home/PresetCarousel.tsx`     | Done    |
+| Stepper                | `src/components/build/Stepper.tsx`           | Done    |
+| Flash Overlay          | `src/components/shared/FlashOverlay.tsx`     | Done    |
+| Fire Icon              | `src/components/shared/FireIcon.tsx`         | Done    |
+| Summary Card           | `src/components/shared/SummaryCard.tsx`      | Done    |
+| CTA Button             | `src/components/shared/CTAButton.tsx`        | Done    |
+| Streak Pill            | `src/components/shared/StreakPill.tsx`       | Done    |
+| Phase Pill             | `src/components/shared/PhasePill.tsx`        | Done    |
+| Section Label          | `src/components/shared/SectionLabel.tsx`     | Done    |
+| History Row            | `src/components/shared/HistoryRow.tsx`       | Done    |
+| Personal Best Row      | `src/components/shared/PersonalBestRow.tsx`  | Done    |
+| Type Chip              | `src/components/shared/TypeChip.tsx`         | Done    |
+| Streak Banner          | `src/components/shared/StreakBanner.tsx`     | Done    |
+| Screen Title           | `src/components/shared/ScreenTitle.tsx`      | Done    |
 
 ---
 
-## 8. Gaps: Figma vs. Code
+## 8. Remaining Gaps
 
-### Token gaps in `theme.ts`
+All token, font, and component gaps from the initial audit have been resolved. Remaining items:
 
-1. **Missing colors:** `offBlack`, `planeBlack`, `divider`, `dividerHi`, `barTrack`, `barFill`, `progressDone`, `progressActive`, `progressPending`, `streakBanner`, `streakBorder`, all tint/alpha variants
-2. **Missing spacing:** `screenV` (46px), `xxl` as 28px (currently 36px -- verify intent)
-3. **Missing radii:** `pill` (20px), value `13` for summary cards (currently `lg` is 14)
-4. **Font family mismatch:** Figma says "Barlow Semi Condensed", code says "BarlowCondensed"
-
-### Component gaps
-
-All shared UI components listed in section 5 (except Timer Ring and Stepper) need to be extracted as reusable components. Currently, button styles, cards, and list items are likely inline in screen files.
+1. **Ghost Button** — not yet extracted as a standalone component (used once on Home for "MORE STATS")
+2. **Edit Button (Inline)** — not yet extracted (used once on preset card)
+3. **Text Input** — not yet extracted as standalone (inline in Build screen)
+4. **Background gradient** — not yet applied to screen backgrounds (screens currently use flat `Colors.bg`)

@@ -1,13 +1,16 @@
 import PresetCarousel from '@/components/home/PresetCarousel';
 import FireIcon from '@/components/shared/FireIcon';
+import CTAButton from '@/components/shared/CTAButton';
+import SectionLabel from '@/components/shared/SectionLabel';
+import StreakPill from '@/components/shared/StreakPill';
+import HistoryRow from '@/components/shared/HistoryRow';
 import { PRESETS, Preset } from '@/constants/presets';
-import { Colors, Radii, Spacing } from '@/constants/theme';
+import { Colors, Spacing } from '@/constants/theme';
 import { computeStreak, useHistoryStore } from '@/store/historyStore';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -33,20 +36,17 @@ export default function HomeScreen() {
       <ScrollView
         style={styles.scroll}
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[]} // nothing sticky
       >
         {/* Header */}
         <View style={styles.header}>
           <FireIcon size={64} color={Colors.work} strokeColor={Colors.bg} />
           {streak > 0 && (
-            <View style={styles.streakBadge}>
-              <Text style={styles.streakText}>{streak}-day streak</Text>
-            </View>
+            <StreakPill label={`${streak}-day streak`} />
           )}
         </View>
 
         {/* Quick start */}
-        <Text style={styles.sectionLabel}>Quick start</Text>
+        <SectionLabel style={styles.sectionLabel}>Quick start</SectionLabel>
         <PresetCarousel
           presets={PRESETS}
           selectedId={selectedPreset.id}
@@ -55,30 +55,25 @@ export default function HomeScreen() {
 
         {/* Start CTA */}
         <View style={styles.ctaWrap}>
-          <Pressable style={styles.cta} onPress={handleStart}>
-            <Text style={styles.ctaText}>▶  Start workout</Text>
-          </Pressable>
+          <CTAButton label="Create New" onPress={handleStart} />
         </View>
 
         {/* Recent */}
-        <Text style={[styles.sectionLabel, { marginTop: 0 }]}>Recent</Text>
+        <SectionLabel style={[styles.sectionLabel, { marginTop: 0 }]}>Recent</SectionLabel>
         {records.length === 0 ? (
           <Text style={styles.empty}>No workouts yet — start your first one above!</Text>
         ) : (
-          records.slice(0, 8).map((r) => (
-            <View key={r.id} style={styles.recentRow}>
-              <View style={styles.recentInfo}>
-                <Text style={styles.recentName}>{r.name}</Text>
-                <Text style={styles.recentMeta}>
-                  {new Date(r.completedAt).toLocaleDateString()} · {Math.round(r.durationSecs / 60)}:00 min · {r.type}
-                </Text>
-              </View>
-              <View>
-                <Text style={styles.kcal}>{r.kcalBurned}</Text>
-                <Text style={styles.kcalUnit}>kcal</Text>
-              </View>
-            </View>
-          ))
+          <View style={styles.historyList}>
+            {records.slice(0, 8).map((r, i) => (
+              <HistoryRow
+                key={r.id}
+                title={r.name}
+                subtitle={`${new Date(r.completedAt).toLocaleDateString()} · ${Math.round(r.durationSecs / 60)}:00 min · ${r.type}`}
+                value={String(r.kcalBurned)}
+                showDivider={i < Math.min(records.length, 8) - 1}
+              />
+            ))}
+          </View>
         )}
         <View style={{ height: 20 }} />
       </ScrollView>
@@ -90,21 +85,33 @@ const styles = StyleSheet.create({
   safe:   { flex: 1, backgroundColor: Colors.bg },
   scroll: { flex: 1 },
 
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', paddingHorizontal: Spacing.screenH, paddingTop: 40, paddingBottom: 24 },
-  streakBadge: { backgroundColor: '#ff3d3d22', borderWidth: 1, borderColor: '#ff3d3d55', paddingHorizontal: 11, paddingVertical: 6, borderRadius: Radii.full },
-  streakText:  { color: '#ff6a6a', fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    paddingHorizontal: Spacing.screenH,
+    paddingTop: 40,
+    paddingBottom: 24,
+  },
 
-  sectionLabel: { fontSize: 10, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1.5, color: Colors.textMuted, paddingHorizontal: Spacing.screenH, marginBottom: 12, marginTop: 0 },
+  sectionLabel: {
+    paddingHorizontal: Spacing.screenH,
+    marginBottom: 12,
+  },
 
-  ctaWrap: { paddingHorizontal: Spacing.screenH, paddingBottom: 28, paddingTop: 14 },
-  cta:     { backgroundColor: Colors.work, borderRadius: Radii.lg, paddingVertical: 18, alignItems: 'center' },
-  ctaText: { fontFamily: 'BarlowCondensed_900Black', fontSize: 22, color: Colors.white, textTransform: 'uppercase', letterSpacing: 0.5 },
+  ctaWrap: {
+    paddingHorizontal: Spacing.screenH,
+    paddingBottom: Spacing.xxl,
+    paddingTop: 14,
+  },
 
-  recentRow:  { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: Spacing.screenH, paddingVertical: 13, borderBottomWidth: 1, borderBottomColor: '#1a1a1a' },
-  recentInfo: { flex: 1 },
-  recentName: { fontSize: 13, fontWeight: '600', color: Colors.textMid },
-  recentMeta: { fontSize: 11, color: '#777', marginTop: 1 },
-  kcal:       { fontFamily: 'BarlowCondensed_700Bold', fontSize: 19, color: '#ff5555', textAlign: 'right' },
-  kcalUnit:   { fontSize: 10, color: '#777', textAlign: 'right' },
-  empty:      { paddingHorizontal: Spacing.screenH, color: Colors.textMuted, fontSize: 13 },
+  historyList: {
+    paddingHorizontal: Spacing.screenH,
+  },
+
+  empty: {
+    paddingHorizontal: Spacing.screenH,
+    color: Colors.textMuted,
+    fontSize: 13,
+  },
 });

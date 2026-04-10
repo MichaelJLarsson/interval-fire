@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts,
-  BarlowCondensed_700Bold,
-  BarlowCondensed_900Black,
-} from '@expo-google-fonts/barlow-condensed';
+  BarlowSemiCondensed_500Medium,
+  BarlowSemiCondensed_700Bold,
+  BarlowSemiCondensed_800ExtraBold,
+} from '@expo-google-fonts/barlow-semi-condensed';
 import { Barlow_400Regular, Barlow_600SemiBold } from '@expo-google-fonts/barlow';
 import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -14,8 +15,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
-    BarlowCondensed_700Bold,
-    BarlowCondensed_900Black,
+    BarlowSemiCondensed_500Medium,
+    BarlowSemiCondensed_700Bold,
+    BarlowSemiCondensed_800ExtraBold,
     Barlow_400Regular,
     Barlow_600SemiBold,
   });
