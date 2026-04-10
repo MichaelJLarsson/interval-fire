@@ -72,8 +72,8 @@ export default function CompleteScreen() {
 
           {/* Action buttons */}
           <View style={styles.ctaRow}>
-            <CTAButton label="Stats" variant="outline" onPress={() => router.replace('/(tabs)/stats')} style={styles.ctaHalf} />
-            <CTAButton label="Home" onPress={() => router.replace('/(tabs)/')} style={styles.ctaHalf} />
+            <CTAButton label="Stats" variant="outline" onPress={() => router.replace('/stats')} style={styles.ctaHalf} />
+            <CTAButton label="Home" onPress={() => router.replace('/')} style={styles.ctaHalf} />
           </View>
         </Animated.View>
     </GradientScreen>

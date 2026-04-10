@@ -32,7 +32,9 @@ export default function RootLayout() {
     <GestureHandlerRootView style={styles.root}>
       <StatusBar style="light" />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#0d0d0d' } }}>
-        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="index" />
+        <Stack.Screen name="build" />
+        <Stack.Screen name="stats" />
         <Stack.Screen name="timer"    options={{ animation: 'fade', gestureEnabled: false }} />
         <Stack.Screen name="complete" options={{ animation: 'fade' }} />
       </Stack>

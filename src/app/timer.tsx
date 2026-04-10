@@ -112,7 +112,7 @@ export default function TimerScreen() {
         voiceOn={voiceEnabled}
         onToggleAudio={() => { setAudio(!audioEnabled); resetChromeTimer(); }}
         onToggleVoice={() => { setVoice(!voiceEnabled); resetChromeTimer(); }}
-        onStop={() => { stop(); router.replace('/(tabs)/'); }}
+        onStop={() => { stop(); router.replace('/'); }}
         onPauseResume={() => { isPaused ? resume() : pause(); resetChromeTimer(); }}
         onSkip={() => { /* advance handled by store */ resetChromeTimer(); }}
         isPaused={isPaused}
