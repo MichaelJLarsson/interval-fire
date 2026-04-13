@@ -7,14 +7,16 @@ import StreakPill from '@/components/shared/StreakPill';
 import HistoryRow from '@/components/shared/HistoryRow';
 import { PRESETS, Preset, TYPE_LABELS } from '@/constants/presets';
 import { MOCK_HISTORY, formatRelativeDate } from '@/constants/mockHistory';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Fonts, Radii, Spacing } from '@/constants/theme';
 import { computeStreak, useHistoryStore } from '@/store/historyStore';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
+  Pressable,
   ScrollView,
   StyleSheet,
+  Text,
   View,
 } from 'react-native';
 
@@ -82,6 +84,13 @@ export default function HomeScreen() {
             );
           })}
         </View>
+
+        {/* More Stats */}
+        <View style={styles.moreStatsWrap}>
+          <Pressable style={styles.moreStatsBtn} onPress={() => router.push('/stats')}>
+            <Text style={styles.moreStatsText}>MORE STATS</Text>
+          </Pressable>
+        </View>
         <View style={{ height: 20 }} />
       </ScrollView>
     </GradientScreen>
@@ -115,4 +124,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.screenH,
   },
 
+  moreStatsWrap: {
+    paddingHorizontal: Spacing.screenH,
+    paddingTop: 18,
+    alignItems: 'flex-start',
+  },
+  moreStatsBtn: {
+    height: 46,
+    paddingHorizontal: 17,
+    borderRadius: 7,
+    backgroundColor: Colors.planeBlack,
+    borderWidth: 2,
+    borderColor: Colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  moreStatsText: {
+    fontFamily: Fonts.bodySemiBold,
+    fontSize: 10,
+    color: Colors.textLo,
+    letterSpacing: 0.2,
+  },
 });
