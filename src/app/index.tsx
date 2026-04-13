@@ -26,9 +26,14 @@ export default function HomeScreen() {
 
   const streak = computeStreak(records);
 
-  const handleStart = () => {
-    startWorkout(selectedPreset);
+  const handlePlay = (preset: Preset) => {
+    startWorkout(preset);
     router.push('/timer');
+  };
+
+  const handleEdit = (preset: Preset) => {
+    // Navigate to build screen (future: pre-fill with preset values)
+    router.push('/build');
   };
 
   return (
@@ -51,11 +56,13 @@ export default function HomeScreen() {
           presets={PRESETS}
           selectedId={selectedPreset.id}
           onSelect={setSelectedPreset}
+          onPlay={handlePlay}
+          onEdit={handleEdit}
         />
 
         {/* Start CTA */}
         <View style={styles.ctaWrap}>
-          <CTAButton label="Create New" onPress={handleStart} />
+          <CTAButton label="Create New" onPress={() => router.push('/build')} />
         </View>
 
         {/* Recent */}
