@@ -5,7 +5,8 @@ import GradientScreen from '@/components/shared/GradientScreen';
 import SectionLabel from '@/components/shared/SectionLabel';
 import StreakPill from '@/components/shared/StreakPill';
 import HistoryRow from '@/components/shared/HistoryRow';
-import { PRESETS, Preset } from '@/constants/presets';
+import { PRESETS, Preset, TYPE_LABELS } from '@/constants/presets';
+import { MOCK_HISTORY, formatRelativeDate } from '@/constants/mockHistory';
 import { Colors, Spacing } from '@/constants/theme';
 import { computeStreak, useHistoryStore } from '@/store/historyStore';
 import { useWorkoutStore } from '@/store/workoutStore';
@@ -14,7 +15,6 @@ import React, { useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 
@@ -25,6 +25,7 @@ export default function HomeScreen() {
   const [selectedPreset, setSelectedPreset] = useState<Preset>(PRESETS[0]);
 
   const streak = computeStreak(records);
+  const historyToShow = records.length > 0 ? records : MOCK_HISTORY;
 
   const handlePlay = (preset: Preset) => {
     startWorkout(preset);
@@ -67,21 +68,20 @@ export default function HomeScreen() {
 
         {/* Recent */}
         <SectionLabel style={[styles.sectionLabel, { marginTop: 0 }]}>Recent</SectionLabel>
-        {records.length === 0 ? (
-          <Text style={styles.empty}>No workouts yet — start your first one above!</Text>
-        ) : (
-          <View style={styles.historyList}>
-            {records.slice(0, 8).map((r, i) => (
+        <View style={styles.historyList}>
+          {historyToShow.slice(0, 8).map((r, i) => {
+            const mins = Math.round(r.durationSecs / 60);
+            return (
               <HistoryRow
                 key={r.id}
                 title={r.name}
-                subtitle={`${new Date(r.completedAt).toLocaleDateString()} · ${Math.round(r.durationSecs / 60)}:00 min · ${r.type}`}
+                subtitle={`${formatRelativeDate(r.completedAt)} · ${mins}:00 min · ${TYPE_LABELS[r.type]}`}
                 value={String(r.kcalBurned)}
-                showDivider={i < Math.min(records.length, 8) - 1}
+                showDivider={i < Math.min(historyToShow.length, 8) - 1}
               />
-            ))}
-          </View>
-        )}
+            );
+          })}
+        </View>
         <View style={{ height: 20 }} />
       </ScrollView>
     </GradientScreen>
@@ -115,9 +115,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.screenH,
   },
 
-  empty: {
-    paddingHorizontal: Spacing.screenH,
-    color: Colors.textMuted,
-    fontSize: 13,
-  },
 });

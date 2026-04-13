@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderBottomWidth: 1,
-    borderBottomColor: '#1a1a1a',
+    borderBottomColor: Colors.divider,
   },
   info: { flex: 1 },
   title: {
