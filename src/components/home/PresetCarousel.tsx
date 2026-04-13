@@ -48,7 +48,7 @@ function PresetCard({ item, active, onSelect, onPlay, onEdit }: PresetCardProps)
 
   return (
     <Animated.View style={[styles.card, animatedStyle]}>
-      <Pressable onPress={() => onSelect(item)}>
+      <Pressable style={styles.cardInner} onPress={() => onSelect(item)}>
         {/* Top row: (type label + title) on left, play button on right */}
         <View style={styles.topRow}>
           <View style={styles.topLeft}>
@@ -139,12 +139,17 @@ export default function PresetCarousel({ presets, selectedId, onSelect, onPlay, 
 const styles = StyleSheet.create({
   card: {
     width: CARD_W,
+    minHeight: 187,
     backgroundColor: Colors.surface,
     borderRadius: Radii.xl,
     padding: 16,
     paddingTop: 14,
     borderWidth: 1,
     borderColor: 'transparent',
+  },
+  cardInner: {
+    flex: 1,
+    justifyContent: 'space-between',
   },
 
   topRow: {
