@@ -1,6 +1,6 @@
+import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { Colors, Fonts, Radii } from '@/constants/theme';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 interface Props {
   label: string;
@@ -42,12 +42,12 @@ const styles = StyleSheet.create({
   },
   labelWrap: { flex: 1 },
   label: {
-    fontSize: 14,
+    fontSize: FontSizes.body,
     fontWeight: '600',
     color: Colors.textMid,
   },
   sublabel: {
-    fontSize: 11,
+    fontSize: FontSizes.caption,
     fontWeight: '500',
     color: Colors.textLo,
     marginTop: 1,
@@ -68,13 +68,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btnText: {
-    fontSize: 18,
+    fontSize: FontSizes.bodyXl,
     fontWeight: '700',
     color: Colors.textHi,
   },
   value: {
     fontFamily: Fonts.condensedBold,
-    fontSize: 16,
+    fontSize: FontSizes.headingMd,
     fontWeight: '700',
     minWidth: 44,
     textAlign: 'center',

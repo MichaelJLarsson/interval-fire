@@ -101,27 +101,20 @@ G| `textLo`           | `#aaa`    | Secondary text (sub-labels, metadata)      |
 
 ### Type Scale
 
-| Name              | Family               | Weight         | Size  | Letter Spacing | Usage                                         |
-| ----------------- | -------------------- | -------------- | ----- | -------------- | --------------------------------------------- |
-| `displayXL`       | Barlow Semi Cond.    | ExtraBold      | 96px  | 0              | Timer countdown digits                        |
-| `displayLg`       | Barlow Semi Cond.    | ExtraBold      | 40px  | 0              | "Workout Complete!" heading                   |
-| `displayMd`       | Barlow Semi Cond.    | ExtraBold      | 36px  | 0              | Preset card title ("TABATA CLASSIC")          |
-| `displaySm`       | Barlow Semi Cond.    | Bold           | 30px  | 0              | Summary data values ("8,340", "6.2h")         |
-| `headingLg`       | Barlow Semi Cond.    | Bold           | 26px  | -0.52px        | Screen titles ("Build Workout", "Your Stats") |
-| `headingMd`       | Barlow Semi Cond.    | ExtraBold      | 20px  | 1px            | Timer workout name, button labels             |
-| `logo`            | Barlow Semi Cond.    | ExtraBold.     | 30px  | -0.5px         | App logo text                                 |
-| `bodyLg`          | Inter                | Bold           | 17px  | 0              | Kcal values in history                        |
-| `bodyMd`          | Inter                | SemiBold       | 14px  | 0              | Setting labels, history titles, PB titles     |
-| `bodySm`          | Inter                | SemiBold       | 13px  | 0              | Edit button, streak text                      |
-| `bodyXs`          | Inter                | Medium         | 12px  | 0              | History item names (secondary)                |
-| `caption`         | Inter                | Medium         | 11px  | 0              | Sub-labels, metadata lines                    |
-| `label`           | Inter                | Bold           | 10px  | 1.5px          | Section headers, uppercase labels             |
-| `labelSm`         | Inter                | SemiBold       | 10px  | 0              | Type chip labels                              |
-| `phaseBadge`      | Inter                | Bold           | 13px  | 2px            | Phase label below timer ("WORK", "REST")      |
-| `nextPhase`       | Inter                | Light/SemiBold | 14px  | 0              | "Next: Rest 0:10" mixed weight                |
-| `ctaText`         | Barlow Semi Cond.    | ExtraBold      | 20px  | 0.4px          | CTA button text ("CREATE NEW", "HOME")        |
-| `pillText`        | Inter                | Bold           | 10px  | 0.3px          | Streak pill, status pill                      |
-| `chipText`        | Inter                | Regular        | 10px  | 0              | Meta chips ("8 rounds", "4:00 min")           |
+Consolidated scale exported as `FontSizes` from `src/constants/theme.ts`.
+
+| Token       | Size  | Typical Usage                                                             |
+| ----------- | ----- | ------------------------------------------------------------------------- |
+| `displayXL` | 82px  | Timer countdown digits                                                    |
+| `displayLg` | 40px  | "Workout Complete!" headline                                              |
+| `displayMd` | 36px  | Preset card title ("TABATA CLASSIC")                                      |
+| `displaySm` | 30px  | Summary data values, logo                                                 |
+| `headingLg` | 26px  | Screen titles ("Build Workout", "Your Stats")                             |
+| `headingMd` | 20px  | CTA button text, timer workout name                                       |
+| `bodyXl`    | 18px  | Kcal values in history, emphasized body                                   |
+| `body`      | 14px  | History titles, setting labels, inputs, streak text, edit button          |
+| `caption`   | 12px  | Sub-labels, metadata lines, secondary body                                |
+| `label`     | 10px  | Uppercase section headers, pills, chips, type chip labels                 |
 
 ### Label Convention
 

@@ -7,7 +7,7 @@ import StreakPill from '@/components/shared/StreakPill';
 import HistoryRow from '@/components/shared/HistoryRow';
 import { PRESETS, Preset, TYPE_LABELS } from '@/constants/presets';
 import { MOCK_HISTORY, formatRelativeDate } from '@/constants/mockHistory';
-import { Colors, Fonts, Radii, Spacing } from '@/constants/theme';
+import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
 import { computeStreak, useHistoryStore } from '@/store/historyStore';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useRouter } from 'expo-router';
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
   moreStatsText: {
     fontFamily: Fonts.bodySemiBold,
-    fontSize: 10,
+    fontSize: FontSizes.label,
     color: Colors.textLo,
     letterSpacing: 0.2,
   },

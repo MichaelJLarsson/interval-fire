@@ -6,7 +6,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { Colors, Fonts, Spacing } from '@/constants/theme';
+import { Colors, Fonts, FontSizes, Spacing } from '@/constants/theme';
 import { useHistoryStore, computeStreak } from '@/store/historyStore';
 import GradientScreen from '@/components/shared/GradientScreen';
 import SummaryCard from '@/components/shared/SummaryCard';
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 
   headline: {
     fontFamily: Fonts.condensed,
-    fontSize: 40,
+    fontSize: FontSizes.displayLg,
     textTransform: 'uppercase',
     color: Colors.textHi,
     textAlign: 'center',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   workoutName: {
-    fontSize: 11,
+    fontSize: FontSizes.caption,
     fontWeight: '700',
     color: Colors.textLo,
     textTransform: 'uppercase',

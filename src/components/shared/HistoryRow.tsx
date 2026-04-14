@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { Colors, Fonts } from '@/constants/theme';
+import { Colors, Fonts, FontSizes } from '@/constants/theme';
 
 interface Props {
   title: string;
@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
   info: { flex: 1 },
   title: {
     fontFamily: Fonts.bodySemiBold,
-    fontSize: 14,
+    fontSize: FontSizes.body,
     color: Colors.textMid,
   },
   subtitle: {
-    fontSize: 11,
+    fontSize: FontSizes.caption,
     fontWeight: '500',
     color: Colors.textLo,
     marginTop: 4,
@@ -52,13 +52,13 @@ const styles = StyleSheet.create({
   valueWrap: { alignItems: 'flex-end' },
   value: {
     fontFamily: Fonts.bodySemiBold,
-    fontSize: 17,
+    fontSize: FontSizes.bodyXl,
     fontWeight: '700',
     color: Colors.kcalValue,
     textAlign: 'right',
   },
   unit: {
-    fontSize: 11,
+    fontSize: FontSizes.caption,
     fontWeight: '500',
     color: Colors.textLo,
     textAlign: 'right',

@@ -3,7 +3,7 @@ import {
   View, Text, ScrollView, Pressable, TextInput, StyleSheet, Switch,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Colors, Spacing, Radii } from '@/constants/theme';
+import { Colors, FontSizes, Spacing, Radii } from '@/constants/theme';
 import {
   Preset, WorkoutType, stepTime, stepWarmup, formatTime, totalSecs,
 } from '@/constants/presets';
@@ -202,13 +202,13 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.xxl,
   },
   moreLabel: {
-    fontSize: 11,
+    fontSize: FontSizes.caption,
     fontWeight: '600',
     color: Colors.textHi,
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
-  moreChev: { fontSize: 10, color: Colors.textHi },
+  moreChev: { fontSize: FontSizes.label, color: Colors.textHi },
 
   moreSection: {
     gap: 10,
@@ -226,12 +226,12 @@ const styles = StyleSheet.create({
     height: 68,
   },
   toggleLabel: {
-    fontSize: 14,
+    fontSize: FontSizes.body,
     fontWeight: '600',
     color: Colors.textMid,
   },
   toggleSub: {
-    fontSize: 11,
+    fontSize: FontSizes.caption,
     fontWeight: '500',
     color: Colors.textLo,
     marginTop: 1,
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     height: 46,
     paddingHorizontal: 17,
     fontWeight: '500',
-    fontSize: 15,
+    fontSize: FontSizes.body,
     color: Colors.textHi,
     textTransform: 'uppercase',
   },

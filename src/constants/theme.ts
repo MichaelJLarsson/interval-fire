@@ -75,6 +75,21 @@ export const Fonts = {
   bodySemiBold:    'Barlow_600SemiBold',
 } as const;
 
+// ─── Font sizes ───────────────────────────────────────────────────────────────
+// Scale follows DESIGN_SYSTEM.md §2 Type Scale.
+export const FontSizes = {
+  displayXL: 82, // Timer countdown digits
+  displayLg: 40, // "Workout Complete!" headline
+  displayMd: 36, // Preset card title
+  displaySm: 30, // Summary data values, logo
+  headingLg: 26, // Screen titles
+  headingMd: 20, // CTA buttons, timer workout name
+  bodyXl:    18, // Kcal value, workout name on timer
+  body:      14, // History titles, setting labels, inputs
+  caption:   12, // Sub-labels, metadata, secondary body
+  label:     10, // Uppercase section labels, chips, pills
+} as const;
+
 // ─── Spacing ──────────────────────────────────────────────────────────────────
 export const Spacing = {
   screenH: 22,   // horizontal screen padding

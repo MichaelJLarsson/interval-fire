@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { Colors, Fonts, Radii } from '@/constants/theme';
+import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
 
 type Variant = 'default' | 'eucalyptus' | 'white';
 
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   label: {
-    fontSize: 10,
+    fontSize: FontSizes.label,
     fontWeight: '700',
     textTransform: 'uppercase',
     letterSpacing: 1.5,
@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
   },
   value: {
     fontFamily: Fonts.condensedBold,
-    fontSize: 30,
+    fontSize: FontSizes.displaySm,
   },
 });

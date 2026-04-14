@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { Colors, Spacing, Radii } from '@/constants/theme';
+import { Colors, FontSizes, Spacing, Radii } from '@/constants/theme';
 import { useHistoryStore, computeStreak, weeklyMinutes } from '@/store/historyStore';
 import GradientScreen from '@/components/shared/GradientScreen';
 import ScreenTitle from '@/components/shared/ScreenTitle';
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   barFill: { width: '100%', borderRadius: 4, minHeight: 2 },
   barDay: {
-    fontSize: 10,
+    fontSize: FontSizes.label,
     fontWeight: '700',
     color: Colors.textLo,
     textTransform: 'uppercase',
@@ -162,5 +162,5 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
 
-  empty: { color: Colors.textMuted, fontSize: 13, paddingBottom: 16 },
+  empty: { color: Colors.textMuted, fontSize: FontSizes.body, paddingBottom: 16 },
 });

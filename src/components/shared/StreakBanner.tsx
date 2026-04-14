@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { Colors, Radii } from '@/constants/theme';
+import { Colors, FontSizes, Radii } from '@/constants/theme';
 
 interface Props {
   streak: number;
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 13,
+    fontSize: FontSizes.body,
     fontWeight: '500',
     color: Colors.work,
   },

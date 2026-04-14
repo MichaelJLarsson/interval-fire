@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { Colors, Radii } from '@/constants/theme';
+import { Colors, FontSizes, Radii } from '@/constants/theme';
 
 interface Props {
   label: string;
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 10,
+    fontSize: FontSizes.label,
     fontWeight: '700',
     color: '#ff6a6a',
     textTransform: 'uppercase',

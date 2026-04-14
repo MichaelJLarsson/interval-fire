@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { Colors, Fonts } from '@/constants/theme';
+import { Colors, Fonts, FontSizes } from '@/constants/theme';
 
 interface Props {
   icon: React.ReactNode;
@@ -50,19 +50,19 @@ const styles = StyleSheet.create({
   },
   info: { flex: 1 },
   title: {
-    fontSize: 14,
+    fontSize: FontSizes.body,
     fontWeight: '600',
     color: Colors.textHi,
   },
   subtitle: {
-    fontSize: 11,
+    fontSize: FontSizes.caption,
     fontWeight: '500',
     color: Colors.textLo,
     marginTop: 1,
   },
   value: {
     fontFamily: Fonts.condensedBold,
-    fontSize: 30,
+    fontSize: FontSizes.displaySm,
     textAlign: 'right',
   },
 });

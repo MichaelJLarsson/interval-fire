@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, TextStyle } from 'react-native';
-import { Colors } from '@/constants/theme';
+import { Colors, FontSizes } from '@/constants/theme';
 
 interface Props {
   children: string;
@@ -13,7 +13,7 @@ export default function SectionLabel({ children, style }: Props) {
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 10,
+    fontSize: FontSizes.label,
     fontWeight: '700',
     textTransform: 'uppercase',
     letterSpacing: 1.5,

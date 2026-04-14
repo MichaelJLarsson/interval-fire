@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Animated, {
   useAnimatedStyle, withTiming, Easing,
 } from 'react-native-reanimated';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Fonts, FontSizes, Spacing } from '@/constants/theme';
 
 interface Props {
   visible: boolean;
@@ -131,9 +131,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
   },
   headLeft:    { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  workoutName: { fontFamily: 'BarlowSemiCondensed_700Bold', fontSize: 17, color: Colors.textMuted, textTransform: 'uppercase', letterSpacing: 1 },
+  workoutName: { fontFamily: Fonts.condensedBold, fontSize: FontSizes.bodyXl, color: Colors.textMuted, textTransform: 'uppercase', letterSpacing: 1 },
   badge:       { paddingHorizontal: 12, paddingVertical: 5, borderRadius: 20 },
-  badgeText:   { fontSize: 10, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
+  badgeText:   { fontSize: FontSizes.label, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
 
   mid: {
     position: 'absolute', top: 108, left: 0, right: 0,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   dot:        { flex: 1, height: 3, borderRadius: 3, backgroundColor: '#242424' },
   dotDone:    { backgroundColor: '#444' },
   dotCurrent: { backgroundColor: Colors.work },
-  roundLabel: { textAlign: 'center', fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1, color: Colors.textMuted, marginTop: 8 },
+  roundLabel: { textAlign: 'center', fontSize: FontSizes.caption, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1, color: Colors.textMuted, marginTop: 8 },
 
   foot: {
     position: 'absolute', bottom: 52, left: 0, right: 0,
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   swOn:            { backgroundColor: Colors.work },
   thumb:           { width: 13, height: 13, borderRadius: 7, backgroundColor: '#555' },
   thumbOn:         { backgroundColor: Colors.white, alignSelf: 'flex-end' },
-  toggleLabel:     { fontSize: 11, fontWeight: '600', color: '#555', textTransform: 'uppercase', letterSpacing: 0.8 },
+  toggleLabel:     { fontSize: FontSizes.caption, fontWeight: '600', color: '#555', textTransform: 'uppercase', letterSpacing: 0.8 },
   toggleLabelOn:   { color: Colors.textMuted },
 
   hint: { position: 'absolute', bottom: 14, left: 0, right: 0, alignItems: 'center' },

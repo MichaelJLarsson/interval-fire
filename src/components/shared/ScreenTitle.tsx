@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, ViewStyle } from 'react-native';
-import { Colors, Fonts } from '@/constants/theme';
+import { Colors, Fonts, FontSizes } from '@/constants/theme';
 
 interface Props {
   line1: string;
@@ -21,7 +21,7 @@ export default function ScreenTitle({ line1, line2, style }: Props) {
 const styles = StyleSheet.create({
   title: {
     fontFamily: Fonts.condensedBold,
-    fontSize: 26,
+    fontSize: FontSizes.headingLg,
     textTransform: 'uppercase',
     color: Colors.textHi,
     lineHeight: 28,

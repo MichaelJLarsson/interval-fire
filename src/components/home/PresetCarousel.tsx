@@ -1,6 +1,6 @@
 import PhasePill from '@/components/shared/PhasePill';
 import { Preset, TYPE_LABELS, formatTime } from '@/constants/presets';
-import { Colors, Fonts, Radii, Spacing } from '@/constants/theme';
+import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
 import React, { useEffect, useRef } from 'react';
 import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   typeLabel: {
-    fontSize: 10,
+    fontSize: FontSizes.label,
     fontWeight: '700',
     textTransform: 'uppercase',
     letterSpacing: 1.5,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
 
   name: {
     fontFamily: Fonts.condensed,
-    fontSize: 36,
+    fontSize: FontSizes.displayMd,
     textTransform: 'uppercase',
     lineHeight: 36,
     color: Colors.textHi,
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   metaText: {
-    fontSize: 10,
+    fontSize: FontSizes.label,
     fontWeight: '700',
     color: Colors.textLo,
   },
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   },
   editText: {
     fontFamily: Fonts.condensedMedium,
-    fontSize: 13,
+    fontSize: FontSizes.body,
     color: Colors.work,
     letterSpacing: 0.26,
   },

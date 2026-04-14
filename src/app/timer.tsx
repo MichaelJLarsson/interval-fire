@@ -11,7 +11,7 @@ import ChromeOverlay from '@/components/timer/ChromeOverlay';
 import FlashOverlay from '@/components/shared/FlashOverlay';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Preset } from '@/constants/presets';
-import { Colors } from '@/constants/theme';
+import { Colors, Fonts, FontSizes } from '@/constants/theme';
 
 export default function TimerScreen() {
   const router = useRouter();
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // Sits on top of ring but is NOT inside pulsing element
   },
-  countdownNum: { fontFamily: 'BarlowSemiCondensed_800ExtraBold', fontSize: 82, lineHeight: 82, letterSpacing: -2 },
-  countdownLbl: { fontSize: 13, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 2, color: Colors.textMuted, marginTop: 4 },
-  nextText: { marginTop: 14, fontSize: 12, color: '#999', fontWeight: '500' },
+  countdownNum: { fontFamily: Fonts.condensed, fontSize: FontSizes.displayXL, lineHeight: FontSizes.displayXL, letterSpacing: -2 },
+  countdownLbl: { fontSize: FontSizes.body, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 2, color: Colors.textMuted, marginTop: 4 },
+  nextText: { marginTop: 14, fontSize: FontSizes.caption, color: '#999', fontWeight: '500' },
 });

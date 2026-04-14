@@ -1,6 +1,6 @@
+import { Colors, FontSizes, Radii } from '@/constants/theme';
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { Colors, Radii } from '@/constants/theme';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 interface Props {
   label: string;
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.restBgTint,
   },
   text: {
-    fontSize: 10,
+    fontSize: FontSizes.label,
     fontWeight: '700',
     textTransform: 'uppercase',
   },

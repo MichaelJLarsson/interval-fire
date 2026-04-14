@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, Text, StyleSheet, ViewStyle } from 'react-native';
-import { Colors, Fonts, Radii } from '@/constants/theme';
+import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
 
 interface Props {
   label: string;
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: Fonts.condensed,
-    fontSize: 20,
+    fontSize: FontSizes.headingMd,
     color: Colors.textHi,
     textTransform: 'uppercase',
     letterSpacing: 0.4,
