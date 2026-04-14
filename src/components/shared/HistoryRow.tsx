@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    paddingVertical: 13,
+    paddingVertical: 12,
   },
   divider: {
     borderBottomWidth: 1,
@@ -39,26 +39,29 @@ const styles = StyleSheet.create({
   },
   info: { flex: 1 },
   title: {
+    fontFamily: Fonts.bodySemiBold,
     fontSize: 14,
-    fontWeight: '600',
     color: Colors.textMid,
   },
   subtitle: {
     fontSize: 11,
     fontWeight: '500',
     color: Colors.textLo,
-    marginTop: 1,
+    marginTop: 4,
   },
   valueWrap: { alignItems: 'flex-end' },
   value: {
-    fontFamily: Fonts.condensedBold,
+    fontFamily: Fonts.bodySemiBold,
     fontSize: 17,
+    fontWeight: '700',
     color: Colors.kcalValue,
     textAlign: 'right',
   },
   unit: {
-    fontSize: 10,
-    color: Colors.textKcal,
+    fontSize: 11,
+    fontWeight: '500',
+    color: Colors.textLo,
     textAlign: 'right',
+    marginTop: 4,
   },
 });
