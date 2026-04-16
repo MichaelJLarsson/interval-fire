@@ -1,6 +1,9 @@
 import React from 'react';
-import Svg, { Path } from 'react-native-svg';
 import { WorkoutType } from '@/constants/presets';
+import RainDropIcon from './icons/RainDropIcon';
+import RunningIcon from './icons/RunningIcon';
+import FavouriteIcon from './icons/FavouriteIcon';
+import DumbbellIcon from './icons/DumbbellIcon';
 
 type Props = {
   type: WorkoutType;
@@ -11,89 +14,12 @@ type Props = {
 export default function WorkoutTypeIcon({ type, color = '#f0f0f0', size = 18 }: Props) {
   switch (type) {
     case 'hiit':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 18 18" fill="none">
-          <Path
-            d="M2.625 10.2585C2.625 7.1204 5.31059 4.0193 7.1956 2.22916C8.21933 1.25695 9.78068 1.25695 10.8044 2.22916C12.6894 4.0193 15.375 7.1204 15.375 10.2585C15.375 13.3353 12.9609 16.5 9 16.5C5.03909 16.5 2.625 13.3353 2.625 10.2585Z"
-            stroke={color}
-            strokeWidth={1.5}
-          />
-        </Svg>
-      );
+      return <RainDropIcon color={color} size={size} />;
     case 'running':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 18 18" fill="none">
-          <Path
-            d="M12.75 3.375C12.75 3.99632 12.2463 4.5 11.625 4.5C11.0037 4.5 10.5 3.99632 10.5 3.375C10.5 2.75368 11.0037 2.25 11.625 2.25C12.2463 2.25 12.75 2.75368 12.75 3.375Z"
-            stroke={color}
-            strokeWidth={1.5}
-          />
-          <Path
-            d="M11.25 15.7506L10.7519 13.7886C10.5871 13.1393 10.2461 12.5463 9.76553 12.0731L8.625 10.9498M8.625 10.9498C7.86915 10.3544 7.49126 10.0567 7.34485 9.6588C7.27963 9.4815 7.24847 9.29355 7.25302 9.10477C7.26322 8.68087 7.5249 8.27715 8.04818 7.46967L9 6.00102M8.625 10.9498L11.25 6.95807M4.5 8.36505C5.25 6.88775 6.40325 6.03172 9 6.00102M9 6.00102C9.16395 5.99908 9.4083 5.99849 9.65235 5.99854C10.031 5.9986 10.2203 5.99864 10.3712 6.06911C10.522 6.13957 10.6767 6.32442 10.9862 6.69411C11.0748 6.80004 11.1659 6.89494 11.25 6.95807M11.25 6.95807C12.116 7.60747 13.472 7.86907 15 6.14935"
-            stroke={color}
-            strokeWidth={1.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <Path
-            d="M3 13.2977L3.50866 13.4187C4.80497 13.7271 6.15243 13.1373 6.75 12"
-            stroke={color}
-            strokeWidth={1.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </Svg>
-      );
+      return <RunningIcon color={color} size={size} />;
     case 'cardio':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 18 18" fill="none">
-          <Path
-            d="M7.80802 14.9758C5.69206 13.3935 1.5 9.7761 1.5 6.52083C1.5 4.36922 3.07894 2.625 5.25 2.625C6.375 2.625 7.5 3 9 4.5C10.5 3 11.625 2.625 12.75 2.625C14.921 2.625 16.5 4.36922 16.5 6.52083C16.5 9.7761 12.3079 13.3935 10.192 14.9758C9.47992 15.5082 8.52007 15.5082 7.80802 14.9758Z"
-            stroke={color}
-            strokeWidth={1.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </Svg>
-      );
+      return <FavouriteIcon color={color} size={size} />;
     case 'strength':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 18 18" fill="none">
-          <Path
-            d="M12 6C11.8171 6.54853 11.4409 6.96958 10.9084 7.20565C9.19815 7.96387 7.96387 9.19815 7.20565 10.9084C6.96958 11.4409 6.54853 11.8171 6 12"
-            stroke={color}
-            strokeWidth={1.5}
-            strokeLinejoin="round"
-          />
-          <Path
-            d="M2.4 15.6L1.5 16.5M15.6 2.4L16.5 1.5"
-            stroke={color}
-            strokeWidth={1.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <Path
-            d="M13.3412 1.8165L12.207 2.90636L15.0875 5.81372L16.1957 4.73767C16.5283 4.34588 16.6302 4.05074 16.2161 3.50716L15.3867 2.63497L14.546 1.80562C14.0085 1.32355 13.5852 1.58294 13.3412 1.8165Z"
-            stroke={color}
-            strokeWidth={1.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <Path
-            d="M10.5086 2.8182C11.3416 1.93784 11.912 2.5644 12.205 2.91329L15.0608 5.78052C15.4162 6.06548 16.0664 6.6122 15.207 7.46351C15.0683 7.60087 14.9324 7.74472 14.7817 7.86869C14.2253 8.32642 13.6913 7.94699 13.4083 7.59832L10.5015 4.69157C10.1954 4.41665 9.66662 3.91853 10.1132 3.2527C10.2336 3.09904 10.3745 2.95999 10.5086 2.8182Z"
-            stroke={color}
-            strokeWidth={1.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <Path
-            d="M3.44057 16.2151L2.58457 15.3691L1.7716 14.5125C1.28918 14.0301 1.5675 13.5476 1.80574 13.3081L2.91729 12.1952L5.80973 15.1002L4.67125 16.2185C4.27311 16.5435 4.00011 16.643 3.46462 16.2185M4.6675 10.4433C4.37454 10.0944 3.80407 9.46784 2.97112 10.3482C2.83696 10.4899 2.69611 10.629 2.57574 10.7827C2.12912 11.4485 2.65789 11.9467 2.96395 12.2215L5.87079 15.1283C6.15373 15.477 6.68773 15.8564 7.24414 15.3987C7.39488 15.2747 7.53082 15.1309 7.6695 14.9935C8.52892 14.1422 7.87867 13.5955 7.52325 13.3105L4.6675 10.4433Z"
-            stroke={color}
-            strokeWidth={1.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </Svg>
-      );
+      return <DumbbellIcon color={color} size={size} />;
   }
 }
