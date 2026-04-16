@@ -16,6 +16,7 @@ import SummaryCard from '@/components/shared/SummaryCard';
 import CTAButton from '@/components/shared/CTAButton';
 import GradientScreen from '@/components/shared/GradientScreen';
 import TypeChip from '@/components/shared/TypeChip';
+import WorkoutTypeIcon from '@/components/shared/WorkoutTypeIcon';
 
 const DEFAULT: Preset = {
   id: 'custom',
@@ -71,6 +72,12 @@ export default function BuildScreen() {
                 label={label}
                 selected={p.type === key}
                 onPress={() => update({ type: key })}
+                icon={
+                  <WorkoutTypeIcon
+                    type={key}
+                    color={p.type === key ? Colors.work : Colors.textLo}
+                  />
+                }
               />
             ))}
           </View>
