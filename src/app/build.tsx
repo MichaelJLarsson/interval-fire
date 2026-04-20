@@ -15,7 +15,7 @@ import SectionLabel from '@/components/shared/SectionLabel';
 import SummaryCard from '@/components/shared/SummaryCard';
 import CTAButton from '@/components/shared/CTAButton';
 import GradientScreen from '@/components/shared/GradientScreen';
-import TypeChip from '@/components/shared/TypeChip';
+import TypeChip, { ChipAccent } from '@/components/shared/TypeChip';
 import WorkoutTypeIcon from '@/components/shared/WorkoutTypeIcon';
 
 const DEFAULT: Preset = {
@@ -26,11 +26,11 @@ const DEFAULT: Preset = {
   prepSecs: 10, warmupSecs: 0, cooldownSecs: 0,
 };
 
-const TYPES: { key: WorkoutType; label: string }[] = [
-  { key: 'hiit',     label: 'HIIT' },
-  { key: 'running',  label: 'Running' },
-  { key: 'cardio',   label: 'Cardio' },
-  { key: 'strength', label: 'Strength' },
+const TYPES: { key: WorkoutType; label: string; accent: ChipAccent }[] = [
+  { key: 'hiit',     label: 'HIIT',     accent: 'work' },
+  { key: 'running',  label: 'Running',  accent: 'prep' },
+  { key: 'cardio',   label: 'Cardio',   accent: 'prep' },
+  { key: 'strength', label: 'Strength', accent: 'rest' },
 ];
 
 export default function BuildScreen() {
@@ -66,16 +66,17 @@ export default function BuildScreen() {
         <View style={styles.section}>
           <SectionLabel style={styles.sectionLabelSpacing}>Type</SectionLabel>
           <View style={styles.typeGrid}>
-            {TYPES.map(({ key, label }) => (
+            {TYPES.map(({ key, label, accent }) => (
               <TypeChip
                 key={key}
                 label={label}
+                accent={accent}
                 selected={p.type === key}
                 onPress={() => update({ type: key })}
                 icon={
                   <WorkoutTypeIcon
                     type={key}
-                    color={p.type === key ? Colors.work : Colors.textLo}
+                    color={p.type === key ? Colors[accent] : Colors.textLo}
                   />
                 }
               />
