@@ -11,7 +11,7 @@ import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
 import { computeStreak, useHistoryStore } from '@/store/historyStore';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -19,6 +19,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { useFocusEffect } from 'expo-router';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -26,8 +27,15 @@ export default function HomeScreen() {
   const { records } = useHistoryStore();
   const [selectedPreset, setSelectedPreset] = useState<Preset>(PRESETS[0]);
 
+  const scrollRef = useRef<ScrollView>(null);
   const streak = computeStreak(records);
   const historyToShow = records.length > 0 ? records : MOCK_HISTORY;
+
+  useFocusEffect(
+    React.useCallback(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
+    }, [])
+  );
 
   const handlePlay = (preset: Preset) => {
     startWorkout(preset);
@@ -42,6 +50,7 @@ export default function HomeScreen() {
   return (
     <GradientScreen>
       <ScrollView
+        ref={scrollRef}
         style={styles.scroll}
         showsVerticalScrollIndicator={false}
       >

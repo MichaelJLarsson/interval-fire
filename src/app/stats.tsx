@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
 import { Colors, FontSizes, Spacing, Radii } from '@/constants/theme';
 import { useHistoryStore, computeStreak, weeklyMinutes } from '@/store/historyStore';
 import GradientScreen from '@/components/shared/GradientScreen';
@@ -10,6 +10,7 @@ import PersonalBestRow from '@/components/shared/PersonalBestRow';
 import HistoryRow from '@/components/shared/HistoryRow';
 import CTAButton from '@/components/shared/CTAButton';
 import HouseIcon from '@/components/shared/icons/HouseIcon';
+import ReturnIcon from '@/components/shared/icons/ReturnIcon';
 import { router } from 'expo-router';
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -36,6 +37,9 @@ export default function StatsScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.headerWrap}>
           <ScreenTitle line1="Your" line2="Stats" />
+          <Pressable style={styles.returnBtn} onPress={() => router.back()}>
+            <ReturnIcon color={Colors.textHi} size={22} />
+          </Pressable>
         </View>
 
         {/* Overview grid */}
@@ -120,9 +124,19 @@ export default function StatsScreen() {
 
 const styles = StyleSheet.create({
   headerWrap: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     paddingHorizontal: Spacing.screenH,
     paddingTop: Spacing.screenV,
     paddingBottom: Spacing.xxl,
+  },
+  returnBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   grid: {
