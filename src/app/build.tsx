@@ -6,6 +6,7 @@ import SectionLabel from '@/components/shared/SectionLabel';
 import SummaryCard from '@/components/shared/SummaryCard';
 import TypeChip, { ChipAccent } from '@/components/shared/TypeChip';
 import WorkoutTypeIcon from '@/components/shared/WorkoutTypeIcon';
+import ReturnIcon from '@/components/shared/icons/ReturnIcon';
 import {
   Preset, WorkoutType,
   formatTime,
@@ -68,6 +69,9 @@ export default function BuildScreen() {
         {/* Header */}
         <View style={styles.headerWrap}>
           <ScreenTitle line1="Build" line2="Workout" />
+          <Pressable style={styles.returnBtn} onPress={() => router.back()}>
+            <ReturnIcon color={Colors.textHi} size={22} />
+          </Pressable>
         </View>
 
         {/* Type selector */}
@@ -194,9 +198,19 @@ const styles = StyleSheet.create({
   scroll: { flex: 1 },
 
   headerWrap: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     paddingHorizontal: Spacing.screenH,
     paddingTop: Spacing.screenV,
     paddingBottom: Spacing.xxl,
+  },
+  returnBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   section: {
