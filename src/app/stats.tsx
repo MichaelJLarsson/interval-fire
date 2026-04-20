@@ -9,14 +9,20 @@ import SummaryCard from '@/components/shared/SummaryCard';
 import PersonalBestRow from '@/components/shared/PersonalBestRow';
 import HistoryRow from '@/components/shared/HistoryRow';
 
-const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export default function StatsScreen() {
   const { records } = useHistoryStore();
   const streak = computeStreak(records);
   const weekly = weeklyMinutes(records);
   const maxMins = Math.max(...weekly, 1);
-  const todayIdx = (new Date().getDay() + 6) % 7; // Mon=0
+
+  // Build day labels so today is always the last column
+  const dayLabels = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (6 - i));
+    return DAY_NAMES[(d.getDay() + 6) % 7];
+  });
 
   const totalWorkouts = records.length;
   const totalMins = records.reduce((s, r) => s + Math.round(r.durationSecs / 60), 0);
@@ -42,8 +48,8 @@ export default function StatsScreen() {
           <SectionLabel style={styles.sectionLabelSpacing}>This week</SectionLabel>
           <View style={styles.chartCard}>
             <View style={styles.bars}>
-              {DAYS.map((day, i) => {
-                const isToday = i === todayIdx;
+              {dayLabels.map((day, i) => {
+                const isToday = i === 6;
                 const pct = weekly[i] / maxMins;
                 return (
                   <View key={day} style={styles.barCol}>

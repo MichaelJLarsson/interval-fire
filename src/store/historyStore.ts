@@ -45,17 +45,16 @@ export function computeStreak(records: WorkoutRecord[]): number {
 }
 
 export function weeklyMinutes(records: WorkoutRecord[]): number[] {
-  // Returns [Mon, Tue, Wed, Thu, Fri, Sat, Sun] in minutes
+  // Returns last 7 days ordered [6 days ago … yesterday, today]
   const result = new Array(7).fill(0);
   const now = new Date();
-  const dayOfWeek = (now.getDay() + 6) % 7; // Mon=0 … Sun=6
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
   records.forEach((r) => {
-    const d = new Date(r.completedAt);
-    const diffMs = now.getTime() - d.getTime();
-    const diffDays = Math.floor(diffMs / 86400000);
-    if (diffDays < 7) {
-      const idx = (dayOfWeek - diffDays + 7) % 7;
-      result[idx] += Math.round(r.durationSecs / 60);
+    const rDate = new Date(r.completedAt);
+    const rStart = new Date(rDate.getFullYear(), rDate.getMonth(), rDate.getDate()).getTime();
+    const diffDays = Math.round((todayStart - rStart) / 86400000);
+    if (diffDays >= 0 && diffDays < 7) {
+      result[6 - diffDays] += Math.round(r.durationSecs / 60);
     }
   });
   return result;
@@ -68,7 +67,6 @@ export function estimateKcal(workSecs: number, rounds: number): number {
 // ─── Mock data ───────────────────────────────────────────────────────────────
 function generateMockRecords(): WorkoutRecord[] {
   const now = new Date();
-  const dayOfWeek = (now.getDay() + 6) % 7; // Mon=0
 
   const templates: { name: string; type: WorkoutType; durationSecs: number; rounds: number; kcal: number }[] = [
     { name: 'Tabata Blast',      type: 'hiit',     durationSecs: 1440, rounds: 12, kcal: 312 },
@@ -82,12 +80,13 @@ function generateMockRecords(): WorkoutRecord[] {
 
   const records: WorkoutRecord[] = [];
 
-  const daysWithWorkouts = [0, 1, 2, 3, 5].filter(d => d <= dayOfWeek);
+  // Generate workouts for 6 of the last 7 days (skip 4 days ago for variety)
+  const daysAgoWithWorkouts = [0, 1, 2, 3, 5, 6];
 
-  daysWithWorkouts.forEach((daysAgo, i) => {
+  daysAgoWithWorkouts.forEach((daysAgo, i) => {
     const t = templates[i % templates.length];
     const date = new Date(now);
-    date.setDate(date.getDate() - (dayOfWeek - daysAgo));
+    date.setDate(date.getDate() - daysAgo);
     date.setHours(7 + i, 30, 0, 0);
     records.push({
       id: `mock-${i}`,
