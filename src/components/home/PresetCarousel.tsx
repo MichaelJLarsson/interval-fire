@@ -4,7 +4,9 @@ import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
 import React, { useEffect, useRef } from 'react';
 import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
+  interpolate,
   interpolateColor,
+  SharedValue,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -27,7 +29,7 @@ interface Props {
 interface PresetCardProps {
   item: Preset;
   active: boolean;
-  dragging: Animated.SharedValue<number>;
+  dragging: SharedValue<number>;
   onSelect: (preset: Preset) => void;
   onPlay: (preset: Preset) => void;
   onEdit: (preset: Preset) => void;
@@ -95,17 +97,51 @@ function PresetCard({ item, active, dragging, onSelect, onPlay, onEdit }: Preset
   );
 }
 
+const DOT_SIZE = 6;
+const DOT_ACTIVE_W = 18;
+
+function AnimatedDot({ index, scrollX }: { index: number; scrollX: SharedValue<number> }) {
+  const snapInterval = CARD_W + CARD_GAP;
+
+  const animStyle = useAnimatedStyle(() => {
+    const progress = scrollX.value / snapInterval;
+    const diff = Math.abs(progress - index);
+
+    const width = interpolate(
+      diff,
+      [0, 1],
+      [DOT_ACTIVE_W, DOT_SIZE],
+      'clamp'
+    );
+
+    const backgroundColor = interpolateColor(
+      diff,
+      [0, 1],
+      [Colors.work, Colors.divider]
+    );
+
+    return { width, backgroundColor };
+  });
+
+  return <Animated.View style={[styles.dot, animStyle]} />;
+}
+
 export default function PresetCarousel({ presets, selectedId, onSelect, onPlay, onEdit }: Props) {
   const flatRef = useRef<FlatList>(null);
-  const [activeDot, setActiveDot] = React.useState(0);
   const cardScale = useSharedValue(1);
   const dragging = useSharedValue(0);
+  const scrollX = useSharedValue(0);
+  const lastSnappedIndex = useRef(0);
 
   const onScroll = (e: any) => {
-    const idx = Math.round(e.nativeEvent.contentOffset.x / (CARD_W + CARD_GAP));
+    const offsetX = e.nativeEvent.contentOffset.x;
+    scrollX.value = offsetX;
+    const idx = Math.round(offsetX / (CARD_W + CARD_GAP));
     const clamped = Math.max(0, Math.min(presets.length - 1, idx));
-    setActiveDot(clamped);
-    onSelect(presets[clamped]);
+    if (clamped !== lastSnappedIndex.current) {
+      lastSnappedIndex.current = clamped;
+      onSelect(presets[clamped]);
+    }
   };
 
   const onScrollBeginDrag = () => {
@@ -161,7 +197,7 @@ export default function PresetCarousel({ presets, selectedId, onSelect, onPlay, 
       {/* Dot indicator */}
       <View style={styles.dotRow}>
         {presets.map((_, i) => (
-          <View key={i} style={[styles.dot, i === activeDot && styles.dotActive]} />
+          <AnimatedDot key={i} index={i} scrollX={scrollX} />
         ))}
       </View>
     </View>
@@ -270,14 +306,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   dot: {
-    width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: Colors.divider,
-  },
-  dotActive: {
-    width: 18,
-    borderRadius: 3,
-    backgroundColor: Colors.work,
   },
 });
