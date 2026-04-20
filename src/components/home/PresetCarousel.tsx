@@ -1,5 +1,5 @@
 import PhasePill from '@/components/shared/PhasePill';
-import { Preset, TYPE_LABELS, formatTime } from '@/constants/presets';
+import { formatTime, Preset, TYPE_LABELS } from '@/constants/presets';
 import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
 import React, { useEffect, useRef } from 'react';
 import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -7,6 +7,7 @@ import Animated, {
   interpolateColor,
   useAnimatedStyle,
   useSharedValue,
+  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 import Svg, { Polygon } from 'react-native-svg';
@@ -26,25 +27,29 @@ interface Props {
 interface PresetCardProps {
   item: Preset;
   active: boolean;
+  dragging: Animated.SharedValue<number>;
   onSelect: (preset: Preset) => void;
   onPlay: (preset: Preset) => void;
   onEdit: (preset: Preset) => void;
 }
 
-function PresetCard({ item, active, onSelect, onPlay, onEdit }: PresetCardProps) {
+function PresetCard({ item, active, dragging, onSelect, onPlay, onEdit }: PresetCardProps) {
   const progress = useSharedValue(active ? 1 : 0);
 
   useEffect(() => {
     progress.value = withTiming(active ? 1 : 0, { duration: 180 });
   }, [active, progress]);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    borderColor: interpolateColor(
-      progress.value,
-      [0, 1],
-      ['rgba(255,61,61,0)', Colors.work]
-    ),
-  }));
+  const animatedStyle = useAnimatedStyle(() => {
+    const show = progress.value * (1 - dragging.value);
+    return {
+      borderColor: interpolateColor(
+        show,
+        [0, 1],
+        ['rgba(255,61,61,0)', Colors.work]
+      ),
+    };
+  });
 
   return (
     <Animated.View style={[styles.card, animatedStyle]}>
@@ -93,6 +98,8 @@ function PresetCard({ item, active, onSelect, onPlay, onEdit }: PresetCardProps)
 export default function PresetCarousel({ presets, selectedId, onSelect, onPlay, onEdit }: Props) {
   const flatRef = useRef<FlatList>(null);
   const [activeDot, setActiveDot] = React.useState(0);
+  const cardScale = useSharedValue(1);
+  const dragging = useSharedValue(0);
 
   const onScroll = (e: any) => {
     const idx = Math.round(e.nativeEvent.contentOffset.x / (CARD_W + CARD_GAP));
@@ -101,31 +108,56 @@ export default function PresetCarousel({ presets, selectedId, onSelect, onPlay, 
     onSelect(presets[clamped]);
   };
 
+  const onScrollBeginDrag = () => {
+    cardScale.value = withTiming(0.96, { duration: 150 });
+    dragging.value = withTiming(1, { duration: 150 });
+  };
+
+  const onScrollEndDrag = () => {
+    cardScale.value = withSpring(1, { damping: 15, stiffness: 150 });
+    dragging.value = withSpring(0, { damping: 15, stiffness: 150 });
+  };
+
+  const onMomentumScrollEnd = () => {
+    cardScale.value = withSpring(1, { damping: 15, stiffness: 150 });
+    dragging.value = withSpring(0, { damping: 15, stiffness: 150 });
+  };
+
+  const scaleStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: cardScale.value }],
+  }));
+
   return (
     <View>
-      <FlatList
-        ref={flatRef}
-        data={presets}
-        horizontal
-        pagingEnabled={false}
-        snapToInterval={CARD_W + CARD_GAP}
-        snapToAlignment="start"
-        decelerationRate="fast"
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: Spacing.screenH, gap: CARD_GAP }}
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-        keyExtractor={(p) => p.id}
-        renderItem={({ item }) => (
-          <PresetCard
-            item={item}
-            active={item.id === selectedId}
-            onSelect={onSelect}
-            onPlay={onPlay}
-            onEdit={onEdit}
-          />
-        )}
-      />
+      <Animated.View style={scaleStyle}>
+        <FlatList
+          ref={flatRef}
+          data={presets}
+          horizontal
+          pagingEnabled={false}
+          snapToInterval={CARD_W + CARD_GAP}
+          snapToAlignment="start"
+          decelerationRate="fast"
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: Spacing.screenH, gap: CARD_GAP }}
+          onScroll={onScroll}
+          onScrollBeginDrag={onScrollBeginDrag}
+          onScrollEndDrag={onScrollEndDrag}
+          onMomentumScrollEnd={onMomentumScrollEnd}
+          scrollEventThrottle={16}
+          keyExtractor={(p) => p.id}
+          renderItem={({ item }) => (
+            <PresetCard
+              item={item}
+              active={item.id === selectedId}
+              dragging={dragging}
+              onSelect={onSelect}
+              onPlay={onPlay}
+              onEdit={onEdit}
+            />
+          )}
+        />
+      </Animated.View>
       {/* Dot indicator */}
       <View style={styles.dotRow}>
         {presets.map((_, i) => (
