@@ -1,16 +1,16 @@
 import PresetCarousel from '@/components/home/PresetCarousel';
-import FireIcon from '@/components/shared/FireIcon';
 import CTAButton from '@/components/shared/CTAButton';
+import FireIcon from '@/components/shared/FireIcon';
 import GradientScreen from '@/components/shared/GradientScreen';
+import HistoryRow from '@/components/shared/HistoryRow';
 import SectionLabel from '@/components/shared/SectionLabel';
 import StreakPill from '@/components/shared/StreakPill';
-import HistoryRow from '@/components/shared/HistoryRow';
-import { PRESETS, Preset, TYPE_LABELS } from '@/constants/presets';
 import { MOCK_HISTORY, formatRelativeDate } from '@/constants/mockHistory';
-import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
+import { PRESETS, Preset, TYPE_LABELS } from '@/constants/presets';
+import { Colors, FontSizes, Fonts, Spacing } from '@/constants/theme';
 import { computeStreak, useHistoryStore } from '@/store/historyStore';
 import { useWorkoutStore } from '@/store/workoutStore';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import {
   Animated,
@@ -20,7 +20,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import { useFocusEffect } from 'expo-router';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -82,7 +81,7 @@ export default function HomeScreen() {
         {/* Recent */}
         <SectionLabel style={[styles.sectionLabel, { marginTop: 0 }]}>Recent</SectionLabel>
         <View style={styles.historyList}>
-          {historyToShow.slice(0, 8).map((r, i) => {
+          {historyToShow.slice(0, 4).map((r, i) => {
             const mins = Math.round(r.durationSecs / 60);
             return (
               <HistoryRow
