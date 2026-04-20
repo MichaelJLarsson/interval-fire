@@ -1,7 +1,7 @@
 import PhasePill from '@/components/shared/PhasePill';
 import { formatTime, Preset, TYPE_LABELS } from '@/constants/presets';
 import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   interpolate,
@@ -35,8 +35,24 @@ interface PresetCardProps {
   onEdit: (preset: Preset) => void;
 }
 
+function usePressScale() {
+  const scale = useSharedValue(1);
+  const animStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+  const onPressIn = useCallback(() => {
+    scale.value = withTiming(0.95, { duration: 100 });
+  }, [scale]);
+  const onPressOut = useCallback(() => {
+    scale.value = withTiming(1, { duration: 100 });
+  }, [scale]);
+  return { animStyle, onPressIn, onPressOut };
+}
+
 function PresetCard({ item, active, dragging, onSelect, onPlay, onEdit }: PresetCardProps) {
   const progress = useSharedValue(active ? 1 : 0);
+  const playPress = usePressScale();
+  const editPress = usePressScale();
 
   useEffect(() => {
     progress.value = withTiming(active ? 1 : 0, { duration: 180 });
@@ -62,11 +78,18 @@ function PresetCard({ item, active, dragging, onSelect, onPlay, onEdit }: Preset
             <Text style={styles.typeLabel}>{TYPE_LABELS[item.type]}</Text>
             <Text style={styles.name}>{item.name.toUpperCase()}</Text>
           </View>
-          <Pressable style={styles.playBtn} onPress={() => onPlay(item)}>
-            <Svg width={24} height={24} viewBox="0 0 24 24">
-              <Polygon points="8,5 20,12 8,19" fill={Colors.white} />
-            </Svg>
-          </Pressable>
+          <Animated.View style={playPress.animStyle}>
+            <Pressable
+              style={styles.playBtn}
+              onPress={() => onPlay(item)}
+              onPressIn={playPress.onPressIn}
+              onPressOut={playPress.onPressOut}
+            >
+              <Svg width={24} height={24} viewBox="0 0 24 24">
+                <Polygon points="8,5 20,12 8,19" fill={Colors.white} />
+              </Svg>
+            </Pressable>
+          </Animated.View>
         </View>
 
         {/* Bottom area: pills left, edit right */}
@@ -88,9 +111,16 @@ function PresetCard({ item, active, dragging, onSelect, onPlay, onEdit }: Preset
             </View>
           </View>
 
-          <Pressable style={styles.editBtn} onPress={() => onEdit(item)}>
-            <Text style={styles.editText}>EDIT</Text>
-          </Pressable>
+          <Animated.View style={editPress.animStyle}>
+            <Pressable
+              style={styles.editBtn}
+              onPress={() => onEdit(item)}
+              onPressIn={editPress.onPressIn}
+              onPressOut={editPress.onPressOut}
+            >
+              <Text style={styles.editText}>EDIT</Text>
+            </Pressable>
+          </Animated.View>
         </View>
       </Pressable>
     </Animated.View>

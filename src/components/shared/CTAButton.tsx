@@ -1,5 +1,5 @@
-import React from 'react';
-import { Pressable, Text, StyleSheet, ViewStyle } from 'react-native';
+import React, { useRef } from 'react';
+import { Pressable, Text, StyleSheet, ViewStyle, Animated } from 'react-native';
 import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
 
 interface Props {
@@ -12,18 +12,42 @@ interface Props {
 
 export default function CTAButton({ label, variant = 'filled', icon, onPress, style }: Props) {
   const isFilled = variant === 'filled';
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const onPressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.95,
+      useNativeDriver: true,
+      speed: 50,
+      bounciness: 4,
+    }).start();
+  };
+
+  const onPressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      useNativeDriver: true,
+      speed: 30,
+      bounciness: 6,
+    }).start();
+  };
+
   return (
-    <Pressable
-      style={[
-        styles.base,
-        isFilled ? styles.filled : styles.outline,
-        style,
-      ]}
-      onPress={onPress}
-    >
-      {icon}
-      <Text style={[styles.text, !isFilled && styles.textOutline]}>{label}</Text>
-    </Pressable>
+    <Animated.View style={{ transform: [{ scale }] }}>
+      <Pressable
+        style={[
+          styles.base,
+          isFilled ? styles.filled : styles.outline,
+          style,
+        ]}
+        onPress={onPress}
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
+      >
+        {icon}
+        <Text style={[styles.text, !isFilled && styles.textOutline]}>{label}</Text>
+      </Pressable>
+    </Animated.View>
   );
 }
 

@@ -13,6 +13,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import {
+  Animated,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -28,6 +29,7 @@ export default function HomeScreen() {
   const [selectedPreset, setSelectedPreset] = useState<Preset>(PRESETS[0]);
 
   const scrollRef = useRef<ScrollView>(null);
+  const moreStatsScale = useRef(new Animated.Value(1)).current;
   const streak = computeStreak(records);
   const historyToShow = records.length > 0 ? records : MOCK_HISTORY;
 
@@ -96,9 +98,16 @@ export default function HomeScreen() {
 
         {/* More Stats */}
         <View style={styles.moreStatsWrap}>
-          <Pressable style={styles.moreStatsBtn} onPress={() => router.push('/stats')}>
-            <Text style={styles.moreStatsText}>MORE STATS</Text>
-          </Pressable>
+          <Animated.View style={{ transform: [{ scale: moreStatsScale }] }}>
+            <Pressable
+              style={styles.moreStatsBtn}
+              onPress={() => router.push('/stats')}
+              onPressIn={() => Animated.timing(moreStatsScale, { toValue: 0.95, duration: 100, useNativeDriver: true }).start()}
+              onPressOut={() => Animated.timing(moreStatsScale, { toValue: 1, duration: 100, useNativeDriver: true }).start()}
+            >
+              <Text style={styles.moreStatsText}>MORE STATS</Text>
+            </Pressable>
+          </Animated.View>
         </View>
         <View style={{ height: 20 }} />
       </ScrollView>
