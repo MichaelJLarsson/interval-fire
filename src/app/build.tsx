@@ -1,22 +1,30 @@
-import React, { useState } from 'react';
-import {
-  View, Text, ScrollView, Pressable, TextInput, StyleSheet, Switch,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { Colors, FontSizes, Spacing, Radii } from '@/constants/theme';
-import {
-  Preset, WorkoutType, stepTime, stepWarmup, formatTime, totalSecs,
-} from '@/constants/presets';
-import { useWorkoutStore } from '@/store/workoutStore';
-import { useSettingsStore } from '@/store/settingsStore';
 import Stepper from '@/components/build/Stepper';
+import CTAButton from '@/components/shared/CTAButton';
+import GradientScreen from '@/components/shared/GradientScreen';
 import ScreenTitle from '@/components/shared/ScreenTitle';
 import SectionLabel from '@/components/shared/SectionLabel';
 import SummaryCard from '@/components/shared/SummaryCard';
-import CTAButton from '@/components/shared/CTAButton';
-import GradientScreen from '@/components/shared/GradientScreen';
 import TypeChip, { ChipAccent } from '@/components/shared/TypeChip';
 import WorkoutTypeIcon from '@/components/shared/WorkoutTypeIcon';
+import {
+  Preset, WorkoutType,
+  formatTime,
+  stepTime, stepWarmup,
+  totalSecs,
+} from '@/constants/presets';
+import { Colors, FontSizes, Radii, Spacing } from '@/constants/theme';
+import { useSettingsStore } from '@/store/settingsStore';
+import { useWorkoutStore } from '@/store/workoutStore';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet, Switch,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
 const DEFAULT: Preset = {
   id: 'custom',
@@ -29,8 +37,8 @@ const DEFAULT: Preset = {
 const TYPES: { key: WorkoutType; label: string; accent: ChipAccent }[] = [
   { key: 'hiit',     label: 'HIIT',     accent: 'work' },
   { key: 'running',  label: 'Running',  accent: 'prep' },
-  { key: 'cardio',   label: 'Cardio',   accent: 'prep' },
-  { key: 'strength', label: 'Strength', accent: 'rest' },
+  { key: 'cardio',   label: 'Cardio',   accent: 'rest' },
+  { key: 'strength', label: 'Strength', accent: 'strength' },
 ];
 
 export default function BuildScreen() {
