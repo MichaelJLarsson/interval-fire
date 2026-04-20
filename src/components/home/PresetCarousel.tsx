@@ -9,7 +9,7 @@ import Animated, {
   SharedValue,
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
+  Easing,
   withTiming,
 } from 'react-native-reanimated';
 import Svg, { Polygon } from 'react-native-svg';
@@ -180,13 +180,13 @@ export default function PresetCarousel({ presets, selectedId, onSelect, onPlay, 
   };
 
   const onScrollEndDrag = () => {
-    cardScale.value = withSpring(1, { damping: 15, stiffness: 150 });
-    dragging.value = withSpring(0, { damping: 15, stiffness: 150 });
+    cardScale.value = withTiming(1, { duration: 250, easing: Easing.out(Easing.quad) });
+    dragging.value = withTiming(0, { duration: 250, easing: Easing.out(Easing.quad) });
   };
 
   const onMomentumScrollEnd = () => {
-    cardScale.value = withSpring(1, { damping: 15, stiffness: 150 });
-    dragging.value = withSpring(0, { damping: 15, stiffness: 150 });
+    cardScale.value = withTiming(1, { duration: 250, easing: Easing.out(Easing.quad) });
+    dragging.value = withTiming(0, { duration: 250, easing: Easing.out(Easing.quad) });
   };
 
   const scaleStyle = useAnimatedStyle(() => ({
