@@ -65,11 +65,74 @@ export function estimateKcal(workSecs: number, rounds: number): number {
   return Math.round(rounds * workSecs * 0.15 + rounds * 2);
 }
 
+// ─── Mock data ───────────────────────────────────────────────────────────────
+function generateMockRecords(): WorkoutRecord[] {
+  const now = new Date();
+  const dayOfWeek = (now.getDay() + 6) % 7; // Mon=0
+
+  const templates: { name: string; type: WorkoutType; durationSecs: number; rounds: number; kcal: number }[] = [
+    { name: 'Tabata Blast',      type: 'hiit',     durationSecs: 1440, rounds: 12, kcal: 312 },
+    { name: 'Morning Cardio',    type: 'cardio',   durationSecs: 1800, rounds: 8,  kcal: 245 },
+    { name: 'Sprint Intervals',  type: 'running',  durationSecs: 2100, rounds: 10, kcal: 380 },
+    { name: 'Power Circuit',     type: 'strength', durationSecs: 2400, rounds: 15, kcal: 420 },
+    { name: 'Quick HIIT',        type: 'hiit',     durationSecs: 900,  rounds: 6,  kcal: 165 },
+    { name: 'Endurance Run',     type: 'running',  durationSecs: 3000, rounds: 10, kcal: 490 },
+    { name: 'Core Burner',       type: 'strength', durationSecs: 1200, rounds: 8,  kcal: 195 },
+  ];
+
+  const records: WorkoutRecord[] = [];
+
+  const daysWithWorkouts = [0, 1, 2, 3, 5].filter(d => d <= dayOfWeek);
+
+  daysWithWorkouts.forEach((daysAgo, i) => {
+    const t = templates[i % templates.length];
+    const date = new Date(now);
+    date.setDate(date.getDate() - (dayOfWeek - daysAgo));
+    date.setHours(7 + i, 30, 0, 0);
+    records.push({
+      id: `mock-${i}`,
+      name: t.name,
+      type: t.type,
+      completedAt: date.getTime(),
+      durationSecs: t.durationSecs,
+      roundsCompleted: t.rounds,
+      kcalBurned: t.kcal,
+    });
+  });
+
+  const olderTemplates = [
+    { name: 'Tabata Blast',     type: 'hiit' as WorkoutType,     durationSecs: 1380, rounds: 12, kcal: 298 },
+    { name: 'Power Circuit',    type: 'strength' as WorkoutType, durationSecs: 2700, rounds: 18, kcal: 465 },
+    { name: 'Sprint Intervals', type: 'running' as WorkoutType,  durationSecs: 2400, rounds: 10, kcal: 410 },
+  ];
+
+  for (let w = 1; w <= 3; w++) {
+    olderTemplates.forEach((t, j) => {
+      const date = new Date(now);
+      date.setDate(date.getDate() - w * 7 - j);
+      date.setHours(8, 0, 0, 0);
+      records.push({
+        id: `mock-old-${w}-${j}`,
+        name: t.name,
+        type: t.type,
+        completedAt: date.getTime(),
+        durationSecs: t.durationSecs,
+        roundsCompleted: t.rounds,
+        kcalBurned: t.kcal,
+      });
+    });
+  }
+
+  return records.sort((a, b) => b.completedAt - a.completedAt);
+}
+
+const MOCK_RECORDS = generateMockRecords();
+
 // ─── Store ────────────────────────────────────────────────────────────────────
 export const useHistoryStore = create<HistoryState>()(
   persist(
     (set) => ({
-      records: [],
+      records: MOCK_RECORDS,
       addRecord: (record) =>
         set((state) => ({ records: [record, ...state.records] })),
       clearHistory: () => set({ records: [] }),
