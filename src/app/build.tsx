@@ -24,14 +24,14 @@ import {
   StyleSheet, Switch,
   Text,
   TextInput,
-  View,
+  View
 } from 'react-native';
 import Animated, {
+  Easing,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-  Easing,
 } from 'react-native-reanimated';
 
 const DEFAULT: Preset = {
@@ -60,9 +60,8 @@ export default function BuildScreen() {
   const open = useSharedValue(0);
   const chevronRotation = useSharedValue(0);
 
-  const timingConfig = { duration: 300, easing: Easing.out(Easing.ease) };
-
   const toggleMore = useCallback(() => {
+    const timingConfig = { duration: 300, easing: Easing.out(Easing.ease) };
     const willOpen = !showMore;
     chevronRotation.value = withTiming(willOpen ? 1 : 0, timingConfig);
     if (willOpen) {
@@ -94,8 +93,6 @@ export default function BuildScreen() {
 
   const totalS = totalSecs(p);
   const mm = Math.floor(totalS / 60);
-  const ss = totalS % 60;
-  const totalLabel = `${mm}:${String(ss).padStart(2, '0')}`;
   const activeMins = Math.floor((p.rounds * p.workSecs) / 60);
 
   return (
@@ -181,7 +178,7 @@ export default function BuildScreen() {
                 onIncrement={() => update({ prepSecs: stepTime(p.prepSecs, 1) })} />
 
               {/* Sound & voice */}
-              <SectionLabel style={[styles.sectionLabelSpacing, { marginTop: Spacing.xxl }]}>Sound & voice</SectionLabel>
+              <SectionLabel style={{ marginTop: Spacing.xxl, ...styles.sectionLabelSpacing }}>Sound & voice</SectionLabel>
               {[
                 { label: 'Audio cues', sub: 'Beep at each interval change', val: audioEnabled, set: setAudio },
                 { label: 'Voice Announcements', sub: '"Work!", "Rest" callouts', val: voiceEnabled, set: setVoice },
@@ -202,7 +199,7 @@ export default function BuildScreen() {
               ))}
 
               {/* Workout name */}
-              <SectionLabel style={[styles.sectionLabelSpacing, { marginTop: Spacing.xxl }]}>Give your workout a name</SectionLabel>
+              <SectionLabel style={{ marginTop: Spacing.xxl, ...styles.sectionLabelSpacing }}>Give your workout a name</SectionLabel>
               <TextInput
                 style={styles.nameInput}
                 value={p.name}
