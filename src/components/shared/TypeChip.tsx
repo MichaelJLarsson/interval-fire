@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, Text, StyleSheet, ViewStyle } from 'react-native';
 import { Colors, FontSizes, Radii } from '@/constants/theme';
+import AnimatedChipIcon from './AnimatedChipIcon';
 
 export type ChipAccent = 'work' | 'prep' | 'rest' | 'strength';
 
@@ -31,7 +32,11 @@ export default function TypeChip({ label, icon, selected = false, accent = 'work
       style={[styles.chip, selected ? selectedStyle : styles.default, style]}
       onPress={onPress}
     >
-      {icon}
+      {icon ? (
+        <AnimatedChipIcon selected={selected} accent={accent}>
+          {icon}
+        </AnimatedChipIcon>
+      ) : null}
       <Text style={[styles.label, selected && { color: accentStyle.text }]}>{label}</Text>
     </Pressable>
   );
