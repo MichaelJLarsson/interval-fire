@@ -17,7 +17,7 @@ import { Colors, FontSizes, Radii, Spacing } from '@/constants/theme';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -26,6 +26,13 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
 
 const DEFAULT: Preset = {
   id: 'custom',
@@ -49,6 +56,34 @@ export default function BuildScreen() {
 
   const [p, setP] = useState<Preset>({ ...DEFAULT });
   const [showMore, setShowMore] = useState(false);
+  const [contentHeight, setContentHeight] = useState(0);
+  const open = useSharedValue(0);
+  const chevronRotation = useSharedValue(0);
+
+  const timingConfig = { duration: 300, easing: Easing.out(Easing.ease) };
+
+  const toggleMore = useCallback(() => {
+    const willOpen = !showMore;
+    chevronRotation.value = withTiming(willOpen ? 1 : 0, timingConfig);
+    if (willOpen) {
+      setShowMore(true);
+      open.value = withTiming(1, timingConfig);
+    } else {
+      open.value = withTiming(0, timingConfig, () => {
+        runOnJS(setShowMore)(false);
+      });
+    }
+  }, [showMore, chevronRotation, open]);
+
+  const collapseStyle = useAnimatedStyle(() => ({
+    height: contentHeight > 0 ? open.value * contentHeight : undefined,
+    opacity: open.value,
+    overflow: 'hidden' as const,
+  }));
+
+  const chevronStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${chevronRotation.value * 180}deg` }],
+  }));
 
   const update = (patch: Partial<Preset>) => setP((prev) => ({ ...prev, ...patch }));
 
@@ -116,60 +151,68 @@ export default function BuildScreen() {
         </View>
 
         {/* More options toggle */}
-        <Pressable style={styles.moreToggle} onPress={() => setShowMore(!showMore)}>
+        <Pressable style={styles.moreToggle} onPress={toggleMore}>
           <Text style={styles.moreLabel}>Optional settings</Text>
-          <Text style={styles.moreChev}>{showMore ? '▲' : '▼'}</Text>
+          <Animated.Text style={[styles.moreChev, chevronStyle]}>▼</Animated.Text>
         </Pressable>
 
         {showMore && (
-          <View style={styles.moreSection}>
-            {/* Additional settings */}
-            <SectionLabel style={styles.sectionLabelSpacing}>Additional settings</SectionLabel>
-            <Stepper label="Warmup" sublabel="Easy pace before intervals"
-              value={p.warmupSecs === 0 ? 'Off' : formatTime(p.warmupSecs)}
-              onDecrement={() => update({ warmupSecs: Math.max(0, stepWarmup(p.warmupSecs, -1)) })}
-              onIncrement={() => update({ warmupSecs: stepWarmup(p.warmupSecs, 1) })} />
-            <Stepper label="Cooldown" sublabel="Easy pace after intervals"
-              value={p.cooldownSecs === 0 ? 'Off' : formatTime(p.cooldownSecs)}
-              onDecrement={() => update({ cooldownSecs: Math.max(0, stepWarmup(p.cooldownSecs, -1)) })}
-              onIncrement={() => update({ cooldownSecs: stepWarmup(p.cooldownSecs, 1) })} />
-            <Stepper label="Countdown" sublabel="Prep time before workout"
-              value={p.prepSecs === 0 ? 'Off' : formatTime(p.prepSecs)}
-              onDecrement={() => update({ prepSecs: Math.max(0, stepTime(p.prepSecs, -1)) })}
-              onIncrement={() => update({ prepSecs: stepTime(p.prepSecs, 1) })} />
+          <Animated.View style={collapseStyle}>
+            <View
+              style={styles.moreSection}
+              onLayout={(e) => {
+                const h = e.nativeEvent.layout.height;
+                if (h > 0 && h !== contentHeight) setContentHeight(h);
+              }}
+            >
+              {/* Additional settings */}
+              <SectionLabel style={styles.sectionLabelSpacing}>Additional settings</SectionLabel>
+              <Stepper label="Warmup" sublabel="Easy pace before intervals"
+                value={p.warmupSecs === 0 ? 'Off' : formatTime(p.warmupSecs)}
+                onDecrement={() => update({ warmupSecs: Math.max(0, stepWarmup(p.warmupSecs, -1)) })}
+                onIncrement={() => update({ warmupSecs: stepWarmup(p.warmupSecs, 1) })} />
+              <Stepper label="Cooldown" sublabel="Easy pace after intervals"
+                value={p.cooldownSecs === 0 ? 'Off' : formatTime(p.cooldownSecs)}
+                onDecrement={() => update({ cooldownSecs: Math.max(0, stepWarmup(p.cooldownSecs, -1)) })}
+                onIncrement={() => update({ cooldownSecs: stepWarmup(p.cooldownSecs, 1) })} />
+              <Stepper label="Countdown" sublabel="Prep time before workout"
+                value={p.prepSecs === 0 ? 'Off' : formatTime(p.prepSecs)}
+                onDecrement={() => update({ prepSecs: Math.max(0, stepTime(p.prepSecs, -1)) })}
+                onIncrement={() => update({ prepSecs: stepTime(p.prepSecs, 1) })} />
 
-            {/* Sound & voice */}
-            <SectionLabel style={[styles.sectionLabelSpacing, { marginTop: Spacing.xxl }]}>Sound & voice</SectionLabel>
-            {[
-              { label: 'Audio cues', sub: 'Beep at each interval change', val: audioEnabled, set: setAudio },
-              { label: 'Voice Announcements', sub: '"Work!", "Rest" callouts', val: voiceEnabled, set: setVoice },
-              { label: 'Three second warning', sub: 'Alert before each switch', val: warningEnabled, set: setWarning },
-            ].map(({ label, sub, val, set }) => (
-              <View key={label} style={styles.toggleRow}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.toggleLabel}>{label}</Text>
-                  <Text style={styles.toggleSub}>{sub}</Text>
+              {/* Sound & voice */}
+              <SectionLabel style={[styles.sectionLabelSpacing, { marginTop: Spacing.xxl }]}>Sound & voice</SectionLabel>
+              {[
+                { label: 'Audio cues', sub: 'Beep at each interval change', val: audioEnabled, set: setAudio },
+                { label: 'Voice Announcements', sub: '"Work!", "Rest" callouts', val: voiceEnabled, set: setVoice },
+                { label: 'Three second warning', sub: 'Alert before each switch', val: warningEnabled, set: setWarning },
+              ].map(({ label, sub, val, set }) => (
+                <View key={label} style={styles.toggleRow}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.toggleLabel}>{label}</Text>
+                    <Text style={styles.toggleSub}>{sub}</Text>
+                  </View>
+                  <Switch
+                    value={val}
+                    onValueChange={set}
+                    trackColor={{ false: '#2c2c2c', true: Colors.work }}
+                    thumbColor={Colors.white}
+                  />
                 </View>
-                <Switch
-                  value={val}
-                  onValueChange={set}
-                  trackColor={{ false: '#2c2c2c', true: Colors.work }}
-                  thumbColor={Colors.white}
-                />
-              </View>
-            ))}
+              ))}
 
-            {/* Workout name */}
-            <SectionLabel style={[styles.sectionLabelSpacing, { marginTop: Spacing.xxl }]}>Give your workout a name</SectionLabel>
-            <TextInput
-              style={styles.nameInput}
-              value={p.name}
-              onChangeText={(t) => update({ name: t })}
-              placeholder="MY HOT HIIT"
-              placeholderTextColor={Colors.inputPlaceholder}
-              maxLength={24}
-            />
-          </View>
+              {/* Workout name */}
+              <SectionLabel style={[styles.sectionLabelSpacing, { marginTop: Spacing.xxl }]}>Give your workout a name</SectionLabel>
+              <TextInput
+                style={styles.nameInput}
+                value={p.name}
+                onChangeText={(t) => update({ name: t })}
+                placeholder="MY HOT HIIT"
+                placeholderTextColor={Colors.inputPlaceholder}
+                maxLength={24}
+              />
+            </View>
+          </Animated.View>
         )}
 
         {/* Summary grid */}
@@ -243,7 +286,7 @@ const styles = StyleSheet.create({
   moreSection: {
     gap: 10,
     paddingHorizontal: Spacing.screenH,
-    marginBottom: Spacing.xxl,
+    paddingBottom: Spacing.xxl,
   },
 
   toggleRow: {
