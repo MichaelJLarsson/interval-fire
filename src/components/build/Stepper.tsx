@@ -1,6 +1,13 @@
 import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 
 interface Props {
   label: string;
@@ -10,7 +17,51 @@ interface Props {
   onIncrement: () => void;
 }
 
+function StepperButton({ children, onPress }: { children: React.ReactNode; onPress: () => void }) {
+  const scale = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  return (
+    <Animated.View style={animatedStyle}>
+      <Pressable
+        style={styles.btn}
+        onPressIn={() => {
+          scale.value = withTiming(0.85, { duration: 90, easing: Easing.out(Easing.ease) });
+        }}
+        onPressOut={() => {
+          scale.value = withSequence(
+            withTiming(1.1, { duration: 110, easing: Easing.out(Easing.ease) }),
+            withTiming(1, { duration: 120, easing: Easing.out(Easing.ease) }),
+          );
+        }}
+        onPress={onPress}
+      >
+        {children}
+      </Pressable>
+    </Animated.View>
+  );
+}
+
 export default function Stepper({ label, sublabel, value, onDecrement, onIncrement }: Props) {
+  const valueScale = useSharedValue(1);
+  const previousValue = useRef(value);
+
+  useEffect(() => {
+    if (previousValue.current !== value) {
+      previousValue.current = value;
+      valueScale.value = withSequence(
+        withTiming(1.18, { duration: 110, easing: Easing.out(Easing.ease) }),
+        withTiming(1, { duration: 160, easing: Easing.out(Easing.ease) }),
+      );
+    }
+  }, [value, valueScale]);
+
+  const valueAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: valueScale.value }],
+  }));
+
   return (
     <View style={styles.row}>
       <View style={styles.labelWrap}>
@@ -18,13 +69,13 @@ export default function Stepper({ label, sublabel, value, onDecrement, onIncreme
         {sublabel && <Text style={styles.sublabel}>{sublabel}</Text>}
       </View>
       <View style={styles.controls}>
-        <Pressable style={styles.btn} onPress={onIncrement}>
+        <StepperButton onPress={onIncrement}>
           <Text style={styles.btnText}>+</Text>
-        </Pressable>
-        <Text style={styles.value}>{value}</Text>
-        <Pressable style={styles.btn} onPress={onDecrement}>
+        </StepperButton>
+        <Animated.Text style={[styles.value, valueAnimatedStyle]}>{value}</Animated.Text>
+        <StepperButton onPress={onDecrement}>
           <Text style={styles.btnText}>−</Text>
-        </Pressable>
+        </StepperButton>
       </View>
     </View>
   );
