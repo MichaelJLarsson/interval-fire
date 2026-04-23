@@ -12,7 +12,7 @@ export interface Preset {
   cooldownSecs: number;
 }
 
-export const PRESETS: Preset[] = [
+export const STARTER_PRESETS: Preset[] = [
   {
     id: 'tabata',
     name: 'Tabata Classic',

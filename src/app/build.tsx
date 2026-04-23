@@ -14,11 +14,13 @@ import {
   totalSecs,
 } from '@/constants/presets';
 import { Colors, FontSizes, Radii, Spacing } from '@/constants/theme';
+import { usePresetsStore } from '@/store/presetsStore';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useWorkoutStore } from '@/store/workoutStore';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import {
+  Alert,
   Pressable,
   ScrollView,
   StyleSheet, Switch,
@@ -54,7 +56,17 @@ export default function BuildScreen() {
   const { startWorkout } = useWorkoutStore();
   const { audioEnabled, voiceEnabled, warningEnabled, setAudio, setVoice, setWarning } = useSettingsStore();
 
-  const [p, setP] = useState<Preset>({ ...DEFAULT });
+  const params = useLocalSearchParams<{ presetId?: string }>();
+  const presetId = typeof params.presetId === 'string' ? params.presetId : undefined;
+  const existingPreset = usePresetsStore((s) =>
+    presetId ? s.presets.find((pr) => pr.id === presetId) : undefined
+  );
+  const addPreset = usePresetsStore((s) => s.addPreset);
+  const updatePreset = usePresetsStore((s) => s.updatePreset);
+  const deletePreset = usePresetsStore((s) => s.deletePreset);
+
+  const [p, setP] = useState<Preset>(() => existingPreset ?? { ...DEFAULT });
+  const isEditing = !!existingPreset;
   const [showMore, setShowMore] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
   const open = useSharedValue(0);
@@ -86,9 +98,54 @@ export default function BuildScreen() {
 
   const update = (patch: Partial<Preset>) => setP((prev) => ({ ...prev, ...patch }));
 
+  const persist = (): Preset => {
+    const name = p.name.trim() || 'My Workout';
+    const body = {
+      name,
+      type: p.type,
+      workSecs: p.workSecs,
+      restSecs: p.restSecs,
+      rounds: p.rounds,
+      prepSecs: p.prepSecs,
+      warmupSecs: p.warmupSecs,
+      cooldownSecs: p.cooldownSecs,
+    };
+    if (isEditing && presetId) {
+      updatePreset(presetId, body);
+      return { ...body, id: presetId };
+    }
+    const newId = addPreset(body);
+    return { ...body, id: newId };
+  };
+
+  const handleSave = () => {
+    persist();
+    router.back();
+  };
+
   const handleSaveStart = () => {
-    startWorkout(p);
+    const saved = persist();
+    startWorkout(saved);
     router.push('/timer');
+  };
+
+  const handleDelete = () => {
+    if (!isEditing || !presetId) return;
+    Alert.alert(
+      'Delete workout?',
+      `"${p.name}" will be removed.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            deletePreset(presetId);
+            router.back();
+          },
+        },
+      ]
+    );
   };
 
   const totalS = totalSecs(p);
@@ -100,7 +157,7 @@ export default function BuildScreen() {
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.headerWrap}>
-          <ScreenTitle line1="Build" line2="Workout" />
+          <ScreenTitle line1={isEditing ? 'Edit' : 'Build'} line2="Workout" />
           <Pressable style={styles.returnBtn} onPress={() => router.back()}>
             <ReturnIcon color={Colors.textHi} size={22} />
           </Pressable>
@@ -225,9 +282,16 @@ export default function BuildScreen() {
         </View>
 
         {/* Action buttons */}
-        <View style={styles.ctaRow}>
-          <CTAButton label="Cancel" variant="outline" onPress={() => router.back()} style={styles.ctaHalf} />
-          <CTAButton label="Ready to go?" onPress={handleSaveStart} style={styles.ctaHalf} />
+        <View style={styles.ctaFooter}>
+          <View style={styles.ctaRow}>
+            <CTAButton label="Save" variant="outline" onPress={handleSave} style={styles.ctaHalf} />
+            <CTAButton label="Save & Start" onPress={handleSaveStart} style={styles.ctaHalf} />
+          </View>
+          {isEditing && (
+            <Pressable style={styles.deleteBtn} onPress={handleDelete}>
+              <Text style={styles.deleteText}>Delete workout</Text>
+            </Pressable>
+          )}
         </View>
       </ScrollView>
     </GradientScreen>
@@ -331,11 +395,27 @@ const styles = StyleSheet.create({
   },
   summaryItem: { flex: 1 },
 
+  ctaFooter: {
+    paddingBottom: Spacing.screenV,
+  },
   ctaRow: {
     flexDirection: 'row',
     gap: 16,
     paddingHorizontal: Spacing.screenH,
-    paddingBottom: Spacing.screenV,
   },
   ctaHalf: { flex: 1 },
+
+  deleteBtn: {
+    alignSelf: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    marginTop: 4,
+  },
+  deleteText: {
+    fontSize: FontSizes.body,
+    fontWeight: '600',
+    color: Colors.textLo,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
 });

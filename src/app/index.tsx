@@ -6,12 +6,13 @@ import HistoryRow from '@/components/shared/HistoryRow';
 import SectionLabel from '@/components/shared/SectionLabel';
 import StreakPill from '@/components/shared/StreakPill';
 import { MOCK_HISTORY, formatRelativeDate } from '@/constants/mockHistory';
-import { PRESETS, Preset, TYPE_LABELS } from '@/constants/presets';
-import { Colors, FontSizes, Fonts, Spacing } from '@/constants/theme';
+import { Preset, TYPE_LABELS } from '@/constants/presets';
+import { Colors, FontSizes, Fonts, Radii, Spacing } from '@/constants/theme';
 import { computeStreak, useHistoryStore } from '@/store/historyStore';
+import { usePresetsStore } from '@/store/presetsStore';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useFocusEffect, useRouter } from 'expo-router';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Pressable,
@@ -25,7 +26,16 @@ export default function HomeScreen() {
   const router = useRouter();
   const { startWorkout } = useWorkoutStore();
   const { records } = useHistoryStore();
-  const [selectedPreset, setSelectedPreset] = useState<Preset>(PRESETS[0]);
+  const presets = usePresetsStore((s) => s.presets);
+  const [selectedId, setSelectedId] = useState<string | null>(presets[0]?.id ?? null);
+
+  useEffect(() => {
+    if (presets.length === 0) {
+      if (selectedId !== null) setSelectedId(null);
+    } else if (!presets.some((p) => p.id === selectedId)) {
+      setSelectedId(presets[0].id);
+    }
+  }, [presets, selectedId]);
 
   const scrollRef = useRef<ScrollView>(null);
   const moreStatsScale = useRef(new Animated.Value(1)).current;
@@ -44,8 +54,7 @@ export default function HomeScreen() {
   };
 
   const handleEdit = (preset: Preset) => {
-    // Navigate to build screen (future: pre-fill with preset values)
-    router.push('/build');
+    router.push({ pathname: '/build', params: { presetId: preset.id } });
   };
 
   return (
@@ -65,13 +74,22 @@ export default function HomeScreen() {
 
         {/* Quick start */}
         <SectionLabel style={styles.sectionLabel}>Quick start</SectionLabel>
-        <PresetCarousel
-          presets={PRESETS}
-          selectedId={selectedPreset.id}
-          onSelect={setSelectedPreset}
-          onPlay={handlePlay}
-          onEdit={handleEdit}
-        />
+        {presets.length === 0 ? (
+          <View style={styles.emptyCardWrap}>
+            <Pressable style={styles.emptyCard} onPress={() => router.push('/build')}>
+              <Text style={styles.emptyTitle}>No workouts yet</Text>
+              <Text style={styles.emptySubtitle}>Tap to create your first one</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <PresetCarousel
+            presets={presets}
+            selectedId={selectedId ?? ''}
+            onSelect={(p) => setSelectedId(p.id)}
+            onPlay={handlePlay}
+            onEdit={handleEdit}
+          />
+        )}
 
         {/* Start CTA */}
         <View style={styles.ctaWrap}>
@@ -161,5 +179,31 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.label,
     color: Colors.textLo,
     letterSpacing: 0.2,
+  },
+
+  emptyCardWrap: {
+    paddingHorizontal: Spacing.screenH,
+  },
+  emptyCard: {
+    minHeight: 120,
+    backgroundColor: Colors.surface,
+    borderRadius: Radii.xl,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyTitle: {
+    fontFamily: Fonts.condensed,
+    fontSize: FontSizes.headingMd,
+    textTransform: 'uppercase',
+    color: Colors.textHi,
+    letterSpacing: 0.5,
+  },
+  emptySubtitle: {
+    fontSize: FontSizes.caption,
+    color: Colors.textLo,
+    marginTop: 6,
   },
 });
