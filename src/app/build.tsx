@@ -1,6 +1,5 @@
 import Stepper from '@/components/build/Stepper';
 import CTAButton from '@/components/shared/CTAButton';
-import GradientScreen from '@/components/shared/GradientScreen';
 import ScreenTitle from '@/components/shared/ScreenTitle';
 import SectionLabel from '@/components/shared/SectionLabel';
 import SummaryCard from '@/components/shared/SummaryCard';
@@ -159,7 +158,7 @@ export default function BuildScreen() {
   const activeMins = Math.floor((p.rounds * p.workSecs) / 60);
 
   return (
-    <GradientScreen>
+    <View style={styles.root}>
       <ScrollView
         style={styles.scroll}
         showsVerticalScrollIndicator={false}
@@ -352,11 +351,12 @@ export default function BuildScreen() {
           </View>
         </View>
       </ScrollView>
-    </GradientScreen>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: Colors.bg },
   scroll: { flex: 1 },
 
   headerWrap: {
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.screenH,
-    paddingTop: Spacing.screenV,
+    paddingTop: Spacing.xxl,
     paddingBottom: Spacing.xxl,
   },
   returnBtn: {
