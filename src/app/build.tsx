@@ -71,6 +71,8 @@ export default function BuildScreen() {
   const isEditing = !!existingPreset;
   const [isNameEditing, setIsNameEditing] = useState(!isEditing);
   const nameInputRef = useRef<TextInput>(null);
+  const nameSnapshotRef = useRef<string | null>(null);
+  const isApplyingNameRef = useRef(false);
   const [showMore, setShowMore] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
   const open = useSharedValue(0);
@@ -158,7 +160,11 @@ export default function BuildScreen() {
 
   return (
     <GradientScreen>
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scroll}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
         {/* Header */}
         <View style={styles.headerWrap}>
           <ScreenTitle line1={isEditing ? 'Edit' : 'Build'} line2="Workout" />
@@ -183,6 +189,7 @@ export default function BuildScreen() {
               <Pressable
                 hitSlop={10}
                 onPress={() => {
+                  nameSnapshotRef.current = p.name;
                   setIsNameEditing(true);
                   requestAnimationFrame(() => nameInputRef.current?.focus());
                 }}
@@ -197,8 +204,18 @@ export default function BuildScreen() {
                 style={styles.nameInput}
                 value={p.name}
                 onChangeText={(t) => update({ name: t })}
+                returnKeyType="done"
+                onSubmitEditing={() => {
+                  isApplyingNameRef.current = true;
+                }}
                 onBlur={() => {
-                  if (isEditing) setIsNameEditing(false);
+                  if (!isEditing) return;
+                  if (!isApplyingNameRef.current && nameSnapshotRef.current !== null) {
+                    update({ name: nameSnapshotRef.current });
+                  }
+                  isApplyingNameRef.current = false;
+                  nameSnapshotRef.current = null;
+                  setIsNameEditing(false);
                 }}
                 placeholder="MY HOT HIIT"
                 placeholderTextColor={Colors.inputPlaceholder}
@@ -209,8 +226,8 @@ export default function BuildScreen() {
                 <Pressable
                   style={styles.applyBtn}
                   onPress={() => {
+                    isApplyingNameRef.current = true;
                     nameInputRef.current?.blur();
-                    setIsNameEditing(false);
                   }}
                 >
                   <Text style={styles.applyText}>Apply</Text>
