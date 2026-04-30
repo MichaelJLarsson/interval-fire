@@ -163,6 +163,19 @@ export default function BuildScreen() {
           </Pressable>
         </View>
 
+        {/* Workout name */}
+        <View style={styles.section}>
+          <SectionLabel style={styles.sectionLabelSpacing}>Give your workout a name</SectionLabel>
+          <TextInput
+            style={styles.nameInput}
+            value={p.name}
+            onChangeText={(t) => update({ name: t })}
+            placeholder="MY HOT HIIT"
+            placeholderTextColor={Colors.inputPlaceholder}
+            maxLength={24}
+          />
+        </View>
+
         {/* Type selector */}
         <View style={styles.section}>
           <SectionLabel style={styles.sectionLabelSpacing}>Type</SectionLabel>
@@ -254,17 +267,6 @@ export default function BuildScreen() {
                   />
                 </View>
               ))}
-
-              {/* Workout name */}
-              <SectionLabel style={{ marginTop: Spacing.xxl, ...styles.sectionLabelSpacing }}>Give your workout a name</SectionLabel>
-              <TextInput
-                style={styles.nameInput}
-                value={p.name}
-                onChangeText={(t) => update({ name: t })}
-                placeholder="MY HOT HIIT"
-                placeholderTextColor={Colors.inputPlaceholder}
-                maxLength={24}
-              />
             </View>
           </Animated.View>
         )}
