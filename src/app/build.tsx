@@ -8,6 +8,7 @@ import TypeChip, { ChipAccent } from '@/components/shared/TypeChip';
 import WorkoutTypeIcon from '@/components/shared/WorkoutTypeIcon';
 import PenIcon from '@/components/shared/icons/PenIcon';
 import ReturnIcon from '@/components/shared/icons/ReturnIcon';
+import TrashIcon from '@/components/shared/icons/TrashIcon';
 import {
   Preset, WorkoutType,
   formatTime,
@@ -161,8 +162,15 @@ export default function BuildScreen() {
         {/* Header */}
         <View style={styles.headerWrap}>
           <ScreenTitle line1={isEditing ? 'Edit' : 'Build'} line2="Workout" />
-          <Pressable style={styles.returnBtn} onPress={() => router.back()}>
-            <ReturnIcon color={Colors.textHi} size={22} />
+          <Pressable
+            style={styles.returnBtn}
+            onPress={isEditing ? handleDelete : () => router.back()}
+          >
+            {isEditing ? (
+              <TrashIcon color={Colors.work} size={22} />
+            ) : (
+              <ReturnIcon color={Colors.textHi} size={22} />
+            )}
           </Pressable>
         </View>
 
@@ -325,11 +333,6 @@ export default function BuildScreen() {
             <CTAButton label="Save" variant="outline" onPress={handleSave} style={styles.ctaHalf} />
             <CTAButton label="Save & Start" onPress={handleSaveStart} style={styles.ctaHalf} />
           </View>
-          {isEditing && (
-            <Pressable style={styles.deleteBtn} onPress={handleDelete}>
-              <Text style={styles.deleteText}>Delete workout</Text>
-            </Pressable>
-          )}
         </View>
       </ScrollView>
     </GradientScreen>
@@ -480,18 +483,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.screenH,
   },
   ctaHalf: { flex: 1 },
-
-  deleteBtn: {
-    alignSelf: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    marginTop: 4,
-  },
-  deleteText: {
-    fontSize: FontSizes.body,
-    fontWeight: '600',
-    color: Colors.textLo,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
 });
