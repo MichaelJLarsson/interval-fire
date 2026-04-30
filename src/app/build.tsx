@@ -6,6 +6,7 @@ import SectionLabel from '@/components/shared/SectionLabel';
 import SummaryCard from '@/components/shared/SummaryCard';
 import TypeChip, { ChipAccent } from '@/components/shared/TypeChip';
 import WorkoutTypeIcon from '@/components/shared/WorkoutTypeIcon';
+import PenIcon from '@/components/shared/icons/PenIcon';
 import ReturnIcon from '@/components/shared/icons/ReturnIcon';
 import {
   Preset, WorkoutType,
@@ -13,12 +14,12 @@ import {
   stepTime, stepWarmup,
   totalSecs,
 } from '@/constants/presets';
-import { Colors, FontSizes, Radii, Spacing } from '@/constants/theme';
+import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
 import { usePresetsStore } from '@/store/presetsStore';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   Alert,
   Pressable,
@@ -67,6 +68,8 @@ export default function BuildScreen() {
 
   const [p, setP] = useState<Preset>(() => existingPreset ?? { ...DEFAULT });
   const isEditing = !!existingPreset;
+  const [isNameEditing, setIsNameEditing] = useState(!isEditing);
+  const nameInputRef = useRef<TextInput>(null);
   const [showMore, setShowMore] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
   const open = useSharedValue(0);
@@ -166,14 +169,47 @@ export default function BuildScreen() {
         {/* Workout name */}
         <View style={styles.section}>
           <SectionLabel style={styles.sectionLabelSpacing}>Give your workout a name</SectionLabel>
-          <TextInput
-            style={styles.nameInput}
-            value={p.name}
-            onChangeText={(t) => update({ name: t })}
-            placeholder="MY HOT HIIT"
-            placeholderTextColor={Colors.inputPlaceholder}
-            maxLength={24}
-          />
+          {isEditing && !isNameEditing ? (
+            <View style={styles.nameDisplay}>
+              <Text style={styles.nameText} numberOfLines={1}>{p.name}</Text>
+              <Pressable
+                hitSlop={10}
+                onPress={() => {
+                  setIsNameEditing(true);
+                  requestAnimationFrame(() => nameInputRef.current?.focus());
+                }}
+              >
+                <PenIcon color={Colors.textHi} size={18} />
+              </Pressable>
+            </View>
+          ) : (
+            <View style={styles.nameEditRow}>
+              <TextInput
+                ref={nameInputRef}
+                style={styles.nameInput}
+                value={p.name}
+                onChangeText={(t) => update({ name: t })}
+                onBlur={() => {
+                  if (isEditing) setIsNameEditing(false);
+                }}
+                placeholder="MY HOT HIIT"
+                placeholderTextColor={Colors.inputPlaceholder}
+                maxLength={24}
+                autoFocus={isEditing && isNameEditing}
+              />
+              {isEditing && (
+                <Pressable
+                  style={styles.applyBtn}
+                  onPress={() => {
+                    nameInputRef.current?.blur();
+                    setIsNameEditing(false);
+                  }}
+                >
+                  <Text style={styles.applyText}>Apply</Text>
+                </Pressable>
+              )}
+            </View>
+          )}
         </View>
 
         {/* Type selector */}
@@ -373,17 +409,55 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
 
+  nameEditRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+  },
   nameInput: {
+    flex: 1,
     backgroundColor: Colors.planeBlack,
     borderWidth: 1,
     borderColor: '#7c7c7c',
     borderRadius: Radii.md,
-    height: 46,
+    height: 54,
     paddingHorizontal: 17,
-    fontWeight: '500',
-    fontSize: FontSizes.body,
+    fontFamily: Fonts.condensedBold,
+    fontSize: FontSizes.headingMd,
     color: Colors.textHi,
     textTransform: 'uppercase',
+    letterSpacing: -0.4,
+  },
+  nameDisplay: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    minHeight: 54,
+  },
+  nameText: {
+    fontFamily: Fonts.condensedBold,
+    fontSize: FontSizes.headingMd,
+    color: Colors.textHi,
+    textTransform: 'uppercase',
+    letterSpacing: -0.4,
+    flexShrink: 1,
+  },
+  applyBtn: {
+    height: 54,
+    paddingHorizontal: 18,
+    borderRadius: Radii.md,
+    backgroundColor: Colors.offBlack,
+    borderWidth: 1,
+    borderColor: Colors.work,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  applyText: {
+    fontFamily: Fonts.condensed,
+    fontSize: FontSizes.headingMd,
+    color: Colors.work,
+    textTransform: 'uppercase',
+    letterSpacing: 0.4,
   },
 
   summaryGrid: {
