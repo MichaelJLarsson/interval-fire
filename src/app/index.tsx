@@ -97,9 +97,9 @@ export default function HomeScreen() {
         </View>
 
         {/* Recent */}
-        <SectionLabel style={[styles.sectionLabel, { marginTop: 0 }]}>Recent</SectionLabel>
+        <SectionLabel style={[styles.sectionLabel, { marginTop: 0, marginBottom: 2 }]}>Recent</SectionLabel>
         <View style={styles.historyList}>
-          {historyToShow.slice(0, 4).map((r, i) => {
+          {historyToShow.slice(0, 3).map((r, i, arr) => {
             const mins = Math.round(r.durationSecs / 60);
             return (
               <HistoryRow
@@ -107,7 +107,7 @@ export default function HomeScreen() {
                 title={r.name}
                 subtitle={`${formatRelativeDate(r.completedAt)} · ${mins}:00 min · ${TYPE_LABELS[r.type]}`}
                 value={String(r.kcalBurned)}
-                showDivider={i < Math.min(historyToShow.length, 8) - 1}
+                showDivider={i < arr.length - 1}
               />
             );
           })}

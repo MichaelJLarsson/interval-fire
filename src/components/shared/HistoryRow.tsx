@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    paddingVertical: 12,
+    paddingVertical: 10,
   },
   divider: {
     borderBottomWidth: 1,
@@ -47,13 +47,12 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.caption,
     fontWeight: '500',
     color: Colors.textLo,
-    marginTop: 4,
+    marginTop: 2,
   },
   valueWrap: { alignItems: 'flex-end' },
   value: {
-    fontFamily: Fonts.bodySemiBold,
+    fontFamily: Fonts.condensedBold,
     fontSize: FontSizes.bodyXl,
-    fontWeight: '700',
     color: Colors.kcalValue,
     textAlign: 'right',
   },
@@ -62,6 +61,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: Colors.textLo,
     textAlign: 'right',
-    marginTop: 4,
+    marginTop: 2,
   },
 });
