@@ -7,8 +7,6 @@ import SectionLabel from '@/components/shared/SectionLabel';
 import SummaryCard from '@/components/shared/SummaryCard';
 import PersonalBestRow from '@/components/shared/PersonalBestRow';
 import HistoryRow from '@/components/shared/HistoryRow';
-import CTAButton from '@/components/shared/CTAButton';
-import HouseIcon from '@/components/shared/icons/HouseIcon';
 import XIcon from '@/components/shared/icons/XIcon';
 import { router } from 'expo-router';
 
@@ -113,9 +111,6 @@ export default function StatsScreen() {
             <Text style={styles.empty}>Complete a workout to see your history here.</Text>
           )}
         </View>
-        <View style={styles.backWrap}>
-          <CTAButton label="Home" icon={<HouseIcon color={Colors.textHi} size={20} />} onPress={() => router.back()} />
-        </View>
       </ScrollView>
     </View>
   );
@@ -188,10 +183,4 @@ const styles = StyleSheet.create({
   },
 
   empty: { color: Colors.textMuted, fontSize: FontSizes.body, paddingBottom: 16 },
-
-  backWrap: {
-    paddingHorizontal: Spacing.screenH,
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing.xxl,
-  },
 });
