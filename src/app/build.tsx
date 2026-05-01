@@ -6,7 +6,7 @@ import SummaryCard from '@/components/shared/SummaryCard';
 import TypeChip, { ChipAccent } from '@/components/shared/TypeChip';
 import WorkoutTypeIcon from '@/components/shared/WorkoutTypeIcon';
 import PenIcon from '@/components/shared/icons/PenIcon';
-import ReturnIcon from '@/components/shared/icons/ReturnIcon';
+import XIcon from '@/components/shared/icons/XIcon';
 import TrashIcon from '@/components/shared/icons/TrashIcon';
 import {
   Preset, WorkoutType,
@@ -174,7 +174,7 @@ export default function BuildScreen() {
             {isEditing ? (
               <TrashIcon color={Colors.work} size={22} />
             ) : (
-              <ReturnIcon color={Colors.textHi} size={22} />
+              <XIcon color={Colors.textHi} size={22} />
             )}
           </Pressable>
         </View>
