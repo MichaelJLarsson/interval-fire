@@ -34,7 +34,7 @@ export default function RootLayout() {
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#0d0d0d' } }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="build" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
-        <Stack.Screen name="stats" />
+        <Stack.Screen name="stats" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
         <Stack.Screen name="timer"    options={{ animation: 'fade', gestureEnabled: false }} />
         <Stack.Screen name="complete" options={{ animation: 'fade' }} />
       </Stack>
