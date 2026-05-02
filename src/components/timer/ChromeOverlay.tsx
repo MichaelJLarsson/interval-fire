@@ -4,6 +4,8 @@ import Animated, {
   useAnimatedStyle, withTiming, Easing,
 } from 'react-native-reanimated';
 import { Colors, Fonts, FontSizes, Spacing } from '@/constants/theme';
+import PauseIcon from '@/components/shared/icons/PauseIcon';
+import FastForwardFilledIcon from '@/components/shared/icons/FastForwardFilledIcon';
 
 interface Props {
   visible: boolean;
@@ -90,10 +92,12 @@ export default function ChromeOverlay({
             <Text style={styles.btnSmIcon}>■</Text>
           </Pressable>
           <Pressable style={[styles.btnLg, isPaused && styles.btnLgPaused]} onPress={onPauseResume}>
-            <Text style={styles.btnLgIcon}>{isPaused ? '▶' : '⏸'}</Text>
+            {isPaused
+              ? <Text style={styles.btnLgIcon}>▶</Text>
+              : <PauseIcon color={Colors.white} size={28} />}
           </Pressable>
           <Pressable style={styles.btnSm} onPress={onSkip}>
-            <Text style={styles.btnSmIcon}>⏭</Text>
+            <FastForwardFilledIcon color={Colors.textHi} size={22} />
           </Pressable>
         </View>
       </Animated.View>
