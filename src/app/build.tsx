@@ -179,6 +179,47 @@ export default function BuildScreen() {
           </Pressable>
         </View>
 
+        {/* Type selector */}
+        <View style={styles.section}>
+          <SectionLabel style={styles.sectionLabelSpacing}>Type</SectionLabel>
+          <View style={styles.typeGrid}>
+            {TYPES.map(({ key, label, accent }) => (
+              <TypeChip
+                key={key}
+                label={label}
+                accent={accent}
+                selected={p.type === key}
+                onPress={() => update({ type: key })}
+                icon={
+                  <WorkoutTypeIcon
+                    type={key}
+                    color={p.type === key ? Colors[accent] : Colors.textLo}
+                  />
+                }
+              />
+            ))}
+          </View>
+        </View>
+
+        {/* Interval settings */}
+        <View style={styles.section}>
+          <SectionLabel style={styles.sectionLabelSpacing}>Interval settings</SectionLabel>
+          <View style={styles.steppers}>
+            <Stepper label="Work" sublabel="Active interval"
+              value={formatTime(p.workSecs)}
+              onDecrement={() => update({ workSecs: Math.max(5, stepTime(p.workSecs, -1)) })}
+              onIncrement={() => update({ workSecs: stepTime(p.workSecs, 1) })} />
+            <Stepper label="Rest" sublabel="Recovery interval"
+              value={p.restSecs === 0 ? 'Off' : formatTime(p.restSecs)}
+              onDecrement={() => update({ restSecs: Math.max(0, stepTime(p.restSecs, -1)) })}
+              onIncrement={() => update({ restSecs: stepTime(p.restSecs, 1) })} />
+            <Stepper label="Rounds" sublabel="Sets to complete"
+              value={String(p.rounds)}
+              onDecrement={() => update({ rounds: Math.max(1, p.rounds - 1) })}
+              onIncrement={() => update({ rounds: Math.min(30, p.rounds + 1) })} />
+          </View>
+        </View>
+
         {/* Workout name */}
         <View style={styles.section}>
           <SectionLabel style={styles.sectionLabelSpacing}>Give your workout a name</SectionLabel>
@@ -234,47 +275,6 @@ export default function BuildScreen() {
               )}
             </View>
           )}
-        </View>
-
-        {/* Type selector */}
-        <View style={styles.section}>
-          <SectionLabel style={styles.sectionLabelSpacing}>Type</SectionLabel>
-          <View style={styles.typeGrid}>
-            {TYPES.map(({ key, label, accent }) => (
-              <TypeChip
-                key={key}
-                label={label}
-                accent={accent}
-                selected={p.type === key}
-                onPress={() => update({ type: key })}
-                icon={
-                  <WorkoutTypeIcon
-                    type={key}
-                    color={p.type === key ? Colors[accent] : Colors.textLo}
-                  />
-                }
-              />
-            ))}
-          </View>
-        </View>
-
-        {/* Interval settings */}
-        <View style={styles.section}>
-          <SectionLabel style={styles.sectionLabelSpacing}>Interval settings</SectionLabel>
-          <View style={styles.steppers}>
-            <Stepper label="Work" sublabel="Active interval"
-              value={formatTime(p.workSecs)}
-              onDecrement={() => update({ workSecs: Math.max(5, stepTime(p.workSecs, -1)) })}
-              onIncrement={() => update({ workSecs: stepTime(p.workSecs, 1) })} />
-            <Stepper label="Rest" sublabel="Recovery interval"
-              value={p.restSecs === 0 ? 'Off' : formatTime(p.restSecs)}
-              onDecrement={() => update({ restSecs: Math.max(0, stepTime(p.restSecs, -1)) })}
-              onIncrement={() => update({ restSecs: stepTime(p.restSecs, 1) })} />
-            <Stepper label="Rounds" sublabel="Sets to complete"
-              value={String(p.rounds)}
-              onDecrement={() => update({ rounds: Math.max(1, p.rounds - 1) })}
-              onIncrement={() => update({ rounds: Math.min(30, p.rounds + 1) })} />
-          </View>
         </View>
 
         {/* More options toggle */}
