@@ -49,7 +49,7 @@ export default function TimerScreen() {
     }, 650);
   };
 
-  useTimer(handleComplete);
+  const { skip } = useTimer(handleComplete);
 
   if (!active) return null;
 
@@ -114,7 +114,7 @@ export default function TimerScreen() {
         onToggleVoice={() => { setVoice(!voiceEnabled); resetChromeTimer(); }}
         onStop={() => { stop(); router.replace('/'); }}
         onPauseResume={() => { isPaused ? resume() : pause(); resetChromeTimer(); }}
-        onSkip={() => { /* advance handled by store */ resetChromeTimer(); }}
+        onSkip={() => { skip(); resetChromeTimer(); }}
         isPaused={isPaused}
       />
 

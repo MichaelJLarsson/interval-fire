@@ -17,19 +17,12 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
   const intervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const nextTickRef = useRef<number>(0);
 
-  const advance = useCallback(() => {
+  const advancePhase = useCallback(() => {
     const { active } = useWorkoutStore.getState();
-    if (!active || active.isPaused) return;
+    if (!active) return;
 
-    const { phase, round, secondsLeft, preset } = active;
+    const { phase, round, preset } = active;
 
-    if (secondsLeft > 0) {
-      tick();
-      scheduleTick();
-      return;
-    }
-
-    // Phase transition
     if (phase === 'prep') {
       setPhase('work', preset.workSecs, preset.workSecs, 1);
       playBeep('high');
@@ -37,7 +30,6 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
       phaseHaptic('work');
     } else if (phase === 'work') {
       if (round >= preset.rounds) {
-        // Workout complete
         const elapsedSecs = Math.round((Date.now() - active.startTimestamp) / 1000);
         const record = {
           id: String(Date.now()),
@@ -53,7 +45,7 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
         playBeep('finish');
         speak('Workout complete! Great job!');
         onComplete(preset, elapsedSecs);
-        return;
+        return true;
       }
       setPhase('rest', preset.restSecs, preset.restSecs);
       playBeep('low');
@@ -65,9 +57,23 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
       speak('Work!');
       phaseHaptic('work');
     }
+    return false;
+  }, [setPhase, stop, playBeep, speak, phaseHaptic, addRecord, onComplete]);
 
+  const advance = useCallback(() => {
+    const { active } = useWorkoutStore.getState();
+    if (!active || active.isPaused) return;
+
+    if (active.secondsLeft > 0) {
+      tick();
+      scheduleTick();
+      return;
+    }
+
+    const finished = advancePhase();
+    if (finished) return;
     scheduleTick();
-  }, [tick, setPhase, stop, playBeep, speak, phaseHaptic, addRecord, onComplete]);
+  }, [tick, advancePhase]);
 
   const scheduleTick = useCallback(() => {
     const now = Date.now();
@@ -75,6 +81,16 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
     nextTickRef.current = now + delay;
     intervalRef.current = setTimeout(advance, delay);
   }, [advance]);
+
+  const skip = useCallback(() => {
+    if (intervalRef.current) clearTimeout(intervalRef.current);
+    const finished = advancePhase();
+    if (finished) return;
+    const { active } = useWorkoutStore.getState();
+    if (!active || active.isPaused) return;
+    nextTickRef.current = Date.now() + 1000;
+    intervalRef.current = setTimeout(advance, 1000);
+  }, [advance, advancePhase]);
 
   // Start ticking when active changes from null → something
   useEffect(() => {
@@ -95,5 +111,5 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
     };
   }, [active?.isPaused, !!active]);
 
-  return null;
+  return { skip };
 }
