@@ -6,8 +6,8 @@ import Animated, {
   withRepeat, withSequence, withTiming, Easing,
 } from 'react-native-reanimated';
 
-const SIZE = 250;
-const RADIUS = 110;
+const SIZE = 270;
+const RADIUS = 120;
 const STROKE = 9;
 export const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const CENTER = SIZE / 2;
@@ -52,7 +52,7 @@ export default function TimerRing({ progress, color, isPulsing }: Props) {
       <Animated.View style={[StyleSheet.absoluteFill, styles.svgWrap, svgStyle]}>
         <Svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
           <Circle cx={CENTER} cy={CENTER} r={RADIUS}
-            fill="none" stroke="#222" strokeWidth={STROKE} />
+            fill="none" stroke="#3a3a3a" strokeWidth={STROKE} />
           <Circle cx={CENTER} cy={CENTER} r={RADIUS}
             fill="none" stroke={color} strokeWidth={STROKE}
             strokeDasharray={CIRCUMFERENCE}

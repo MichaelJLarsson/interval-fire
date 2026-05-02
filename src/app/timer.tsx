@@ -148,6 +148,6 @@ const styles = StyleSheet.create({
     // Sits on top of ring but is NOT inside pulsing element
   },
   countdownNum: { fontFamily: Fonts.condensed, fontSize: FontSizes.displayXL, lineHeight: FontSizes.displayXL, letterSpacing: -2 },
-  countdownLbl: { fontSize: FontSizes.body, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 2, color: Colors.textMuted, marginTop: 4 },
-  nextText: { marginTop: 14, fontSize: FontSizes.caption, color: '#999', fontWeight: '500' },
+  countdownLbl: { fontSize: 13, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 2, color: Colors.textLo, marginTop: 6 },
+  nextText: { marginTop: 26, fontSize: FontSizes.body, color: Colors.textLo, fontWeight: '600' },
 });

@@ -78,7 +78,7 @@ export const Fonts = {
 // ─── Font sizes ───────────────────────────────────────────────────────────────
 // Scale follows DESIGN_SYSTEM.md §2 Type Scale.
 export const FontSizes = {
-  displayXL: 82, // Timer countdown digits
+  displayXL: 96, // Timer countdown digits
   displayLg: 40, // "Workout Complete!" headline
   displayMd: 36, // Preset card title
   displaySm: 30, // Summary data values, logo

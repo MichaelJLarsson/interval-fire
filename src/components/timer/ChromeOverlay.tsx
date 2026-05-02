@@ -66,7 +66,7 @@ export default function ChromeOverlay({
         <View style={styles.headLeft}>
           <Text style={styles.workoutName}>{workoutName}</Text>
         </View>
-        <View style={[styles.badge, { backgroundColor: phaseColor + '28' }]}>
+        <View style={[styles.badge, { backgroundColor: phaseColor + '21', borderColor: phaseColor + '54' }]}>
           <Text style={[styles.badgeText, { color: phaseColor }]}>{phaseBadge}</Text>
         </View>
       </Animated.View>
@@ -89,7 +89,7 @@ export default function ChromeOverlay({
       <Animated.View style={[styles.foot, footStyle]} pointerEvents={visible ? 'auto' : 'none'}>
         <View style={styles.controls}>
           <Pressable style={styles.btnSm} onPress={onStop}>
-            <Text style={styles.btnSmIcon}>■</Text>
+            <View style={styles.stopIcon} />
           </Pressable>
           <Pressable style={[styles.btnLg, isPaused && styles.btnLgPaused]} onPress={onPauseResume}>
             {isPaused
@@ -135,25 +135,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
   },
   headLeft:    { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  workoutName: { fontFamily: Fonts.condensedBold, fontSize: FontSizes.bodyXl, color: Colors.textMuted, textTransform: 'uppercase', letterSpacing: 1 },
-  badge:       { paddingHorizontal: 12, paddingVertical: 5, borderRadius: 20 },
-  badgeText:   { fontSize: FontSizes.label, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
+  workoutName: { fontFamily: Fonts.condensed, fontSize: FontSizes.headingMd, color: Colors.textHi, textTransform: 'uppercase', letterSpacing: 1 },
+  badge:       { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, borderWidth: 1 },
+  badgeText:   { fontSize: FontSizes.label, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.3 },
 
   mid: {
-    position: 'absolute', top: 108, left: 0, right: 0,
+    position: 'absolute', top: 94, left: 0, right: 0,
   },
   dots:       { flexDirection: 'row', gap: 3, paddingHorizontal: Spacing.screenH },
-  dot:        { flex: 1, height: 3, borderRadius: 3, backgroundColor: '#242424' },
-  dotDone:    { backgroundColor: '#444' },
-  dotCurrent: { backgroundColor: Colors.work },
-  roundLabel: { textAlign: 'center', fontSize: FontSizes.caption, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1, color: Colors.textMuted, marginTop: 8 },
+  dot:        { flex: 1, height: 3, borderRadius: 2, backgroundColor: Colors.progressPending },
+  dotDone:    { backgroundColor: Colors.progressDone },
+  dotCurrent: { backgroundColor: Colors.progressActive },
+  roundLabel: { textAlign: 'center', fontSize: FontSizes.label, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1.5, color: Colors.textLo, marginTop: 12 },
 
   foot: {
     position: 'absolute', bottom: 52, left: 0, right: 0,
   },
-  controls: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 24, paddingHorizontal: Spacing.screenH, paddingVertical: 16 },
-  btnSm:     { width: 56, height: 56, borderRadius: 28, backgroundColor: '#303030', borderWidth: 2, borderColor: '#555', alignItems: 'center', justifyContent: 'center' },
-  btnSmIcon: { color: Colors.textHi, fontSize: 16 },
+  controls:  { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 23, paddingHorizontal: Spacing.screenH, paddingVertical: 16 },
+  btnSm:     { width: 56, height: 56, borderRadius: 28, backgroundColor: Colors.planeBlack, borderWidth: 2, borderColor: Colors.border, alignItems: 'center', justifyContent: 'center' },
+  stopIcon:  { width: 12, height: 12, backgroundColor: '#d9d9d9' },
   btnLg:     { width: 76, height: 76, borderRadius: 38, backgroundColor: Colors.work, alignItems: 'center', justifyContent: 'center' },
   btnLgPaused: { backgroundColor: '#555' },
   btnLgIcon: { color: Colors.white, fontSize: 22 },
@@ -167,8 +167,8 @@ const styles = StyleSheet.create({
   swOn:            { backgroundColor: Colors.work },
   thumb:           { width: 13, height: 13, borderRadius: 7, backgroundColor: '#555' },
   thumbOn:         { backgroundColor: Colors.white, alignSelf: 'flex-end' },
-  toggleLabel:     { fontSize: FontSizes.caption, fontWeight: '600', color: '#555', textTransform: 'uppercase', letterSpacing: 0.8 },
-  toggleLabelOn:   { color: Colors.textMuted },
+  toggleLabel:     { fontSize: FontSizes.label, fontWeight: '700', color: '#555', textTransform: 'uppercase', letterSpacing: 1.5 },
+  toggleLabelOn:   { color: Colors.textLo },
 
   hint: { position: 'absolute', bottom: 14, left: 0, right: 0, alignItems: 'center' },
   hintPill: { width: 40, height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.13)' },
