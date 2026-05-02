@@ -167,15 +167,8 @@ export default function BuildScreen() {
         {/* Header */}
         <View style={styles.headerWrap}>
           <ScreenTitle line1={isEditing ? 'Edit' : 'Build'} line2="Workout" />
-          <Pressable
-            style={styles.returnBtn}
-            onPress={isEditing ? handleDelete : () => router.back()}
-          >
-            {isEditing ? (
-              <TrashIcon color={Colors.work} size={22} />
-            ) : (
-              <XIcon color={Colors.textHi} size={22} />
-            )}
+          <Pressable style={styles.returnBtn} onPress={() => router.back()}>
+            <XIcon color={Colors.textHi} size={22} />
           </Pressable>
         </View>
 
@@ -345,9 +338,15 @@ export default function BuildScreen() {
 
         {/* Action buttons */}
         <View style={styles.ctaFooter}>
-          <View style={styles.ctaRow}>
-            <CTAButton label="Save" variant="outline" onPress={handleSave} style={styles.ctaHalf} />
-            <CTAButton label="Save & Start" onPress={handleSaveStart} style={styles.ctaHalf} />
+          <View style={styles.ctaStack}>
+            <CTAButton label="Start Workout" onPress={handleSaveStart} />
+            <CTAButton label="Save" variant="outline" onPress={handleSave} />
+            {isEditing && (
+              <Pressable style={styles.deleteBtn} onPress={handleDelete}>
+                <TrashIcon color={Colors.work} size={18} />
+                <Text style={styles.deleteText}>Delete workout</Text>
+              </Pressable>
+            )}
           </View>
         </View>
       </ScrollView>
@@ -494,10 +493,21 @@ const styles = StyleSheet.create({
   ctaFooter: {
     paddingBottom: Spacing.screenV,
   },
-  ctaRow: {
-    flexDirection: 'row',
-    gap: 16,
+  ctaStack: {
     paddingHorizontal: Spacing.screenH,
+    gap: Spacing.sm,
   },
-  ctaHalf: { flex: 1 },
+  deleteBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 14,
+    marginTop: Spacing.md,
+  },
+  deleteText: {
+    color: Colors.work,
+    fontSize: FontSizes.body,
+    fontWeight: '600',
+  },
 });
