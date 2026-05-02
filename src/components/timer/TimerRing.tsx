@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import Animated, {
-  useSharedValue, useAnimatedStyle,
-  withRepeat, withSequence, withTiming, Easing,
+  useSharedValue, useAnimatedStyle, useAnimatedProps,
+  withRepeat, withSequence, withTiming, cancelAnimation, Easing,
 } from 'react-native-reanimated';
 
 const SIZE = 270;
@@ -11,6 +11,8 @@ const RADIUS = 120;
 const STROKE = 9;
 export const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const CENTER = SIZE / 2;
+
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export const PHASE_COLORS = {
   work: '#ff3d3d',
@@ -22,10 +24,17 @@ interface Props {
   progress: number;
   color: string;
   isPulsing: boolean;
+  phase: string;
+  isPaused: boolean;
 }
 
-export default function TimerRing({ progress, color, isPulsing }: Props) {
+const offsetFor = (progress: number) =>
+  CIRCUMFERENCE * (1 - Math.max(0, Math.min(1, progress)));
+
+export default function TimerRing({ progress, color, isPulsing, phase, isPaused }: Props) {
   const scale = useSharedValue(1);
+  const dashOffset = useSharedValue(offsetFor(progress));
+  const lastPhase = useRef(phase);
 
   useEffect(() => {
     if (isPulsing) {
@@ -40,11 +49,28 @@ export default function TimerRing({ progress, color, isPulsing }: Props) {
     }
   }, [isPulsing]);
 
+  useEffect(() => {
+    const target = offsetFor(progress);
+    if (lastPhase.current !== phase) {
+      lastPhase.current = phase;
+      cancelAnimation(dashOffset);
+      dashOffset.value = target;
+      return;
+    }
+    if (isPaused) {
+      cancelAnimation(dashOffset);
+      return;
+    }
+    dashOffset.value = withTiming(target, { duration: 1000, easing: Easing.linear });
+  }, [progress, phase, isPaused]);
+
   const svgStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
 
-  const dashOffset = CIRCUMFERENCE * (1 - Math.max(0, Math.min(1, progress)));
+  const animatedProps = useAnimatedProps(() => ({
+    strokeDashoffset: dashOffset.value,
+  }));
 
   return (
     <View style={styles.container}>
@@ -53,10 +79,10 @@ export default function TimerRing({ progress, color, isPulsing }: Props) {
         <Svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
           <Circle cx={CENTER} cy={CENTER} r={RADIUS}
             fill="none" stroke="#3a3a3a" strokeWidth={STROKE} />
-          <Circle cx={CENTER} cy={CENTER} r={RADIUS}
+          <AnimatedCircle cx={CENTER} cy={CENTER} r={RADIUS}
             fill="none" stroke={color} strokeWidth={STROKE}
             strokeDasharray={CIRCUMFERENCE}
-            strokeDashoffset={dashOffset}
+            animatedProps={animatedProps}
             strokeLinecap="round"
             rotation="-90"
             origin={`${CENTER}, ${CENTER}`} />

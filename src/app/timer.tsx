@@ -83,7 +83,7 @@ export default function TimerScreen() {
     <Pressable style={styles.screen} onPress={handleTap}>
       {/* Always-visible core */}
       <View style={styles.core} pointerEvents="none">
-        <TimerRing progress={progress} color={phaseColor} isPulsing={isPulsing} />
+        <TimerRing progress={progress} color={phaseColor} isPulsing={isPulsing} phase={phase} isPaused={isPaused} />
         {/* Countdown text is a sibling to the ring, not inside it */}
         <View style={styles.countdown}>
           <Text style={[styles.countdownNum, { color: phaseColor }]}>{countdownText}</Text>
