@@ -5,14 +5,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm start          # Start Expo dev server (alias: npx expo start)
+npm start          # Start Expo dev server
 npm run ios        # Build and run on iOS simulator
 npm run android    # Build and run on Android emulator
 npm run web        # Start web dev server
-npm run lint       # Run ESLint via expo lint
+npm run lint       # Run ESLint (expo lint, flat config)
+npm test           # Run Jest test suite
 ```
 
-No test runner is configured yet.
+To run a single test file:
+```bash
+npx jest src/store/__tests__/workoutStore.test.ts
+```
 
 ## Architecture
 
@@ -23,27 +27,64 @@ No test runner is configured yet.
 - `@/assets/*` → `./assets/*`
 
 ### Routing (`src/app/`)
-- `(tabs)/` — Bottom tab navigator with three screens: Home (index), Build, Stats
-- `timer` — Full-screen timer (fade transition, gesture disabled while active)
-- `complete` — Post-workout summary (fade transition)
+The app uses a flat Stack navigator (no tab bar). All screens live directly under `src/app/`:
+- `index.tsx` — Home: preset carousel, recent workouts, streak
+- `build.tsx` — Workout builder modal (create/edit presets)
+- `stats.tsx` — Stats dashboard modal
+- `timer.tsx` — Full-screen timer (fade transition, gesture disabled while running)
+- `complete.tsx` — Post-workout summary (fade transition, receives `name`/`elapsedSecs`/`rounds` via `useLocalSearchParams`)
 
-### State management (Zustand)
-Three stores in `src/store/`, two persisted via AsyncStorage:
-- **workoutStore** — Active workout state (phase, round, secondsLeft). Not persisted. Phases cycle: `prep → work → rest → work → … → complete`.
-- **historyStore** — Completed workout records. Persisted (`interval-fire-history`). Includes derived selectors: `computeStreak`, `weeklyMinutes`, `estimateKcal`.
-- **settingsStore** — User preferences (audio, voice, warning toggles). Persisted (`interval-fire-settings`).
+Build and stats are presented as `slide_from_bottom` modals. The root `_layout.tsx` loads fonts and wraps everything in `GestureHandlerRootView`.
+
+### State management (Zustand — `src/store/`)
+Four stores, three persisted via AsyncStorage:
+- **workoutStore** — Active workout state (`phase`, `round`, `secondsLeft`, `isPaused`). **Not persisted.** Phases cycle: `prep → work → rest → work → … → complete`.
+- **historyStore** — Completed `WorkoutRecord` entries. Persisted (`interval-fire-history`). Seeded with mock data for development. Derived selectors live **outside** the store as standalone functions: `computeStreak`, `weeklyMinutes`, `estimateKcal`.
+- **settingsStore** — `audioEnabled`, `voiceEnabled`, `warningEnabled` toggles. Persisted (`interval-fire-settings`).
+- **presetsStore** — User-created `Preset` entries with full CRUD. Persisted (`interval-fire-presets`). Defaults to four `STARTER_PRESETS` from `src/constants/presets.ts`. Generated IDs use format `user-${timestamp}-${random}`.
 
 ### Timer engine (`src/hooks/useTimer.ts`)
-Drift-corrected `setTimeout`-based timer that drives the workout. Handles phase transitions, audio cues (beeps + speech), haptic feedback, and auto-records completed workouts to history.
+Drift-corrected `setTimeout` loop (1 s base). On each tick it calls `advance()`:
+1. Decrements `secondsLeft` via `workoutStore.tick()`.
+2. When `secondsLeft` hits 0, transitions phase: `prep → work`, `work → rest`, `rest → work` (incrementing round), or records the workout and calls `onComplete()`.
+3. Audio cues via `useAudio` (frequency beeps + `expo-speech` announcements) and haptics via `useHaptics`, both gated by settings toggles.
+4. On completion, calculates elapsed time, constructs a `WorkoutRecord` with estimated kcal, and calls `historyStore.addRecord()` before navigating away.
+
+Drift correction: each tick schedules the next with `max(0, nextTickRef - Date.now() + 1000)` to compensate for JS event-loop jitter.
+
+### Preset data model (`src/constants/presets.ts`)
+```ts
+interface Preset {
+  id: string;
+  name: string;
+  type: 'hiit' | 'running' | 'cardio' | 'strength';
+  workSecs: number; restSecs: number; rounds: number;
+  prepSecs: number; warmupSecs: number; cooldownSecs: number;
+}
+```
+Utility functions: `stepTime` (5 s increments ≤60 s, then 15 s), `stepWarmup` (30 s ≤2 min, then 60 s), `formatTime` ("Off" / "30s" / "1:30"), `totalSecs`.
 
 ### Design system (`src/constants/theme.ts`)
-Dark theme only. All color tokens, spacing, radii, and font family references are centralized. Fonts: Barlow (body) and Barlow Condensed (display), loaded via `@expo-google-fonts`.
+Dark theme only. Key tokens:
+- **Backgrounds:** `bg` #0d0d0d, `surface` #1e1e1e, `surfaceLo` #181818
+- **Phase accents:** `work` #ff3d3d, `rest` #00e5a0, `prep` #ffc300, `strength` #b388ff
+- **Typography:** `condensed` = BarlowSemiCondensed_800ExtraBold (display), `body` = Barlow_400Regular, `bodySemiBold` = Barlow_600SemiBold — 10-level font-size scale from `label` (10) to `displayXL` (82)
+- **Spacing:** `screenH` 22 / `screenV` 46 plus xs–xxxl (4–36)
+- **Radii:** sm (8) through `pill` (20) / `full` (999)
 
-### Presets (`src/constants/presets.ts`)
-Workout templates with `workSecs`, `restSecs`, `rounds`, `prepSecs`, `warmupSecs`, `cooldownSecs`. Includes utility functions: `stepTime`, `stepWarmup`, `formatTime`, `totalSecs`.
+A companion `DESIGN_SYSTEM.md` documents the full token table and shared component specs.
+
+### Component organization (`src/components/`)
+- `shared/` — App-wide reusable pieces (cards, pills, buttons, icons)
+- `timer/` — `TimerRing` (animated Reanimated progress ring) and `ChromeOverlay` (tap-to-reveal controls with audio/pause/skip/stop)
+- `home/` — `PresetCarousel`
+- `build/` — `Stepper`
 
 ### Key conventions
-- React Compiler is enabled (`experiments.reactCompiler: true` in app.json)
-- Typed routes enabled (`experiments.typedRoutes: true`)
-- Portrait orientation only
-- `GestureHandlerRootView` wraps the entire app at root layout level
+- React Compiler enabled (`experiments.reactCompiler: true` in `app.json`) — avoid manual `useMemo`/`useCallback` where the compiler handles it.
+- Typed routes enabled (`experiments.typedRoutes: true`) — use typed `router.push` / `<Link href>` paths.
+- Portrait orientation only.
+- Derived/computed values (streak, weekly minutes, kcal) are standalone selector functions, not embedded in store state.
+- Mock history data is loaded by default in `historyStore` for local development; clearing AsyncStorage removes it.
+- Animations use `react-native-reanimated` (spring + timing); the `FlashOverlay` component fires on every phase transition.
+- Tests live in `__tests__/` subdirectories adjacent to the code they test; mocks for `async-storage`, `expo-haptics`, and `expo-speech` are in `src/__mocks__/`.
