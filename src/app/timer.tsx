@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { useWorkoutStore, Phase } from '@/store/workoutStore';
@@ -112,7 +112,20 @@ export default function TimerScreen() {
         voiceOn={voiceEnabled}
         onToggleAudio={() => { setAudio(!audioEnabled); resetChromeTimer(); }}
         onToggleVoice={() => { setVoice(!voiceEnabled); resetChromeTimer(); }}
-        onStop={() => { stop(); router.replace('/'); }}
+        onStop={() => {
+          if (!active) return;
+          const wasPaused = active.isPaused;
+          if (!wasPaused) pause();
+          Alert.alert(
+            'Stop workout?',
+            'Your progress will be lost.',
+            [
+              { text: 'Cancel', style: 'cancel', onPress: () => { if (!wasPaused) resume(); } },
+              { text: 'Stop', style: 'destructive', onPress: () => { stop(); router.replace('/'); } },
+            ],
+            { cancelable: true, onDismiss: () => { if (!wasPaused) resume(); } },
+          );
+        }}
         onPauseResume={() => { isPaused ? resume() : pause(); resetChromeTimer(); }}
         onSkip={() => { skip(); resetChromeTimer(); }}
         isPaused={isPaused}
