@@ -33,13 +33,9 @@ export default function CTAButton({ label, variant = 'filled', icon, onPress, st
   };
 
   return (
-    <Animated.View style={{ transform: [{ scale }] }}>
+    <Animated.View style={[{ transform: [{ scale }] }, style]}>
       <Pressable
-        style={[
-          styles.base,
-          isFilled ? styles.filled : styles.outline,
-          style,
-        ]}
+        style={[styles.base, isFilled ? styles.filled : styles.outline]}
         onPress={onPress}
         onPressIn={onPressIn}
         onPressOut={onPressOut}

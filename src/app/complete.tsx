@@ -81,11 +81,17 @@ export default function CompleteScreen() {
 }
 
 const styles = StyleSheet.create({
-  inner: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: Spacing.screenH },
+  inner: {
+    flex: 1,
+    alignItems: 'center',
+    paddingHorizontal: Spacing.screenH,
+    paddingTop: Spacing.xxxl,
+    paddingBottom: Spacing.xxl,
+  },
 
-  checkWrap: { marginBottom: 24 },
+  checkWrap: { marginBottom: 104 },
 
-  content: { alignItems: 'center', width: '100%' },
+  content: { alignItems: 'center', width: '100%', flex: 1 },
 
   headline: {
     fontFamily: Fonts.condensed,
@@ -114,7 +120,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     width: '100%',
-    marginBottom: Spacing.xxl,
   },
   tile: { flex: 1 },
 
@@ -122,6 +127,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 18,
     width: '100%',
+    marginTop: 'auto',
   },
   ctaHalf: { flex: 1 },
 });
