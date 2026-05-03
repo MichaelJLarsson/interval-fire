@@ -131,6 +131,7 @@ export default function BuildScreen() {
   const handleSaveStart = () => {
     const saved = persist();
     startWorkout(saved);
+    router.dismiss();
     router.push('/timer');
   };
 
