@@ -28,7 +28,6 @@ const VOICE_ASSETS: Record<VoicePhrase, ReturnType<typeof require>> = {
 const COUNTDOWN_TICK = require('@/assets/sounds/countdown.wav');
 
 export function useAudio() {
-  const { audioEnabled, voiceEnabled } = useSettingsStore();
   const voicePlayerRef = useRef<ReturnType<typeof createAudioPlayer> | null>(null);
   const tickPlayerRef = useRef<ReturnType<typeof createAudioPlayer> | null>(null);
 
@@ -39,26 +38,30 @@ export function useAudio() {
     };
   }, []);
 
+  // Read settings via getState() so callbacks stay stable and always see the
+  // latest toggle value — otherwise the timer's setTimeout chain keeps invoking
+  // stale closures captured before the user flipped Audio/Voice.
+
   // TODO: bundle short WAV beep files in assets/sounds/ and play via expo-audio
   const playBeep = useCallback(async (_type: BeepType) => {
-    if (!audioEnabled) return;
-  }, [audioEnabled]);
+    if (!useSettingsStore.getState().audioEnabled) return;
+  }, []);
 
   const playTick = useCallback(() => {
-    if (!audioEnabled) return;
+    if (!useSettingsStore.getState().audioEnabled) return;
     tickPlayerRef.current?.remove();
     const player = createAudioPlayer(COUNTDOWN_TICK);
     player.play();
     tickPlayerRef.current = player;
-  }, [audioEnabled]);
+  }, []);
 
   const speak = useCallback((phrase: VoicePhrase) => {
-    if (!voiceEnabled) return;
+    if (!useSettingsStore.getState().voiceEnabled) return;
     voicePlayerRef.current?.remove();
     const player = createAudioPlayer(VOICE_ASSETS[phrase]);
     player.play();
     voicePlayerRef.current = player;
-  }, [voiceEnabled]);
+  }, []);
 
   return { playBeep, playTick, speak };
 }

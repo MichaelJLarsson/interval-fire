@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Animated, {
-  useAnimatedStyle, withTiming, Easing,
+  useAnimatedStyle, useSharedValue, withTiming, Easing, interpolateColor,
 } from 'react-native-reanimated';
 import { Colors, Fonts, FontSizes, Spacing } from '@/constants/theme';
 import PauseIcon from '@/components/shared/icons/PauseIcon';
 import FastForwardFilledIcon from '@/components/shared/icons/FastForwardFilledIcon';
+
+const SWITCH_TRACK_OFF = '#2c2c2c';
+const SWITCH_THUMB_OFF = '#555';
+const SWITCH_THUMB_TRAVEL = 15; // track 32 - padding 4 - thumb 13
+
+function AnimatedSwitch({ on }: { on: boolean }) {
+  const v = useSharedValue(on ? 1 : 0);
+  useEffect(() => {
+    v.value = withTiming(on ? 1 : 0, { duration: 220, easing: Easing.out(Easing.cubic) });
+  }, [on, v]);
+
+  const trackStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(v.value, [0, 1], [SWITCH_TRACK_OFF, Colors.work]),
+  }));
+  const thumbStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: v.value * SWITCH_THUMB_TRAVEL }],
+    backgroundColor: interpolateColor(v.value, [0, 1], [SWITCH_THUMB_OFF, Colors.white]),
+  }));
+
+  return (
+    <Animated.View style={[styles.sw, trackStyle]}>
+      <Animated.View style={[styles.thumb, thumbStyle]} />
+    </Animated.View>
+  );
+}
 
 interface Props {
   visible: boolean;
@@ -105,16 +130,12 @@ export default function ChromeOverlay({
       {/* ── Audio toggles ── */}
       <Animated.View style={[styles.toggles, togStyle]} pointerEvents={visible ? 'auto' : 'none'}>
         <Pressable style={styles.toggle} onPress={onToggleAudio}>
-          <View style={[styles.sw, audioOn && styles.swOn]}>
-            <View style={[styles.thumb, audioOn && styles.thumbOn]} />
-          </View>
-          <Text style={[styles.toggleLabel, audioOn && styles.toggleLabelOn]}>Audio</Text>
+          <AnimatedSwitch on={audioOn} />
+          <Text style={styles.toggleLabel}>Audio</Text>
         </Pressable>
         <Pressable style={styles.toggle} onPress={onToggleVoice}>
-          <View style={[styles.sw, voiceOn && styles.swOn]}>
-            <View style={[styles.thumb, voiceOn && styles.thumbOn]} />
-          </View>
-          <Text style={[styles.toggleLabel, voiceOn && styles.toggleLabelOn]}>Voice</Text>
+          <AnimatedSwitch on={voiceOn} />
+          <Text style={styles.toggleLabel}>Voice</Text>
         </Pressable>
       </Animated.View>
 
@@ -163,12 +184,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row', justifyContent: 'center', gap: 28, paddingBottom: 20, paddingTop: 8,
   },
   toggle:          { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  sw:              { width: 32, height: 18, borderRadius: 9, backgroundColor: '#2c2c2c', justifyContent: 'center', paddingHorizontal: 2 },
-  swOn:            { backgroundColor: Colors.work },
-  thumb:           { width: 13, height: 13, borderRadius: 7, backgroundColor: '#555' },
-  thumbOn:         { backgroundColor: Colors.white, alignSelf: 'flex-end' },
-  toggleLabel:     { fontSize: FontSizes.label, fontWeight: '700', color: '#555', textTransform: 'uppercase', letterSpacing: 1.5 },
-  toggleLabelOn:   { color: Colors.textLo },
+  sw:              { width: 32, height: 18, borderRadius: 9, justifyContent: 'center', paddingHorizontal: 2 },
+  thumb:           { width: 13, height: 13, borderRadius: 7 },
+  toggleLabel:     { fontSize: FontSizes.label, fontWeight: '700', color: Colors.textLo, textTransform: 'uppercase', letterSpacing: 1.5 },
 
   hint: { position: 'absolute', bottom: 14, left: 0, right: 0, alignItems: 'center' },
   hintPill: { width: 40, height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.13)' },
