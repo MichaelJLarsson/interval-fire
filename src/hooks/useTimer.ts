@@ -74,10 +74,11 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
       const updated = useWorkoutStore.getState().active;
       if (updated && warningEnabled) {
         const sLeft = updated.secondsLeft;
-        if (sLeft >= 1 && sLeft <= 3) {
-          // Voice during prep, beep during work/rest
-          if (updated.phase === 'prep') speak(COUNTDOWN_PHRASES[sLeft]);
-          else playTick();
+        // Voice 3-2-1 during prep; four beeps (3, 2, 1, 0) during work/rest
+        if (updated.phase === 'prep') {
+          if (sLeft >= 1 && sLeft <= 3) speak(COUNTDOWN_PHRASES[sLeft]);
+        } else if (sLeft >= 0 && sLeft <= 3) {
+          playTick();
         }
       }
       scheduleTick();
