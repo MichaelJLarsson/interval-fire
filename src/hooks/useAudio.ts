@@ -8,7 +8,6 @@ export type VoicePhrase =
   | 'prep'
   | 'work'
   | 'rest'
-  | 'halfway'
   | 'last_round'
   | 'three'
   | 'two'
@@ -19,7 +18,6 @@ const VOICE_ASSETS: Record<VoicePhrase, ReturnType<typeof require>> = {
   prep:       require('@/assets/voice/prep.mp3'),
   work:       require('@/assets/voice/work.mp3'),
   rest:       require('@/assets/voice/rest.mp3'),
-  halfway:    require('@/assets/voice/halfway.mp3'),
   last_round: require('@/assets/voice/last_round.mp3'),
   three:      require('@/assets/voice/three.mp3'),
   two:        require('@/assets/voice/two.mp3'),
@@ -27,13 +25,17 @@ const VOICE_ASSETS: Record<VoicePhrase, ReturnType<typeof require>> = {
   complete:   require('@/assets/voice/complete.mp3'),
 };
 
+const COUNTDOWN_TICK = require('@/assets/sounds/countdown.wav');
+
 export function useAudio() {
   const { audioEnabled, voiceEnabled } = useSettingsStore();
-  const playerRef = useRef<ReturnType<typeof createAudioPlayer> | null>(null);
+  const voicePlayerRef = useRef<ReturnType<typeof createAudioPlayer> | null>(null);
+  const tickPlayerRef = useRef<ReturnType<typeof createAudioPlayer> | null>(null);
 
   useEffect(() => {
     return () => {
-      playerRef.current?.remove();
+      voicePlayerRef.current?.remove();
+      tickPlayerRef.current?.remove();
     };
   }, []);
 
@@ -42,13 +44,21 @@ export function useAudio() {
     if (!audioEnabled) return;
   }, [audioEnabled]);
 
+  const playTick = useCallback(() => {
+    if (!audioEnabled) return;
+    tickPlayerRef.current?.remove();
+    const player = createAudioPlayer(COUNTDOWN_TICK);
+    player.play();
+    tickPlayerRef.current = player;
+  }, [audioEnabled]);
+
   const speak = useCallback((phrase: VoicePhrase) => {
     if (!voiceEnabled) return;
-    playerRef.current?.remove();
+    voicePlayerRef.current?.remove();
     const player = createAudioPlayer(VOICE_ASSETS[phrase]);
     player.play();
-    playerRef.current = player;
+    voicePlayerRef.current = player;
   }, [voiceEnabled]);
 
-  return { playBeep, speak };
+  return { playBeep, playTick, speak };
 }

@@ -25,7 +25,6 @@ const PHRASES: Record<string, string> = {
   prep: 'Get ready!',
   work: 'Work!',
   rest: 'Rest!',
-  halfway: 'Halfway!',
   last_round: 'Last round!',
   three: '3',
   two: '2',

@@ -15,7 +15,7 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
   const { active, tick, setPhase, stop } = useWorkoutStore();
   const { addRecord } = useHistoryStore();
   const { warningEnabled } = useSettingsStore();
-  const { playBeep, speak } = useAudio();
+  const { playBeep, playTick, speak } = useAudio();
   const { phaseHaptic } = useHaptics();
 
   const intervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -72,19 +72,12 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
     if (active.secondsLeft > 0) {
       tick();
       const updated = useWorkoutStore.getState().active;
-      if (updated) {
+      if (updated && warningEnabled) {
         const sLeft = updated.secondsLeft;
-        // Countdown cues for last 3 seconds of any phase
-        if (warningEnabled && sLeft >= 1 && sLeft <= 3) {
-          speak(COUNTDOWN_PHRASES[sLeft]);
-        }
-        // Halfway cue — only during work, only outside the countdown window
-        if (
-          updated.phase === 'work' &&
-          sLeft > 3 &&
-          sLeft === Math.round(updated.preset.workSecs / 2)
-        ) {
-          speak('halfway');
+        if (sLeft >= 1 && sLeft <= 3) {
+          // Voice during prep, beep during work/rest
+          if (updated.phase === 'prep') speak(COUNTDOWN_PHRASES[sLeft]);
+          else playTick();
         }
       }
       scheduleTick();
@@ -94,7 +87,7 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
     const finished = advancePhase();
     if (finished) return;
     scheduleTick();
-  }, [tick, advancePhase, warningEnabled, speak]);
+  }, [tick, advancePhase, warningEnabled, speak, playTick]);
 
   const scheduleTick = useCallback(() => {
     const now = Date.now();
