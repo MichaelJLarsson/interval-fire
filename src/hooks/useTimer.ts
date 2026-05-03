@@ -1,17 +1,21 @@
 import { useEffect, useRef, useCallback } from 'react';
-import { useWorkoutStore, Phase } from '@/store/workoutStore';
+import { useWorkoutStore } from '@/store/workoutStore';
 import { useHistoryStore, estimateKcal } from '@/store/historyStore';
+import { useSettingsStore } from '@/store/settingsStore';
 import { Preset } from '@/constants/presets';
-import { useAudio } from './useAudio';
+import { useAudio, VoicePhrase } from './useAudio';
 import { useHaptics } from './useHaptics';
 
 // ─── Drift-corrected timer ────────────────────────────────────────────────────
 // We record the expected next-tick timestamp and correct for JS drift each tick.
 
+const COUNTDOWN_PHRASES: Record<number, VoicePhrase> = { 1: 'one', 2: 'two', 3: 'three' };
+
 export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => void) {
   const { active, tick, setPhase, stop } = useWorkoutStore();
   const { addRecord } = useHistoryStore();
-  const { playBeep, speak } = useAudio();
+  const { warningEnabled } = useSettingsStore();
+  const { playBeep, playTick, speak } = useAudio();
   const { phaseHaptic } = useHaptics();
 
   const intervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -26,7 +30,7 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
     if (phase === 'prep') {
       setPhase('work', preset.workSecs, preset.workSecs, 1);
       playBeep('high');
-      speak('Work!');
+      speak(preset.rounds === 1 ? 'last_round' : 'work');
       phaseHaptic('work');
     } else if (phase === 'work') {
       if (round >= preset.rounds) {
@@ -43,18 +47,19 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
         addRecord(record);
         stop();
         playBeep('finish');
-        speak('Workout complete! Great job!');
+        speak('complete');
         onComplete(preset, elapsedSecs);
         return true;
       }
       setPhase('rest', preset.restSecs, preset.restSecs);
       playBeep('low');
-      speak('Rest!');
+      speak('rest');
       phaseHaptic('rest');
     } else {
-      setPhase('work', preset.workSecs, preset.workSecs, round + 1);
+      const nextRound = round + 1;
+      setPhase('work', preset.workSecs, preset.workSecs, nextRound);
       playBeep('high');
-      speak('Work!');
+      speak(nextRound === preset.rounds ? 'last_round' : 'work');
       phaseHaptic('work');
     }
     return false;
@@ -66,6 +71,16 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
 
     if (active.secondsLeft > 0) {
       tick();
+      const updated = useWorkoutStore.getState().active;
+      if (updated && warningEnabled) {
+        const sLeft = updated.secondsLeft;
+        // Voice 3-2-1 during prep; four beeps (3, 2, 1, 0) during work/rest
+        if (updated.phase === 'prep') {
+          if (sLeft >= 1 && sLeft <= 3) speak(COUNTDOWN_PHRASES[sLeft]);
+        } else if (sLeft >= 0 && sLeft <= 3) {
+          playTick();
+        }
+      }
       scheduleTick();
       return;
     }
@@ -73,7 +88,7 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
     const finished = advancePhase();
     if (finished) return;
     scheduleTick();
-  }, [tick, advancePhase]);
+  }, [tick, advancePhase, warningEnabled, speak, playTick]);
 
   const scheduleTick = useCallback(() => {
     const now = Date.now();
@@ -102,6 +117,8 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
       if (intervalRef.current) clearTimeout(intervalRef.current);
       return;
     }
+    // Announce prep phase start
+    speak('prep');
     // Fresh start
     nextTickRef.current = Date.now() + 1000;
     intervalRef.current = setTimeout(advance, 1000);
