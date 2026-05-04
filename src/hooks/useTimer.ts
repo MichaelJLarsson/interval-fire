@@ -18,6 +18,7 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
 
   const intervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const nextTickRef = useRef<number>(0);
+  const announcedPrepRef = useRef<boolean>(false);
 
   const advancePhase = useCallback(() => {
     const { active } = useWorkoutStore.getState();
@@ -110,14 +111,20 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
   useEffect(() => {
     if (!active) {
       if (intervalRef.current) clearTimeout(intervalRef.current);
+      announcedPrepRef.current = false;
       return;
     }
     if (active.isPaused) {
       if (intervalRef.current) clearTimeout(intervalRef.current);
       return;
     }
-    // Announce prep phase start
-    speak('prep');
+    // Announce prep phase only on the initial workout start — not on resume
+    // or after a skip-while-paused (setPhase clears isPaused, which would
+    // otherwise re-trigger this effect and double up with advancePhase's voice).
+    if (!announcedPrepRef.current) {
+      speak('prep');
+      announcedPrepRef.current = true;
+    }
     // Fresh start
     nextTickRef.current = Date.now() + 1000;
     intervalRef.current = setTimeout(advance, 1000);
