@@ -8,6 +8,10 @@ import SummaryCard from '@/components/shared/SummaryCard';
 import PersonalBestRow from '@/components/shared/PersonalBestRow';
 import HistoryRow from '@/components/shared/HistoryRow';
 import XIcon from '@/components/shared/icons/XIcon';
+import BoltIcon from '@/components/shared/icons/BoltIcon';
+import ClockIcon from '@/components/shared/icons/ClockIcon';
+import CycleIcon from '@/components/shared/icons/CycleIcon';
+import TrophyIcon from '@/components/shared/icons/TrophyIcon';
 import { router } from 'expo-router';
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -73,14 +77,14 @@ export default function StatsScreen() {
           <SectionLabel style={styles.sectionLabelSpacing}>Personal bests</SectionLabel>
           <View style={styles.pbCard}>
             {[
-              { title: 'Longest streak',  sub: 'Consecutive days',     value: `${streak}d`,        iconBg: Colors.workBgTint2, valueColor: Colors.workLight, emoji: '🏆' },
-              { title: 'Most rounds',     sub: 'In a single session',  value: String(records.length > 0 ? Math.max(...records.map(r => r.roundsCompleted)) : 0), iconBg: Colors.restIconBg, valueColor: Colors.rest, emoji: '🔄' },
-              { title: 'Longest workout', sub: 'Single session',       value: records.length > 0 ? `${Math.round(Math.max(...records.map(r => r.durationSecs)) / 60)}:00` : '0:00', iconBg: Colors.prepIconBg, valueColor: Colors.prep, emoji: '⏱' },
-              { title: 'Most kcal',       sub: 'In a single session',  value: records.length > 0 ? String(Math.max(...records.map(r => r.kcalBurned))) : '0', iconBg: Colors.plumIconBg, valueColor: Colors.strength, emoji: '⚡' },
-            ].map(({ title, sub, value, iconBg, valueColor, emoji }, i, arr) => (
+              { title: 'Longest streak',  sub: 'Consecutive days',     value: `${streak}d`,        iconBg: Colors.workBgTint2, valueColor: Colors.workLight, icon: <TrophyIcon /> },
+              { title: 'Most rounds',     sub: 'In a single session',  value: String(records.length > 0 ? Math.max(...records.map(r => r.roundsCompleted)) : 0), iconBg: Colors.restIconBg, valueColor: Colors.rest, icon: <CycleIcon /> },
+              { title: 'Longest workout', sub: 'Single session',       value: records.length > 0 ? `${Math.round(Math.max(...records.map(r => r.durationSecs)) / 60)}:00` : '0:00', iconBg: Colors.prepIconBg, valueColor: Colors.prep, icon: <ClockIcon /> },
+              { title: 'Most kcal',       sub: 'In a single session',  value: records.length > 0 ? String(Math.max(...records.map(r => r.kcalBurned))) : '0', iconBg: Colors.plumIconBg, valueColor: Colors.strength, icon: <BoltIcon /> },
+            ].map(({ title, sub, value, iconBg, valueColor, icon }, i, arr) => (
               <PersonalBestRow
                 key={title}
-                icon={<Text style={{ fontSize: 18 }}>{emoji}</Text>}
+                icon={icon}
                 iconBg={iconBg}
                 title={title}
                 subtitle={sub}
