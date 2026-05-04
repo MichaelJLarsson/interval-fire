@@ -86,6 +86,18 @@ describe('estimateKcal', () => {
     expect(estimateKcal(20, 8, 'strength')).toBe(Math.round((8 * 20 * 0.15 + 8 * 2) * 0.85)); // 34
   });
 
+  it('adds walking-pace kcal for warmup and cooldown', () => {
+    const workKcal = Math.round((8 * 20 * 0.15 + 8 * 2) * 1.0);
+    const steadyKcal = (60 + 90) * 0.065; // 150s total
+    expect(estimateKcal(20, 8, 'cardio', 60, 90)).toBe(Math.round(workKcal + steadyKcal));
+  });
+
+  it('steady-state kcal is not scaled by type multiplier', () => {
+    const hiitWork = (8 * 20 * 0.15 + 8 * 2) * 1.2;
+    const steady = 60 * 0.065;
+    expect(estimateKcal(20, 8, 'hiit', 60, 0)).toBe(Math.round(hiitWork + steady));
+  });
+
   it('returns 0 for 0 rounds', () => {
     expect(estimateKcal(20, 0, 'hiit')).toBe(0);
   });

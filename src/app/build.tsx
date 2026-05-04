@@ -332,7 +332,7 @@ export default function BuildScreen() {
             <SummaryCard label="Total workout time" value={`${mm} min`} variant="eucalyptus" style={styles.summaryItem} />
           </View>
           <View style={styles.summaryRow}>
-            <SummaryCard label="Kcal" value={String(estimateKcal(p.workSecs, p.rounds, p.type))} style={styles.summaryItem} />
+            <SummaryCard label="Kcal" value={String(estimateKcal(p.workSecs, p.rounds, p.type, p.warmupSecs, p.cooldownSecs))} style={styles.summaryItem} />
             <SummaryCard label="Active phase" value={`${activeMins} min`} variant="eucalyptus" style={styles.summaryItem} />
           </View>
         </View>

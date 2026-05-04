@@ -68,8 +68,18 @@ const KCAL_TYPE_MULTIPLIER: Record<WorkoutType, number> = {
   strength: 0.85,
 };
 
-export function estimateKcal(workSecs: number, rounds: number, type: WorkoutType = 'cardio'): number {
-  return Math.round((rounds * workSecs * 0.15 + rounds * 2) * KCAL_TYPE_MULTIPLIER[type]);
+const WALKING_KCAL_PER_SEC = 0.065;
+
+export function estimateKcal(
+  workSecs: number,
+  rounds: number,
+  type: WorkoutType = 'cardio',
+  warmupSecs = 0,
+  cooldownSecs = 0,
+): number {
+  const workKcal = (rounds * workSecs * 0.15 + rounds * 2) * KCAL_TYPE_MULTIPLIER[type];
+  const steadyKcal = (warmupSecs + cooldownSecs) * WALKING_KCAL_PER_SEC;
+  return Math.round(workKcal + steadyKcal);
 }
 
 // ─── Mock data ───────────────────────────────────────────────────────────────

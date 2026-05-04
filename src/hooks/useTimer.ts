@@ -41,7 +41,7 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
           completedAt: Date.now(),
           durationSecs: elapsedSecs,
           roundsCompleted: round,
-          kcalBurned: estimateKcal(preset.workSecs, round, preset.type),
+          kcalBurned: estimateKcal(preset.workSecs, round, preset.type, preset.warmupSecs, preset.cooldownSecs),
         };
         addRecord(record);
         stop();
