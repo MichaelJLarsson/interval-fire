@@ -1,7 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useHistoryStore, estimateKcal } from '@/store/historyStore';
-import { useSettingsStore } from '@/store/settingsStore';
 import { Preset } from '@/constants/presets';
 import { useAudio, VoicePhrase } from './useAudio';
 import { useHaptics } from './useHaptics';
@@ -14,7 +13,6 @@ const COUNTDOWN_PHRASES: Record<number, VoicePhrase> = { 1: 'one', 2: 'two', 3: 
 export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => void) {
   const { active, tick, setPhase, stop } = useWorkoutStore();
   const { addRecord } = useHistoryStore();
-  const { warningEnabled } = useSettingsStore();
   const { playBeep, playTick, speak } = useAudio();
   const { phaseHaptic } = useHaptics();
 
@@ -72,9 +70,10 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
     if (active.secondsLeft > 0) {
       tick();
       const updated = useWorkoutStore.getState().active;
-      if (updated && warningEnabled) {
+      if (updated) {
         const sLeft = updated.secondsLeft;
-        // Voice 3-2-1 during prep; four beeps (3, 2, 1, 0) during work/rest
+        // Voice 3-2-1 during prep (gated by voiceEnabled);
+        // four ticks (3, 2, 1, 0) during work/rest (gated by audioEnabled).
         if (updated.phase === 'prep') {
           if (sLeft >= 1 && sLeft <= 3) speak(COUNTDOWN_PHRASES[sLeft]);
         } else if (sLeft >= 0 && sLeft <= 3) {
@@ -88,7 +87,7 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
     const finished = advancePhase();
     if (finished) return;
     scheduleTick();
-  }, [tick, advancePhase, warningEnabled, speak, playTick]);
+  }, [tick, advancePhase, speak, playTick]);
 
   const scheduleTick = useCallback(() => {
     const now = Date.now();

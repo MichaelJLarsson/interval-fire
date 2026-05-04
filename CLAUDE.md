@@ -40,7 +40,7 @@ Build and stats are presented as `slide_from_bottom` modals. The root `_layout.t
 Four stores, three persisted via AsyncStorage:
 - **workoutStore** — Active workout state (`phase`, `round`, `secondsLeft`, `isPaused`). **Not persisted.** Phases cycle: `prep → work → rest → work → … → complete`.
 - **historyStore** — Completed `WorkoutRecord` entries. Persisted (`interval-fire-history`). Seeded with mock data for development. Derived selectors live **outside** the store as standalone functions: `computeStreak`, `weeklyMinutes`, `estimateKcal`.
-- **settingsStore** — `audioEnabled`, `voiceEnabled`, `warningEnabled` toggles. Persisted (`interval-fire-settings`).
+- **settingsStore** — `audioEnabled`, `voiceEnabled` toggles. Persisted (`interval-fire-settings`). `audioEnabled` gates the work/rest 3-second warning ticks; `voiceEnabled` gates all spoken cues including the prep 3-2-1 countdown.
 - **presetsStore** — User-created `Preset` entries with full CRUD. Persisted (`interval-fire-presets`). Defaults to four `STARTER_PRESETS` from `src/constants/presets.ts`. Generated IDs use format `user-${timestamp}-${random}`.
 
 ### Timer engine (`src/hooks/useTimer.ts`)

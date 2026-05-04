@@ -55,7 +55,7 @@ const TYPES: { key: WorkoutType; label: string; accent: ChipAccent }[] = [
 export default function BuildScreen() {
   const router = useRouter();
   const { startWorkout } = useWorkoutStore();
-  const { audioEnabled, voiceEnabled, warningEnabled, setAudio, setVoice, setWarning } = useSettingsStore();
+  const { audioEnabled, voiceEnabled, setAudio, setVoice } = useSettingsStore();
 
   const params = useLocalSearchParams<{ presetId?: string }>();
   const presetId = typeof params.presetId === 'string' ? params.presetId : undefined;
@@ -304,9 +304,8 @@ export default function BuildScreen() {
               {/* Sound & voice */}
               <SectionLabel style={{ marginTop: Spacing.xxl, ...styles.sectionLabelSpacing }}>Sound & voice</SectionLabel>
               {[
-                { label: 'Audio cues', sub: 'Beep at each interval change', val: audioEnabled, set: setAudio },
+                { label: 'Audio cues', sub: 'Three second warning before each switch', val: audioEnabled, set: setAudio },
                 { label: 'Voice Announcements', sub: '"Work!", "Rest" callouts', val: voiceEnabled, set: setVoice },
-                { label: 'Three second warning', sub: 'Alert before each switch', val: warningEnabled, set: setWarning },
               ].map(({ label, sub, val, set }) => (
                 <View key={label} style={styles.toggleRow}>
                   <View style={{ flex: 1 }}>

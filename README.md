@@ -92,7 +92,7 @@ Beeps are synthesized programmatically — no API key required.
 | `speak('work' \| 'rest' \| 'last_round')` | Phase transitions |
 | `speak('complete')` | Workout finished |
 
-All voice cues respect the `voiceEnabled` setting; all beeps respect `audioEnabled`; the countdown cues additionally respect `warningEnabled`.
+All voice cues (including the prep 3-2-1 countdown) respect the `voiceEnabled` setting; all beeps (including the work/rest 3-second warning ticks) respect `audioEnabled`.
 
 ## Get a fresh project
 
