@@ -61,8 +61,15 @@ export function weeklyMinutes(records: WorkoutRecord[]): number[] {
   return result;
 }
 
-export function estimateKcal(workSecs: number, rounds: number): number {
-  return Math.round(rounds * workSecs * 0.15 + rounds * 2);
+const KCAL_TYPE_MULTIPLIER: Record<WorkoutType, number> = {
+  hiit:     1.2,
+  running:  1.15,
+  cardio:   1.0,
+  strength: 0.85,
+};
+
+export function estimateKcal(workSecs: number, rounds: number, type: WorkoutType = 'cardio'): number {
+  return Math.round((rounds * workSecs * 0.15 + rounds * 2) * KCAL_TYPE_MULTIPLIER[type]);
 }
 
 // ─── Mock data ───────────────────────────────────────────────────────────────

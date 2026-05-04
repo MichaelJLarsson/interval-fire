@@ -70,16 +70,28 @@ describe('computeStreak', () => {
 });
 
 describe('estimateKcal', () => {
-  it('applies the formula: rounds * workSecs * 0.15 + rounds * 2', () => {
+  it('defaults to cardio multiplier (1.0)', () => {
     expect(estimateKcal(20, 8)).toBe(Math.round(8 * 20 * 0.15 + 8 * 2)); // 40
   });
 
-  it('returns 0 for 0 rounds', () => {
-    expect(estimateKcal(20, 0)).toBe(0);
+  it('applies hiit multiplier (1.2)', () => {
+    expect(estimateKcal(20, 8, 'hiit')).toBe(Math.round((8 * 20 * 0.15 + 8 * 2) * 1.2)); // 48
   });
 
-  it('returns 0 for 0 workSecs', () => {
-    expect(estimateKcal(0, 8)).toBe(Math.round(8 * 2)); // 16
+  it('applies running multiplier (1.15)', () => {
+    expect(estimateKcal(20, 8, 'running')).toBe(Math.round((8 * 20 * 0.15 + 8 * 2) * 1.15)); // 46
+  });
+
+  it('applies strength multiplier (0.85)', () => {
+    expect(estimateKcal(20, 8, 'strength')).toBe(Math.round((8 * 20 * 0.15 + 8 * 2) * 0.85)); // 34
+  });
+
+  it('returns 0 for 0 rounds', () => {
+    expect(estimateKcal(20, 0, 'hiit')).toBe(0);
+  });
+
+  it('returns rounds * 2 * multiplier for 0 workSecs', () => {
+    expect(estimateKcal(0, 8, 'cardio')).toBe(Math.round(8 * 2)); // 16
   });
 });
 

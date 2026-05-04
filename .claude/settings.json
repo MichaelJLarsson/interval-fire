@@ -2,5 +2,6 @@
   "enabledPlugins": {
     "agent-skills@addy-agent-skills": true,
     "figma@claude-plugins-official": true
-  }
+  },
+  "model": "claude-sonnet-4-6"
 }

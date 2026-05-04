@@ -15,6 +15,7 @@ import {
   totalSecs,
 } from '@/constants/presets';
 import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
+import { estimateKcal } from '@/store/historyStore';
 import { usePresetsStore } from '@/store/presetsStore';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useWorkoutStore } from '@/store/workoutStore';
@@ -331,7 +332,7 @@ export default function BuildScreen() {
             <SummaryCard label="Total workout time" value={`${mm} min`} variant="eucalyptus" style={styles.summaryItem} />
           </View>
           <View style={styles.summaryRow}>
-            <SummaryCard label="Kcal" value={String(Math.round(totalS * 0.15))} style={styles.summaryItem} />
+            <SummaryCard label="Kcal" value={String(estimateKcal(p.workSecs, p.rounds, p.type))} style={styles.summaryItem} />
             <SummaryCard label="Active phase" value={`${activeMins} min`} variant="eucalyptus" style={styles.summaryItem} />
           </View>
         </View>
