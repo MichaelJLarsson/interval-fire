@@ -45,7 +45,7 @@ export function computeStreak(records: WorkoutRecord[]): number {
 }
 
 export function weeklyMinutes(records: WorkoutRecord[]): number[] {
-  // Returns last 7 days ordered [6 days ago … yesterday, today]
+  // Returns minutes per weekday, indexed Mon=0 … Sun=6, for records in the last 7 days.
   const result = new Array(7).fill(0);
   const now = new Date();
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
@@ -54,7 +54,8 @@ export function weeklyMinutes(records: WorkoutRecord[]): number[] {
     const rStart = new Date(rDate.getFullYear(), rDate.getMonth(), rDate.getDate()).getTime();
     const diffDays = Math.round((todayStart - rStart) / 86400000);
     if (diffDays >= 0 && diffDays < 7) {
-      result[6 - diffDays] += Math.round(r.durationSecs / 60);
+      const idx = (rDate.getDay() + 6) % 7;
+      result[idx] += Math.round(r.durationSecs / 60);
     }
   });
   return result;
