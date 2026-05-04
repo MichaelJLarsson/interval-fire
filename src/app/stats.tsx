@@ -13,7 +13,7 @@ import { router } from 'expo-router';
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export default function StatsScreen() {
-  const { records } = useHistoryStore();
+  const { records, clearHistory, seedSampleData } = useHistoryStore();
   const streak = computeStreak(records);
   const weekly = weeklyMinutes(records);
   const maxMins = Math.max(...weekly, 1);
@@ -107,6 +107,16 @@ export default function StatsScreen() {
           {records.length === 0 && (
             <Text style={styles.empty}>Complete a workout to see your history here.</Text>
           )}
+          <View style={styles.devActions}>
+            <Pressable onPress={seedSampleData}>
+              <Text style={styles.devBtn}>Seed sample data</Text>
+            </Pressable>
+            {records.length > 0 && (
+              <Pressable onPress={clearHistory}>
+                <Text style={[styles.devBtn, styles.devBtnDestructive]}>Clear history</Text>
+              </Pressable>
+            )}
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -180,4 +190,17 @@ const styles = StyleSheet.create({
   },
 
   empty: { color: Colors.textMuted, fontSize: FontSizes.body, paddingBottom: 16 },
+
+  devActions: {
+    flexDirection: 'row',
+    gap: Spacing.md,
+    paddingTop: Spacing.sm,
+    paddingBottom: Spacing.xs,
+  },
+  devBtn: {
+    fontSize: FontSizes.caption,
+    color: Colors.textLo,
+    textDecorationLine: 'underline',
+  },
+  devBtnDestructive: { color: Colors.work },
 });

@@ -18,6 +18,7 @@ interface HistoryState {
   records: WorkoutRecord[];
   addRecord: (record: WorkoutRecord) => void;
   clearHistory: () => void;
+  seedSampleData: () => void;
 }
 
 // ─── Derived selectors (call outside the store to keep it lean) ───────────────
@@ -143,16 +144,15 @@ function generateMockRecords(): WorkoutRecord[] {
   return records.sort((a, b) => b.completedAt - a.completedAt);
 }
 
-const MOCK_RECORDS = generateMockRecords();
-
 // ─── Store ────────────────────────────────────────────────────────────────────
 export const useHistoryStore = create<HistoryState>()(
   persist(
     (set) => ({
-      records: MOCK_RECORDS,
+      records: [],
       addRecord: (record) =>
         set((state) => ({ records: [record, ...state.records] })),
       clearHistory: () => set({ records: [] }),
+      seedSampleData: () => set({ records: generateMockRecords() }),
     }),
     {
       name: 'interval-fire-history',
