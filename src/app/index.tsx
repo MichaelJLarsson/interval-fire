@@ -5,7 +5,7 @@ import GradientScreen from '@/components/shared/GradientScreen';
 import HistoryRow from '@/components/shared/HistoryRow';
 import SectionLabel from '@/components/shared/SectionLabel';
 import StreakPill from '@/components/shared/StreakPill';
-import { MOCK_HISTORY, formatRelativeDate } from '@/constants/mockHistory';
+import { formatRelativeDate } from '@/constants/mockHistory';
 import { Preset, TYPE_LABELS } from '@/constants/presets';
 import { Colors, FontSizes, Fonts, Radii, Spacing } from '@/constants/theme';
 import { computeStreak, useHistoryStore } from '@/store/historyStore';
@@ -40,7 +40,6 @@ export default function HomeScreen() {
   const scrollRef = useRef<ScrollView>(null);
   const moreStatsScale = useRef(new Animated.Value(1)).current;
   const streak = computeStreak(records);
-  const historyToShow = records.length > 0 ? records : MOCK_HISTORY;
 
   useFocusEffect(
     React.useCallback(() => {
@@ -99,18 +98,22 @@ export default function HomeScreen() {
         {/* Recent */}
         <SectionLabel style={[styles.sectionLabel, { marginTop: 0, marginBottom: 2 }]}>Recent</SectionLabel>
         <View style={styles.historyList}>
-          {historyToShow.slice(0, 3).map((r, i, arr) => {
-            const mins = Math.round(r.durationSecs / 60);
-            return (
-              <HistoryRow
-                key={r.id}
-                title={r.name}
-                subtitle={`${formatRelativeDate(r.completedAt)} · ${mins}:00 min · ${TYPE_LABELS[r.type]}`}
-                value={String(r.kcalBurned)}
-                showDivider={i < arr.length - 1}
-              />
-            );
-          })}
+          {records.length === 0 ? (
+            <Text style={styles.emptyRecent}>Complete a workout to see your recent activity.</Text>
+          ) : (
+            records.slice(0, 3).map((r, i, arr) => {
+              const mins = Math.round(r.durationSecs / 60);
+              return (
+                <HistoryRow
+                  key={r.id}
+                  title={r.name}
+                  subtitle={`${formatRelativeDate(r.completedAt)} · ${mins}:00 min · ${TYPE_LABELS[r.type]}`}
+                  value={String(r.kcalBurned)}
+                  showDivider={i < arr.length - 1}
+                />
+              );
+            })
+          )}
         </View>
 
         {/* More Stats */}
@@ -157,6 +160,11 @@ const styles = StyleSheet.create({
 
   historyList: {
     paddingHorizontal: Spacing.screenH,
+  },
+  emptyRecent: {
+    fontSize: FontSizes.caption,
+    color: Colors.textMuted,
+    paddingVertical: 8,
   },
 
   moreStatsWrap: {
