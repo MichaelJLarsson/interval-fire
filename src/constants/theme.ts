@@ -19,7 +19,9 @@ export const Colors = {
   work:      '#ff3d3d',
   workLight: '#ff6060',
   workSoft:  '#ff5050',
+  workAlt:   '#ff6d3d',
   rest:      '#00e5a0',
+  restAlt:   '#00B9D5',
   prep:      '#ffc300',
   strength:  '#b388ff',
 

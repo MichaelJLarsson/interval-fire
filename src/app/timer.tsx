@@ -1,17 +1,17 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
-import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { useWorkoutStore, Phase } from '@/store/workoutStore';
-import { useSettingsStore } from '@/store/settingsStore';
-import { useTimer } from '@/hooks/useTimer';
-import { useChromeVisibility } from '@/hooks/useChromeVisibility';
-import TimerRing, { PHASE_COLORS, CIRCUMFERENCE } from '@/components/timer/TimerRing';
-import ChromeOverlay from '@/components/timer/ChromeOverlay';
 import FlashOverlay from '@/components/shared/FlashOverlay';
-import { LinearGradient } from 'expo-linear-gradient';
+import ChromeOverlay from '@/components/timer/ChromeOverlay';
+import TimerRing, { PHASE_COLORS } from '@/components/timer/TimerRing';
 import { Preset } from '@/constants/presets';
-import { Colors, Fonts, FontSizes } from '@/constants/theme';
+import { Colors, FontSizes } from '@/constants/theme';
+import { useChromeVisibility } from '@/hooks/useChromeVisibility';
+import { useTimer } from '@/hooks/useTimer';
+import { useSettingsStore } from '@/store/settingsStore';
+import { Phase, useWorkoutStore } from '@/store/workoutStore';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
+import React, { useEffect, useRef } from 'react';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function TimerScreen() {
   const router = useRouter();
@@ -36,7 +36,7 @@ export default function TimerScreen() {
       setFlashPhase(active.phase);
       setTimeout(() => setFlashPhase(null), 700);
     }
-  }, [active?.phase]);
+  }, [active]);
 
   const handleComplete = (preset: Preset, elapsedSecs: number) => {
     setFlashPhase('finish');
@@ -83,12 +83,15 @@ export default function TimerScreen() {
     <Pressable style={styles.screen} onPress={handleTap}>
       {/* Always-visible core */}
       <View style={styles.core} pointerEvents="none">
-        <TimerRing progress={progress} color={phaseColor} isPulsing={isPulsing} phase={phase} isPaused={isPaused} />
-        {/* Countdown text is a sibling to the ring, not inside it */}
-        <View style={styles.countdown}>
-          <Text style={[styles.countdownNum, { color: phaseColor }]}>{countdownText}</Text>
-          <Text style={styles.countdownLbl}>{phaseLabel}</Text>
-        </View>
+        <TimerRing
+          progress={progress}
+          color={phaseColor}
+          isPulsing={isPulsing}
+          phase={phase}
+          isPaused={isPaused}
+          countdownText={countdownText}
+          phaseLabel={phaseLabel}
+        />
       </View>
 
       <Text style={styles.nextText}>
@@ -126,7 +129,14 @@ export default function TimerScreen() {
             { cancelable: true, onDismiss: () => { if (!wasPaused) resume(); } },
           );
         }}
-        onPauseResume={() => { isPaused ? resume() : pause(); resetChromeTimer(); }}
+        onPauseResume={() => {
+          if (isPaused) {
+            resume();
+          } else {
+            pause();
+          }
+          resetChromeTimer();
+        }}
         onSkip={() => { skip(); resetChromeTimer(); }}
         isPaused={isPaused}
       />
@@ -142,12 +152,5 @@ const styles = StyleSheet.create({
   gradient: { flex: 1 },
   screen: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   core:   { alignItems: 'center', justifyContent: 'center' },
-  countdown: {
-    position: 'absolute',
-    alignItems: 'center',
-    // Sits on top of ring but is NOT inside pulsing element
-  },
-  countdownNum: { fontFamily: Fonts.condensed, fontSize: FontSizes.displayXL, lineHeight: FontSizes.displayXL, letterSpacing: -2 },
-  countdownLbl: { fontSize: 13, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 2, color: Colors.textLo, marginTop: 6 },
   nextText: { marginTop: 26, fontSize: FontSizes.body, color: Colors.textLo, fontWeight: '600' },
 });
