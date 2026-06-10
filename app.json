@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "interval-fire",
+    "name": "Interval Fire",
     "slug": "interval-fire",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,7 +8,6 @@
     "scheme": "intervalfire",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon",
       "bundleIdentifier": "com.intervalfire.app"
     },
     "android": {

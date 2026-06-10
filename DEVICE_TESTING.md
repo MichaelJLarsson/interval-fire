@@ -3,6 +3,7 @@
 Two paths: **Path A** (local USB build, free) for fast iteration; **Path B** (EAS Build → TestFlight) for final pre-App-Store validation.
 
 ## Prerequisites (one-time)
+
 - Xcode installed from the App Store
 - Run `xcode-select --install` for command-line tools
 - Open Xcode once, accept the license, install iOS platform
@@ -17,6 +18,7 @@ Two paths: **Path A** (local USB build, free) for fast iteration; **Path B** (EA
 2. Add your Apple ID to Xcode: **Xcode → Settings → Accounts → + → Apple ID**.
 
 3. Open the workspace (not the `.xcodeproj`):
+
    ```bash
    open ios/intervalfire.xcworkspace
    ```
@@ -25,9 +27,11 @@ Two paths: **Path A** (local USB build, free) for fast iteration; **Path B** (EA
    - If you get a "bundle identifier not available" error, change `com.intervalfire.app` to something unique (e.g. `com.yourname.intervalfire`) in both Xcode and `app.json` line 12.
 
 5. Build and install from the terminal (this also starts Metro):
+
    ```bash
    npx expo run:ios --device
    ```
+
    Pick your iPhone from the list. First build takes a few minutes.
 
 6. **Trust the developer certificate on the iPhone** (first launch only):
@@ -46,6 +50,7 @@ This is the correct pre-App-Store validation step — same build pipeline, same 
 1. Enroll in the **Apple Developer Program** at developer.apple.com ($99/yr) and register the app in App Store Connect with bundle ID `com.intervalfire.app`.
 
 2. Install EAS CLI and log in:
+
    ```bash
    npm install -g eas-cli
    eas login
@@ -53,18 +58,23 @@ This is the correct pre-App-Store validation step — same build pipeline, same 
    ```
 
 3. Configure build profiles:
+
    ```bash
    eas build:configure
    ```
+
    This creates `eas.json` with `development`, `preview`, and `production` profiles.
 
 4. Trigger a production build (cloud build, ~10–20 min):
+
    ```bash
    eas build --platform ios --profile production
    ```
+
    EAS will prompt for your Apple credentials and handle certificates/provisioning automatically.
 
 5. Submit to TestFlight:
+
    ```bash
    eas submit --platform ios --latest
    ```
