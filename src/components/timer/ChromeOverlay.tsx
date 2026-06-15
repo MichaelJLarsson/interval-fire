@@ -1,6 +1,6 @@
 import FastForwardFilledIcon from '@/components/shared/icons/FastForwardFilledIcon'
 import PauseIcon from '@/components/shared/icons/PauseIcon'
-import { Colors, Fonts, FontSizes, Spacing } from '@/constants/theme'
+import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme'
 import React, { useEffect } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import Animated, {
@@ -11,8 +11,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
-const SWITCH_TRACK_OFF = '#2c2c2c'
-const SWITCH_THUMB_OFF = '#555'
+const SWITCH_TRACK_OFF = Colors.borderHi
+const SWITCH_THUMB_OFF = Colors.textFaint
 const SWITCH_THUMB_TRAVEL = 15 // track 32 - padding 4 - thumb 13
 
 function AnimatedSwitch({ on }: { on: boolean }) {
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  headLeft: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  headLeft: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   workoutName: {
     fontFamily: Fonts.condensed,
     fontSize: FontSizes.headingMd,
@@ -187,7 +187,12 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
-  badge: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, borderWidth: 1 },
+  badge: {
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.sm,
+    borderRadius: Radii.pill,
+    borderWidth: 1,
+  },
   badgeText: {
     fontSize: FontSizes.label,
     fontWeight: '700',
@@ -201,7 +206,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  dots: { flexDirection: 'row', gap: 3, paddingHorizontal: Spacing.screenH },
+  dots: { flexDirection: 'row', gap: Spacing.xs, paddingHorizontal: Spacing.screenH },
   dot: { flex: 1, height: 3, borderRadius: 2, backgroundColor: Colors.progressPending },
   dotDone: { backgroundColor: Colors.progressDone },
   dotCurrent: { backgroundColor: Colors.progressActive },
@@ -212,7 +217,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1.5,
     color: Colors.textLo,
-    marginTop: 12,
+    marginTop: Spacing.md,
   },
 
   foot: {
@@ -225,9 +230,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 23,
+    gap: Spacing.xl,
     paddingHorizontal: Spacing.screenH,
-    paddingVertical: 16,
+    paddingVertical: Spacing.lg,
   },
   btnSm: {
     width: 56,
@@ -239,7 +244,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  stopIcon: { width: 12, height: 12, backgroundColor: '#d9d9d9' },
+  stopIcon: { width: 12, height: 12, backgroundColor: Colors.textMid },
   btnLg: {
     width: 76,
     height: 76,
@@ -248,7 +253,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btnLgPaused: { backgroundColor: '#555' },
+  btnLgPaused: { backgroundColor: Colors.textFaint },
   btnLgIcon: { color: Colors.white, fontSize: 22 },
 
   toggles: {
@@ -258,11 +263,11 @@ const styles = StyleSheet.create({
     right: 0,
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 28,
-    paddingBottom: 20,
-    paddingTop: 8,
+    gap: Spacing.xxl,
+    paddingBottom: Spacing.xl,
+    paddingTop: Spacing.sm,
   },
-  toggle: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  toggle: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   sw: { width: 32, height: 18, borderRadius: 9, justifyContent: 'center', paddingHorizontal: 2 },
   thumb: { width: 13, height: 13, borderRadius: 7 },
   toggleLabel: {
@@ -274,5 +279,5 @@ const styles = StyleSheet.create({
   },
 
   hint: { position: 'absolute', bottom: 14, left: 0, right: 0, alignItems: 'center' },
-  hintPill: { width: 40, height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.13)' },
+  hintPill: { width: 40, height: 4, borderRadius: 2, backgroundColor: Colors.white + '21' },
 })
