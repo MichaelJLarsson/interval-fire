@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
 
   foot: {
     position: 'absolute',
-    bottom: 52,
+    bottom: 90,
     left: 0,
     right: 0,
   },
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: Spacing.xl,
+    gap: Spacing.lg,
     paddingHorizontal: Spacing.screenH,
     paddingVertical: Spacing.lg,
   },
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
 
   toggles: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 25,
     left: 0,
     right: 0,
     flexDirection: 'row',
