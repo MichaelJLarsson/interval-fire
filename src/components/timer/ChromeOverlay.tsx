@@ -13,7 +13,12 @@ import Animated, {
 
 const SWITCH_TRACK_OFF = Colors.borderHi
 const SWITCH_THUMB_OFF = Colors.textFaint
-const SWITCH_THUMB_TRAVEL = 15 // track 32 - padding 4 - thumb 13
+const SWITCH_HEIGHT = 24
+const SWITCH_PADDING = Math.round(SWITCH_HEIGHT / 9)
+const SWITCH_WIDTH = Math.round(SWITCH_HEIGHT * (32 / 18))
+const THUMB_SIZE = SWITCH_HEIGHT - SWITCH_PADDING * 2 - 1
+const SWITCH_THUMB_TRAVEL = SWITCH_WIDTH - SWITCH_PADDING * 2 - THUMB_SIZE
+const TOGGLE_FONT_SIZE = Math.round(SWITCH_HEIGHT * (10 / 18))
 
 function AnimatedSwitch({ on }: { on: boolean }) {
   const v = useSharedValue(on ? 1 : 0)
@@ -268,10 +273,16 @@ const styles = StyleSheet.create({
     paddingTop: Spacing.sm,
   },
   toggle: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
-  sw: { width: 32, height: 18, borderRadius: 9, justifyContent: 'center', paddingHorizontal: 2 },
-  thumb: { width: 13, height: 13, borderRadius: 7 },
+  sw: {
+    width: SWITCH_WIDTH,
+    height: SWITCH_HEIGHT,
+    borderRadius: SWITCH_HEIGHT / 2,
+    justifyContent: 'center',
+    paddingHorizontal: SWITCH_PADDING,
+  },
+  thumb: { width: THUMB_SIZE, height: THUMB_SIZE, borderRadius: THUMB_SIZE / 2 },
   toggleLabel: {
-    fontSize: FontSizes.label,
+    fontSize: TOGGLE_FONT_SIZE,
     fontWeight: '700',
     color: Colors.textLo,
     textTransform: 'uppercase',
