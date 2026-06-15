@@ -1,17 +1,3 @@
-import PresetCarousel from '@/components/home/PresetCarousel';
-import CTAButton from '@/components/shared/CTAButton';
-import FireIcon from '@/components/shared/FireIcon';
-import GradientScreen from '@/components/shared/GradientScreen';
-import HistoryRow from '@/components/shared/HistoryRow';
-import SectionLabel from '@/components/shared/SectionLabel';
-import StreakPill from '@/components/shared/StreakPill';
-import { formatRelativeDate } from '@/constants/mockHistory';
-import { Preset, TYPE_LABELS } from '@/constants/presets';
-import { Colors, FontSizes, Fonts, Radii, Spacing } from '@/constants/theme';
-import { computeStreak, useHistoryStore } from '@/store/historyStore';
-import { usePresetsStore } from '@/store/presetsStore';
-import { useWorkoutStore } from '@/store/workoutStore';
-import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
@@ -21,6 +7,21 @@ import {
   Text,
   View,
 } from 'react-native';
+import { useFocusEffect, useRouter } from 'expo-router';
+
+import PresetCarousel from '@/components/home/PresetCarousel';
+import CTAButton from '@/components/shared/CTAButton';
+import FireIcon from '@/components/shared/FireIcon';
+import GradientScreen from '@/components/shared/GradientScreen';
+import HistoryRow from '@/components/shared/HistoryRow';
+import SectionLabel from '@/components/shared/SectionLabel';
+import StreakPill from '@/components/shared/StreakPill';
+import { formatRelativeDate } from '@/constants/mockHistory';
+import { Preset, TYPE_LABELS } from '@/constants/presets';
+import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
+import { computeStreak, useHistoryStore } from '@/store/historyStore';
+import { usePresetsStore } from '@/store/presetsStore';
+import { useWorkoutStore } from '@/store/workoutStore';
 
 export default function HomeScreen() {
   const router = useRouter();

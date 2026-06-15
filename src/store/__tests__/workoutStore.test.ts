@@ -1,5 +1,6 @@
-import { useWorkoutStore } from '../workoutStore';
 import type { Preset } from '@/constants/presets';
+
+import { useWorkoutStore } from '../workoutStore';
 
 const PRESET: Preset = {
   id: 'tabata',

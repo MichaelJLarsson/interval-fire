@@ -14,6 +14,7 @@ npm test           # Run Jest test suite
 ```
 
 To run a single test file:
+
 ```bash
 npx jest src/store/__tests__/workoutStore.test.ts
 ```
@@ -23,11 +24,14 @@ npx jest src/store/__tests__/workoutStore.test.ts
 **Interval Fire** is a React Native interval/HIIT timer app built with Expo SDK 55, expo-router (file-based routing), and TypeScript (strict mode).
 
 ### Path aliases
+
 - `@/*` → `./src/*`
 - `@/assets/*` → `./assets/*`
 
 ### Routing (`src/app/`)
+
 The app uses a flat Stack navigator (no tab bar). All screens live directly under `src/app/`:
+
 - `index.tsx` — Home: preset carousel, recent workouts, streak
 - `build.tsx` — Workout builder modal (create/edit presets)
 - `stats.tsx` — Stats dashboard modal
@@ -37,14 +41,18 @@ The app uses a flat Stack navigator (no tab bar). All screens live directly unde
 Build and stats are presented as `slide_from_bottom` modals. The root `_layout.tsx` loads fonts and wraps everything in `GestureHandlerRootView`.
 
 ### State management (Zustand — `src/store/`)
+
 Four stores, three persisted via AsyncStorage:
+
 - **workoutStore** — Active workout state (`phase`, `round`, `secondsLeft`, `isPaused`). **Not persisted.** Phases cycle: `prep → work → rest → work → … → complete`.
 - **historyStore** — Completed `WorkoutRecord` entries. Persisted (`interval-fire-history`). Seeded with mock data for development. Derived selectors live **outside** the store as standalone functions: `computeStreak`, `weeklyMinutes`, `estimateKcal`.
 - **settingsStore** — `audioEnabled`, `voiceEnabled` toggles. Persisted (`interval-fire-settings`). `audioEnabled` gates the work/rest 3-second warning ticks; `voiceEnabled` gates all spoken cues including the prep 3-2-1 countdown.
 - **presetsStore** — User-created `Preset` entries with full CRUD. Persisted (`interval-fire-presets`). Defaults to four `STARTER_PRESETS` from `src/constants/presets.ts`. Generated IDs use format `user-${timestamp}-${random}`.
 
 ### Timer engine (`src/hooks/useTimer.ts`)
+
 Drift-corrected `setTimeout` loop (1 s base). On each tick it calls `advance()`:
+
 1. Decrements `secondsLeft` via `workoutStore.tick()`.
 2. When `secondsLeft` hits 0, transitions phase: `prep → work`, `work → rest`, `rest → work` (incrementing round), or records the workout and calls `onComplete()`.
 3. Audio cues via `useAudio` (frequency beeps + `expo-speech` announcements) and haptics via `useHaptics`, both gated by settings toggles.
@@ -53,19 +61,29 @@ Drift-corrected `setTimeout` loop (1 s base). On each tick it calls `advance()`:
 Drift correction: each tick schedules the next with `max(0, nextTickRef - Date.now() + 1000)` to compensate for JS event-loop jitter.
 
 ### Preset data model (`src/constants/presets.ts`)
+
 ```ts
 interface Preset {
-  id: string;
-  name: string;
-  type: 'hiit' | 'running' | 'cardio' | 'strength';
-  workSecs: number; restSecs: number; rounds: number;
-  prepSecs: number; warmupSecs: number; cooldownSecs: number;
+  id: string
+  name: string
+  type: 'hiit' | 'running' | 'cardio' | 'strength'
+  workSecs: number
+  restSecs: number
+  rounds: number
+  prepSecs: number
+  warmupSecs: number
+  cooldownSecs: number
 }
 ```
+
 Utility functions: `stepTime` (5 s increments ≤60 s, then 15 s), `stepWarmup` (30 s ≤2 min, then 60 s), `formatTime` ("Off" / "30s" / "1:30"), `totalSecs`.
 
 ### Design system (`src/constants/theme.ts`)
+
 Dark theme only. Key tokens:
+
+Utility functions: `stepTime` (5 s increments ≤60 s, then 15 s), `stepWarmup` (30 s ≤2 min, then 60 s), `formatTime` ("Off" / "30s" / "1:30"), `totalSecs`.
+
 - **Backgrounds:** `bg` #0d0d0d, `surface` #1e1e1e, `surfaceLo` #181818
 - **Phase accents:** `work` #ff3d3d, `rest` #00e5a0, `prep` #ffc300, `strength` #b388ff
 - **Typography:** `condensed` = BarlowSemiCondensed_800ExtraBold (display), `body` = Barlow_400Regular, `bodySemiBold` = Barlow_600SemiBold — 10-level font-size scale from `label` (10) to `displayXL` (82)
@@ -75,12 +93,22 @@ Dark theme only. Key tokens:
 A companion `DESIGN_SYSTEM.md` documents the full token table and shared component specs.
 
 ### Component organization (`src/components/`)
+
 - `shared/` — App-wide reusable pieces (cards, pills, buttons, icons)
 - `timer/` — `TimerRing` (animated Reanimated progress ring) and `ChromeOverlay` (tap-to-reveal controls with audio/pause/skip/stop)
 - `home/` — `PresetCarousel`
 - `build/` — `Stepper`
 
+### Import order
+
+Enforced by `eslint-plugin-simple-import-sort`. Always group imports in this order:
+
+1. Framework — `react`, `react-native`, `expo-*`
+2. Third-party — other `node_modules` packages
+3. Local — `@/*` path aliases
+
 ### Key conventions
+
 - React Compiler enabled (`experiments.reactCompiler: true` in `app.json`) — avoid manual `useMemo`/`useCallback` where the compiler handles it.
 - Typed routes enabled (`experiments.typedRoutes: true`) — use typed `router.push` / `<Link href>` paths.
 - Portrait orientation only.

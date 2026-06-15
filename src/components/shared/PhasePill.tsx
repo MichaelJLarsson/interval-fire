@@ -1,6 +1,7 @@
-import { Colors, FontSizes, Radii } from '@/constants/theme';
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+
+import { Colors, FontSizes, Radii } from '@/constants/theme';
 
 interface Props {
   label: string;

@@ -1,6 +1,6 @@
-import { Spacing, Colors } from '@/constants/theme'
 import React, { useEffect } from 'react'
 import { Pressable, StyleSheet } from 'react-native'
+
 import Animated, {
   Easing,
   interpolateColor,
@@ -8,6 +8,8 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
+
+import { Colors,Spacing } from '@/constants/theme'
 
 interface Props {
   children?: React.ReactNode

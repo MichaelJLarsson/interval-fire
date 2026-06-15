@@ -1,18 +1,20 @@
-import PhasePill from '@/components/shared/PhasePill';
-import { formatTime, Preset, TYPE_LABELS } from '@/constants/presets';
-import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+
 import Animated, {
+  Easing,
   interpolate,
   interpolateColor,
   SharedValue,
   useAnimatedStyle,
   useSharedValue,
-  Easing,
   withTiming,
 } from 'react-native-reanimated';
 import Svg, { Polygon } from 'react-native-svg';
+
+import PhasePill from '@/components/shared/PhasePill';
+import { formatTime, Preset, TYPE_LABELS } from '@/constants/presets';
+import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
 
 const { width: SCREEN_W } = Dimensions.get('window');
 const CARD_W = SCREEN_W - Spacing.screenH * 2;

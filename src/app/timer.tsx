@@ -1,3 +1,9 @@
+import React, { useEffect, useRef } from 'react';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
+
 import FlashOverlay from '@/components/shared/FlashOverlay';
 import ChromeOverlay from '@/components/timer/ChromeOverlay';
 import TimerRing, { PHASE_COLORS } from '@/components/timer/TimerRing';
@@ -7,11 +13,6 @@ import { useChromeVisibility } from '@/hooks/useChromeVisibility';
 import { useTimer } from '@/hooks/useTimer';
 import { useSettingsStore } from '@/store/settingsStore';
 import { Phase, useWorkoutStore } from '@/store/workoutStore';
-import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router';
-import React, { useEffect, useRef } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function TimerScreen() {
   const router = useRouter();

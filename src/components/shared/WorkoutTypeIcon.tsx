@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { WorkoutType } from '@/constants/presets';
+
+import DumbbellIcon from './icons/DumbbellIcon';
+import FavouriteIcon from './icons/FavouriteIcon';
 import RainDropIcon from './icons/RainDropIcon';
 import RunningIcon from './icons/RunningIcon';
-import FavouriteIcon from './icons/FavouriteIcon';
-import DumbbellIcon from './icons/DumbbellIcon';
 
 type Props = {
   type: WorkoutType;

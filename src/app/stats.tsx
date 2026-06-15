@@ -1,18 +1,19 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
-import { Colors, FontSizes, Spacing, Radii } from '@/constants/theme';
-import { useHistoryStore, computeStreak, weeklyMinutes } from '@/store/historyStore';
-import ScreenTitle from '@/components/shared/ScreenTitle';
-import SectionLabel from '@/components/shared/SectionLabel';
-import SummaryCard from '@/components/shared/SummaryCard';
-import PersonalBestRow from '@/components/shared/PersonalBestRow';
+import { Pressable, ScrollView, StyleSheet,Text, View } from 'react-native';
+import { router } from 'expo-router';
+
 import HistoryRow from '@/components/shared/HistoryRow';
-import XIcon from '@/components/shared/icons/XIcon';
 import BoltIcon from '@/components/shared/icons/BoltIcon';
 import ClockIcon from '@/components/shared/icons/ClockIcon';
 import CycleIcon from '@/components/shared/icons/CycleIcon';
 import TrophyIcon from '@/components/shared/icons/TrophyIcon';
-import { router } from 'expo-router';
+import XIcon from '@/components/shared/icons/XIcon';
+import PersonalBestRow from '@/components/shared/PersonalBestRow';
+import ScreenTitle from '@/components/shared/ScreenTitle';
+import SectionLabel from '@/components/shared/SectionLabel';
+import SummaryCard from '@/components/shared/SummaryCard';
+import { Colors, FontSizes, Radii,Spacing } from '@/constants/theme';
+import { computeStreak, useHistoryStore, weeklyMinutes } from '@/store/historyStore';
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 

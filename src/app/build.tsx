@@ -1,25 +1,3 @@
-import Stepper from '@/components/build/Stepper';
-import CTAButton from '@/components/shared/CTAButton';
-import ScreenTitle from '@/components/shared/ScreenTitle';
-import SectionLabel from '@/components/shared/SectionLabel';
-import SummaryCard from '@/components/shared/SummaryCard';
-import TypeChip, { ChipAccent } from '@/components/shared/TypeChip';
-import WorkoutTypeIcon from '@/components/shared/WorkoutTypeIcon';
-import PenIcon from '@/components/shared/icons/PenIcon';
-import XIcon from '@/components/shared/icons/XIcon';
-import TrashIcon from '@/components/shared/icons/TrashIcon';
-import {
-  Preset, WorkoutType,
-  formatTime,
-  stepTime, stepWarmup,
-  totalSecs,
-} from '@/constants/presets';
-import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
-import { estimateKcal } from '@/store/historyStore';
-import { usePresetsStore } from '@/store/presetsStore';
-import { useSettingsStore } from '@/store/settingsStore';
-import { useWorkoutStore } from '@/store/workoutStore';
-import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useRef, useState } from 'react';
 import {
   Alert,
@@ -30,6 +8,8 @@ import {
   TextInput,
   View
 } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+
 import Animated, {
   Easing,
   runOnJS,
@@ -37,6 +17,28 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+
+import Stepper from '@/components/build/Stepper';
+import CTAButton from '@/components/shared/CTAButton';
+import PenIcon from '@/components/shared/icons/PenIcon';
+import TrashIcon from '@/components/shared/icons/TrashIcon';
+import XIcon from '@/components/shared/icons/XIcon';
+import ScreenTitle from '@/components/shared/ScreenTitle';
+import SectionLabel from '@/components/shared/SectionLabel';
+import SummaryCard from '@/components/shared/SummaryCard';
+import TypeChip, { ChipAccent } from '@/components/shared/TypeChip';
+import WorkoutTypeIcon from '@/components/shared/WorkoutTypeIcon';
+import {
+  formatTime,
+  Preset,   stepTime, stepWarmup,
+  totalSecs,
+WorkoutType,
+} from '@/constants/presets';
+import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
+import { estimateKcal } from '@/store/historyStore';
+import { usePresetsStore } from '@/store/presetsStore';
+import { useSettingsStore } from '@/store/settingsStore';
+import { useWorkoutStore } from '@/store/workoutStore';
 
 const DEFAULT: Preset = {
   id: 'custom',

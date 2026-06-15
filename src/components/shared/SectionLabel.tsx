@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, StyleSheet, TextStyle } from 'react-native';
+import { StyleSheet, Text, TextStyle } from 'react-native';
+
 import { Colors, FontSizes } from '@/constants/theme';
 
 interface Props {

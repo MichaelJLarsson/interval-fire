@@ -1,5 +1,5 @@
-import { stepTime, stepWarmup, formatTime, totalSecs } from '../presets';
 import type { Preset } from '../presets';
+import { formatTime, stepTime, stepWarmup, totalSecs } from '../presets';
 
 describe('stepTime', () => {
   describe('stepping up', () => {

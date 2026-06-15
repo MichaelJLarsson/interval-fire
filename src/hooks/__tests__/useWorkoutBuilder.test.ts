@@ -1,4 +1,5 @@
-import { renderHook, act } from '@testing-library/react-native';
+import { act,renderHook } from '@testing-library/react-native';
+
 import { useWorkoutBuilder } from '../useWorkoutBuilder';
 
 describe('useWorkoutBuilder', () => {

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+
 import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
 
 type Variant = 'default' | 'eucalyptus' | 'white';

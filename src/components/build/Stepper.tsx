@@ -1,6 +1,6 @@
-import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
 import React, { useEffect, useRef } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -8,6 +8,8 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
+
+import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
 
 interface Props {
   label: string;

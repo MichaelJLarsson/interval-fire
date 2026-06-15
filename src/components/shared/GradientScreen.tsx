@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { Colors } from '@/constants/theme';
 
 interface Props {

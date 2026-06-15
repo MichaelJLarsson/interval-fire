@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+
 import Animated, {
-  useSharedValue, useAnimatedStyle,
-  withTiming, withSequence, runOnJS,
-} from 'react-native-reanimated';
+runOnJS,
+useAnimatedStyle,
+  useSharedValue, withSequence,   withTiming, } from 'react-native-reanimated';
+
 import { Phase } from '@/store/workoutStore';
 
 const PHASE_FLASH: Record<Phase | 'finish', string> = {

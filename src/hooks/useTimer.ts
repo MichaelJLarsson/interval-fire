@@ -1,7 +1,9 @@
-import { useEffect, useRef, useCallback } from 'react';
-import { useWorkoutStore } from '@/store/workoutStore';
-import { useHistoryStore, estimateKcal } from '@/store/historyStore';
+import { useCallback,useEffect, useRef } from 'react';
+
 import { Preset } from '@/constants/presets';
+import { estimateKcal,useHistoryStore } from '@/store/historyStore';
+import { useWorkoutStore } from '@/store/workoutStore';
+
 import { useAudio, VoicePhrase } from './useAudio';
 import { useHaptics } from './useHaptics';
 

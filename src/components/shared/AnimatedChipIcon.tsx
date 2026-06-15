@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
+
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withSpring,
-  withSequence,
-  withDelay,
   Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSequence,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated';
+
 import { ChipAccent } from './TypeChip';
 
 type Props = {

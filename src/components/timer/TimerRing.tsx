@@ -1,6 +1,6 @@
-import { Colors, Fonts, FontSizes } from '@/constants/theme';
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import Animated, {
   cancelAnimation,
   Easing,
@@ -11,6 +11,8 @@ import Animated, {
   withRepeat, withSequence, withTiming,
 } from 'react-native-reanimated';
 import Svg, { Circle, ClipPath, Defs, G, LinearGradient, Path, Stop, Text as SvgText } from 'react-native-svg';
+
+import { Colors, Fonts, FontSizes } from '@/constants/theme';
 
 const SIZE = 270;
 const RADIUS = 120;

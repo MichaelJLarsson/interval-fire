@@ -1,10 +1,12 @@
+import React from 'react'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
+
+import Animated, { Easing, useAnimatedStyle, withTiming } from 'react-native-reanimated'
+
 import FastForwardFilledIcon from '@/components/shared/icons/FastForwardFilledIcon'
 import PauseIcon from '@/components/shared/icons/PauseIcon'
 import Toggle from '@/components/shared/Toggle'
 import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme'
-import React from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
-import Animated, { Easing, useAnimatedStyle, withTiming } from 'react-native-reanimated'
 
 interface Props {
   visible: boolean

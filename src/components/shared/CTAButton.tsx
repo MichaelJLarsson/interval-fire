@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import { Pressable, Text, StyleSheet, ViewStyle, Animated } from 'react-native';
+import { Animated,Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
+
 import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
 
 interface Props {

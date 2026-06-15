@@ -1,12 +1,15 @@
 import React from 'react';
-import { Pressable, Text, StyleSheet, ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
+
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
   Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
+
 import { Colors, FontSizes, Radii } from '@/constants/theme';
+
 import AnimatedChipIcon from './AnimatedChipIcon';
 
 export type ChipAccent = 'work' | 'prep' | 'rest' | 'strength';

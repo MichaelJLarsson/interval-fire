@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 const HIDE_DELAY_MS = 4000;
 

@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useFonts,
-  BarlowSemiCondensed_500Medium,
+
+import { Barlow_400Regular, Barlow_600SemiBold } from '@expo-google-fonts/barlow';
+import {   BarlowSemiCondensed_500Medium,
   BarlowSemiCondensed_700Bold,
   BarlowSemiCondensed_800ExtraBold,
+useFonts,
 } from '@expo-google-fonts/barlow-semi-condensed';
-import { Barlow_400Regular, Barlow_600SemiBold } from '@expo-google-fonts/barlow';
-import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { StyleSheet } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 

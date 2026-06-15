@@ -1,5 +1,5 @@
-import { computeStreak, estimateKcal, weeklyMinutes } from '../historyStore';
 import type { WorkoutRecord } from '../historyStore';
+import { computeStreak, estimateKcal, weeklyMinutes } from '../historyStore';
 
 // Fix "today" to a known date: 2026-04-03 (Friday)
 const FIXED_NOW = new Date('2026-04-03T12:00:00.000Z').getTime();
