@@ -1,45 +1,10 @@
 import FastForwardFilledIcon from '@/components/shared/icons/FastForwardFilledIcon'
 import PauseIcon from '@/components/shared/icons/PauseIcon'
+import Toggle from '@/components/shared/Toggle'
 import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import Animated, {
-  Easing,
-  interpolateColor,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated'
-
-const SWITCH_TRACK_OFF = Colors.borderHi
-const SWITCH_THUMB_OFF = Colors.textFaint
-const SWITCH_HEIGHT = 24
-const SWITCH_PADDING = Math.round(SWITCH_HEIGHT / 9)
-const SWITCH_WIDTH = Math.round(SWITCH_HEIGHT * (32 / 18))
-const THUMB_SIZE = SWITCH_HEIGHT - SWITCH_PADDING * 2 - 1
-const SWITCH_THUMB_TRAVEL = SWITCH_WIDTH - SWITCH_PADDING * 2 - THUMB_SIZE
-const TOGGLE_FONT_SIZE = Math.round(SWITCH_HEIGHT * (10 / 18))
-
-function AnimatedSwitch({ on }: { on: boolean }) {
-  const v = useSharedValue(on ? 1 : 0)
-  useEffect(() => {
-    v.value = withTiming(on ? 1 : 0, { duration: 220, easing: Easing.out(Easing.cubic) })
-  }, [on, v])
-
-  const trackStyle = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(v.value, [0, 1], [SWITCH_TRACK_OFF, Colors.work]),
-  }))
-  const thumbStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: v.value * SWITCH_THUMB_TRAVEL }],
-    backgroundColor: interpolateColor(v.value, [0, 1], [SWITCH_THUMB_OFF, Colors.white]),
-  }))
-
-  return (
-    <Animated.View style={[styles.sw, trackStyle]}>
-      <Animated.View style={[styles.thumb, thumbStyle]} />
-    </Animated.View>
-  )
-}
+import Animated, { Easing, useAnimatedStyle, withTiming } from 'react-native-reanimated'
 
 interface Props {
   visible: boolean
@@ -152,14 +117,8 @@ export default function ChromeOverlay({
 
       {/* ── Audio toggles ── */}
       <Animated.View style={[styles.toggles, togStyle]} pointerEvents={visible ? 'auto' : 'none'}>
-        <Pressable style={styles.toggle} onPress={onToggleAudio}>
-          <AnimatedSwitch on={audioOn} />
-          <Text style={styles.toggleLabel}>Audio</Text>
-        </Pressable>
-        <Pressable style={styles.toggle} onPress={onToggleVoice}>
-          <AnimatedSwitch on={voiceOn} />
-          <Text style={styles.toggleLabel}>Voice</Text>
-        </Pressable>
+        <Toggle label="Audio" on={audioOn} onPress={onToggleAudio} />
+        <Toggle label="Voice" on={voiceOn} onPress={onToggleVoice} />
       </Animated.View>
 
       {/* ── Ghost hint pill (always visible) ── */}
@@ -272,23 +231,6 @@ const styles = StyleSheet.create({
     paddingBottom: Spacing.xl,
     paddingTop: Spacing.sm,
   },
-  toggle: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
-  sw: {
-    width: SWITCH_WIDTH,
-    height: SWITCH_HEIGHT,
-    borderRadius: SWITCH_HEIGHT / 2,
-    justifyContent: 'center',
-    paddingHorizontal: SWITCH_PADDING,
-  },
-  thumb: { width: THUMB_SIZE, height: THUMB_SIZE, borderRadius: THUMB_SIZE / 2 },
-  toggleLabel: {
-    fontSize: TOGGLE_FONT_SIZE,
-    fontWeight: '700',
-    color: Colors.textLo,
-    textTransform: 'uppercase',
-    letterSpacing: 1.5,
-  },
-
   hint: { position: 'absolute', bottom: 14, left: 0, right: 0, alignItems: 'center' },
   hintPill: { width: 40, height: 4, borderRadius: 2, backgroundColor: Colors.white + '21' },
 })
