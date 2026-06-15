@@ -1,6 +1,6 @@
-import { Colors, Spacing } from '@/constants/theme'
+import { Spacing, Colors } from '@/constants/theme'
 import React, { useEffect } from 'react'
-import { Pressable, StyleSheet, Text } from 'react-native'
+import { Pressable, StyleSheet } from 'react-native'
 import Animated, {
   Easing,
   interpolateColor,
@@ -10,18 +10,17 @@ import Animated, {
 } from 'react-native-reanimated'
 
 interface Props {
-  label: string
+  children?: React.ReactNode
   on: boolean
   onPress: () => void
   height?: number
 }
 
-export default function Toggle({ label, on, onPress, height = 24 }: Props) {
+export default function Toggle({ children, on, onPress, height = 24 }: Props) {
   const padding = Math.round(height / 9)
   const width = Math.round(height * (32 / 18))
   const thumbSize = height - padding * 2 - 1
   const thumbTravel = width - padding * 2 - thumbSize
-  const fontSize = Math.round(height * (10 / 18))
 
   const v = useSharedValue(on ? 1 : 0)
   useEffect(() => {
@@ -55,17 +54,11 @@ export default function Toggle({ label, on, onPress, height = 24 }: Props) {
           style={[{ width: thumbSize, height: thumbSize, borderRadius: thumbSize / 2 }, thumbStyle]}
         />
       </Animated.View>
-      <Text style={[styles.label, { fontSize }]}>{label}</Text>
+      {children}
     </Pressable>
   )
 }
 
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
-  label: {
-    fontWeight: '700',
-    color: Colors.textLo,
-    textTransform: 'uppercase',
-    letterSpacing: 1.5,
-  },
 })

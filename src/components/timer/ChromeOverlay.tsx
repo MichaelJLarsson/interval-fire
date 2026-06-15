@@ -117,8 +117,12 @@ export default function ChromeOverlay({
 
       {/* ── Audio toggles ── */}
       <Animated.View style={[styles.toggles, togStyle]} pointerEvents={visible ? 'auto' : 'none'}>
-        <Toggle label="Audio" on={audioOn} onPress={onToggleAudio} />
-        <Toggle label="Voice" on={voiceOn} onPress={onToggleVoice} />
+        <Toggle on={audioOn} onPress={onToggleAudio}>
+          <Text style={styles.toggleLabel}>Audio</Text>
+        </Toggle>
+        <Toggle on={voiceOn} onPress={onToggleVoice}>
+          <Text style={styles.toggleLabel}>Voice</Text>
+        </Toggle>
       </Animated.View>
 
       {/* ── Ghost hint pill (always visible) ── */}
@@ -230,6 +234,13 @@ const styles = StyleSheet.create({
     gap: Spacing.xxl,
     paddingBottom: Spacing.xl,
     paddingTop: Spacing.sm,
+  },
+  toggleLabel: {
+    fontSize: FontSizes.label,
+    fontWeight: '700',
+    color: Colors.textLo,
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
   },
   hint: { position: 'absolute', bottom: 14, left: 0, right: 0, alignItems: 'center' },
   hintPill: { width: 40, height: 4, borderRadius: 2, backgroundColor: Colors.white + '21' },
