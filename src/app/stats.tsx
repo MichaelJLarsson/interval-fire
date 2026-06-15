@@ -1,34 +1,34 @@
-import React from 'react';
-import { Pressable, ScrollView, StyleSheet,Text, View } from 'react-native';
-import { router } from 'expo-router';
+import { router } from 'expo-router'
+import React from 'react'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 
-import HistoryRow from '@/components/shared/HistoryRow';
-import BoltIcon from '@/components/shared/icons/BoltIcon';
-import ClockIcon from '@/components/shared/icons/ClockIcon';
-import CycleIcon from '@/components/shared/icons/CycleIcon';
-import TrophyIcon from '@/components/shared/icons/TrophyIcon';
-import XIcon from '@/components/shared/icons/XIcon';
-import PersonalBestRow from '@/components/shared/PersonalBestRow';
-import ScreenTitle from '@/components/shared/ScreenTitle';
-import SectionLabel from '@/components/shared/SectionLabel';
-import SummaryCard from '@/components/shared/SummaryCard';
-import { Colors, FontSizes, Radii,Spacing } from '@/constants/theme';
-import { computeStreak, useHistoryStore, weeklyMinutes } from '@/store/historyStore';
+import HistoryRow from '@/components/shared/HistoryRow'
+import BoltIcon from '@/components/shared/icons/BoltIcon'
+import ClockIcon from '@/components/shared/icons/ClockIcon'
+import CycleIcon from '@/components/shared/icons/CycleIcon'
+import TrophyIcon from '@/components/shared/icons/TrophyIcon'
+import XIcon from '@/components/shared/icons/XIcon'
+import PersonalBestRow from '@/components/shared/PersonalBestRow'
+import ScreenTitle from '@/components/shared/ScreenTitle'
+import SectionLabel from '@/components/shared/SectionLabel'
+import SummaryCard from '@/components/shared/SummaryCard'
+import { Colors, FontSizes, Radii, Spacing } from '@/constants/theme'
+import { computeStreak, useHistoryStore, weeklyMinutes } from '@/store/historyStore'
 
-const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 export default function StatsScreen() {
-  const { records, clearHistory, seedSampleData } = useHistoryStore();
-  const streak = computeStreak(records);
-  const weekly = weeklyMinutes(records);
-  const maxMins = Math.max(...weekly, 1);
-  const todayIdx = (new Date().getDay() + 6) % 7;
+  const { records, clearHistory, seedSampleData } = useHistoryStore()
+  const streak = computeStreak(records)
+  const weekly = weeklyMinutes(records)
+  const maxMins = Math.max(...weekly, 1)
+  const todayIdx = (new Date().getDay() + 6) % 7
   // Order columns so today is the last (rightmost) bar.
-  const columns = Array.from({ length: 7 }, (_, i) => (todayIdx + 1 + i) % 7);
+  const columns = Array.from({ length: 7 }, (_, i) => (todayIdx + 1 + i) % 7)
 
-  const totalWorkouts = records.length;
-  const totalMins = records.reduce((s, r) => s + Math.round(r.durationSecs / 60), 0);
-  const totalKcal = records.reduce((s, r) => s + r.kcalBurned, 0);
+  const totalWorkouts = records.length
+  const totalMins = records.reduce((s, r) => s + Math.round(r.durationSecs / 60), 0)
+  const totalKcal = records.reduce((s, r) => s + r.kcalBurned, 0)
 
   return (
     <View style={styles.root}>
@@ -43,9 +43,23 @@ export default function StatsScreen() {
         {/* Overview grid */}
         <View style={styles.grid}>
           <SummaryCard label="Workouts" value={String(totalWorkouts)} style={styles.gridItem} />
-          <SummaryCard label="Total time" value={`${(totalMins / 60).toFixed(1)}h`} variant="eucalyptus" style={styles.gridItem} />
-          <SummaryCard label="Kcal burned" value={totalKcal.toLocaleString()} style={styles.gridItem} />
-          <SummaryCard label="Current streak" value={`${streak}d`} variant="eucalyptus" style={styles.gridItem} />
+          <SummaryCard
+            label="Total time"
+            value={`${(totalMins / 60).toFixed(1)}h`}
+            variant="eucalyptus"
+            style={styles.gridItem}
+          />
+          <SummaryCard
+            label="Kcal burned"
+            value={totalKcal.toLocaleString()}
+            style={styles.gridItem}
+          />
+          <SummaryCard
+            label="Current streak"
+            value={`${streak}d`}
+            variant="eucalyptus"
+            style={styles.gridItem}
+          />
         </View>
 
         {/* Weekly bar chart */}
@@ -54,20 +68,25 @@ export default function StatsScreen() {
           <View style={styles.chartCard}>
             <View style={styles.bars}>
               {columns.map((idx, col) => {
-                const isToday = col === 6;
-                const pct = weekly[idx] / maxMins;
-                const day = DAY_NAMES[idx];
+                const isToday = col === 6
+                const pct = weekly[idx] / maxMins
+                const day = DAY_NAMES[idx]
                 return (
                   <View key={day} style={styles.barCol}>
                     <View style={styles.barTrack}>
-                      <View style={[
-                        styles.barFill,
-                        { height: `${Math.round(pct * 100)}%`, backgroundColor: isToday ? Colors.barToday : Colors.barFill }
-                      ]} />
+                      <View
+                        style={[
+                          styles.barFill,
+                          {
+                            height: `${Math.round(pct * 100)}%`,
+                            backgroundColor: isToday ? Colors.barToday : Colors.barFill,
+                          },
+                        ]}
+                      />
                     </View>
                     <Text style={[styles.barDay, isToday && styles.barDayToday]}>{day}</Text>
                   </View>
-                );
+                )
               })}
             </View>
           </View>
@@ -78,10 +97,44 @@ export default function StatsScreen() {
           <SectionLabel style={styles.sectionLabelSpacing}>Personal bests</SectionLabel>
           <View style={styles.pbCard}>
             {[
-              { title: 'Longest streak',  sub: 'Consecutive days',     value: `${streak}d`,        iconBg: Colors.workBgTint2, valueColor: Colors.workLight, icon: <TrophyIcon /> },
-              { title: 'Most rounds',     sub: 'In a single session',  value: String(records.length > 0 ? Math.max(...records.map(r => r.roundsCompleted)) : 0), iconBg: Colors.restIconBg, valueColor: Colors.rest, icon: <CycleIcon /> },
-              { title: 'Longest workout', sub: 'Single session',       value: records.length > 0 ? `${Math.round(Math.max(...records.map(r => r.durationSecs)) / 60)}:00` : '0:00', iconBg: Colors.prepIconBg, valueColor: Colors.prep, icon: <ClockIcon /> },
-              { title: 'Most kcal',       sub: 'In a single session',  value: records.length > 0 ? String(Math.max(...records.map(r => r.kcalBurned))) : '0', iconBg: Colors.plumIconBg, valueColor: Colors.strength, icon: <BoltIcon /> },
+              {
+                title: 'Longest streak',
+                sub: 'Consecutive days',
+                value: `${streak}d`,
+                iconBg: Colors.workBgTint2,
+                valueColor: Colors.workLight,
+                icon: <TrophyIcon />,
+              },
+              {
+                title: 'Most rounds',
+                sub: 'In a single session',
+                value: String(
+                  records.length > 0 ? Math.max(...records.map((r) => r.roundsCompleted)) : 0,
+                ),
+                iconBg: Colors.restIconBg,
+                valueColor: Colors.rest,
+                icon: <CycleIcon />,
+              },
+              {
+                title: 'Longest workout',
+                sub: 'Single session',
+                value:
+                  records.length > 0
+                    ? `${Math.round(Math.max(...records.map((r) => r.durationSecs)) / 60)}:00`
+                    : '0:00',
+                iconBg: Colors.prepIconBg,
+                valueColor: Colors.prep,
+                icon: <ClockIcon />,
+              },
+              {
+                title: 'Most kcal',
+                sub: 'In a single session',
+                value:
+                  records.length > 0 ? String(Math.max(...records.map((r) => r.kcalBurned))) : '0',
+                iconBg: Colors.plumIconBg,
+                valueColor: Colors.strength,
+                icon: <BoltIcon />,
+              },
             ].map(({ title, sub, value, iconBg, valueColor, icon }, i, arr) => (
               <PersonalBestRow
                 key={title}
@@ -125,7 +178,7 @@ export default function StatsScreen() {
         </View>
       </ScrollView>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -208,4 +261,4 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   devBtnDestructive: { color: Colors.work },
-});
+})
