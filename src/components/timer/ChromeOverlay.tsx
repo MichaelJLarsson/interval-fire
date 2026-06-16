@@ -1,8 +1,11 @@
+// Framework
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
+// 3rd party
 import Animated, { Easing, useAnimatedStyle, withTiming } from 'react-native-reanimated'
 
+// Local imports
 import FastForwardFilledIcon from '@/components/shared/icons/FastForwardFilledIcon'
 import PauseIcon from '@/components/shared/icons/PauseIcon'
 import Toggle from '@/components/shared/Toggle'
@@ -45,25 +48,25 @@ export default function ChromeOverlay({
   isPaused,
 }: Props) {
   // Header slides down from top
-  const headStyle = useAnimatedStyle(() => ({
+  const headerAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: withTiming(visible ? 0 : -90, SPRING) }],
     opacity: withTiming(visible ? 1 : 0, FADE),
   }))
 
   // Dots + round slide down, slight delay
-  const midStyle = useAnimatedStyle(() => ({
+  const middleAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: withTiming(visible ? 0 : -60, SPRING) }],
     opacity: withTiming(visible ? 1 : 0, { duration: 300 }),
   }))
 
   // Controls slide up from bottom
-  const footStyle = useAnimatedStyle(() => ({
+  const footerAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: withTiming(visible ? 0 : 140, SPRING) }],
     opacity: withTiming(visible ? 1 : 0, FADE),
   }))
 
   // Toggles slide up slightly after controls
-  const togStyle = useAnimatedStyle(() => ({
+  const togglesAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: withTiming(visible ? 0 : 140, SPRING) }],
     opacity: withTiming(visible ? 1 : 0, { duration: 350, easing: Easing.out(Easing.ease) }),
   }))
@@ -71,8 +74,11 @@ export default function ChromeOverlay({
   return (
     <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
       {/* ── Header ── */}
-      <Animated.View style={[styles.head, headStyle]} pointerEvents={visible ? 'auto' : 'none'}>
-        <View style={styles.headLeft}>
+      <Animated.View
+        style={[styles.header, headerAnimatedStyle]}
+        pointerEvents={visible ? 'auto' : 'none'}
+      >
+        <View style={styles.headerLeft}>
           <Text style={styles.workoutName}>{workoutName}</Text>
         </View>
         <View
@@ -86,7 +92,7 @@ export default function ChromeOverlay({
       </Animated.View>
 
       {/* ── Progress dots + round label ── */}
-      <Animated.View style={[styles.mid, midStyle]} pointerEvents="none">
+      <Animated.View style={[styles.middle, middleAnimatedStyle]} pointerEvents="none">
         <View style={styles.dots}>
           {dots.map((d, i) => (
             <View
@@ -99,26 +105,35 @@ export default function ChromeOverlay({
       </Animated.View>
 
       {/* ── Controls ── */}
-      <Animated.View style={[styles.foot, footStyle]} pointerEvents={visible ? 'auto' : 'none'}>
+      <Animated.View
+        style={[styles.footer, footerAnimatedStyle]}
+        pointerEvents={visible ? 'auto' : 'none'}
+      >
         <View style={styles.controls}>
-          <Pressable style={styles.btnSm} onPress={onStop}>
+          <Pressable style={styles.buttonSmall} onPress={onStop}>
             <View style={styles.stopIcon} />
           </Pressable>
-          <Pressable style={[styles.btnLg, isPaused && styles.btnLgPaused]} onPress={onPauseResume}>
+          <Pressable
+            style={[styles.buttonLarge, isPaused && styles.buttonLargePaused]}
+            onPress={onPauseResume}
+          >
             {isPaused ? (
-              <Text style={styles.btnLgIcon}>▶</Text>
+              <Text style={styles.buttonLargeIcon}>▶</Text>
             ) : (
               <PauseIcon color={Colors.white} size={28} />
             )}
           </Pressable>
-          <Pressable style={styles.btnSm} onPress={onSkip}>
+          <Pressable style={styles.buttonSmall} onPress={onSkip}>
             <FastForwardFilledIcon color={Colors.textHi} size={22} />
           </Pressable>
         </View>
       </Animated.View>
 
       {/* ── Audio toggles ── */}
-      <Animated.View style={[styles.toggles, togStyle]} pointerEvents={visible ? 'auto' : 'none'}>
+      <Animated.View
+        style={[styles.toggles, togglesAnimatedStyle]}
+        pointerEvents={visible ? 'auto' : 'none'}
+      >
         <Toggle on={audioOn} onPress={onToggleAudio}>
           <Text style={styles.toggleLabel}>Audio</Text>
         </Toggle>
@@ -138,7 +153,7 @@ export default function ChromeOverlay({
 }
 
 const styles = StyleSheet.create({
-  head: {
+  header: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -149,7 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  headLeft: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   workoutName: {
     fontFamily: Fonts.condensed,
     fontSize: FontSizes.headingMd,
@@ -169,8 +184,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.3,
   },
-
-  mid: {
+  middle: {
     position: 'absolute',
     top: 94,
     left: 0,
@@ -189,8 +203,7 @@ const styles = StyleSheet.create({
     color: Colors.textLo,
     marginTop: Spacing.md,
   },
-
-  foot: {
+  footer: {
     position: 'absolute',
     bottom: 90,
     left: 0,
@@ -204,7 +217,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.screenH,
     paddingVertical: Spacing.lg,
   },
-  btnSm: {
+  buttonSmall: {
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -215,7 +228,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   stopIcon: { width: 12, height: 12, backgroundColor: Colors.textMid },
-  btnLg: {
+  buttonLarge: {
     width: 76,
     height: 76,
     borderRadius: 38,
@@ -223,9 +236,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btnLgPaused: { backgroundColor: Colors.textFaint },
-  btnLgIcon: { color: Colors.white, fontSize: 22 },
-
+  buttonLargePaused: { backgroundColor: Colors.textFaint },
+  buttonLargeIcon: { color: Colors.white, fontSize: 22 },
   toggles: {
     position: 'absolute',
     bottom: 25,
