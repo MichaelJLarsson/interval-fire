@@ -1,11 +1,12 @@
-import { router } from 'expo-router'
+// Framawork
 import React from 'react'
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { router } from 'expo-router'
 
+// Local imports
 import HistoryRow from '@/components/shared/HistoryRow'
 import BoltIcon from '@/components/shared/icons/BoltIcon'
 import ClockIcon from '@/components/shared/icons/ClockIcon'
-import CycleIcon from '@/components/shared/icons/CycleIcon'
 import TrophyIcon from '@/components/shared/icons/TrophyIcon'
 import XIcon from '@/components/shared/icons/XIcon'
 import PersonalBestRow from '@/components/shared/PersonalBestRow'
@@ -18,7 +19,7 @@ import { computeStreak, useHistoryStore, weeklyMinutes } from '@/store/historySt
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 export default function StatsScreen() {
-  const { records, clearHistory, seedSampleData } = useHistoryStore()
+  const { records, clearHistory } = useHistoryStore()
   const streak = computeStreak(records)
   const weekly = weeklyMinutes(records)
   const maxMins = Math.max(...weekly, 1)
@@ -166,9 +167,6 @@ export default function StatsScreen() {
             <Text style={styles.empty}>Complete a workout to see your history here.</Text>
           )}
           <View style={styles.devActions}>
-            <Pressable onPress={seedSampleData}>
-              <Text style={styles.devBtn}>Seed sample data</Text>
-            </Pressable>
             {records.length > 0 && (
               <Pressable onPress={clearHistory}>
                 <Text style={[styles.devBtn, styles.devBtnDestructive]}>Clear history</Text>
