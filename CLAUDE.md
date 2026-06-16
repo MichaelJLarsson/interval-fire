@@ -109,6 +109,7 @@ Enforced by `eslint-plugin-simple-import-sort`. Always group imports in this ord
 
 ### Key conventions
 
+- Never abbreviate style keys, const names, or variable names. Use full descriptive names (`buttonSmall` not `btnSm`, `headerAnimatedStyle` not `headStyle`, `footer` not `foot`).
 - React Compiler enabled (`experiments.reactCompiler: true` in `app.json`) — avoid manual `useMemo`/`useCallback` where the compiler handles it.
 - Typed routes enabled (`experiments.typedRoutes: true`) — use typed `router.push` / `<Link href>` paths.
 - Portrait orientation only.
