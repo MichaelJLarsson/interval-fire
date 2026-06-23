@@ -9,7 +9,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
-import { Colors,Spacing } from '@/constants/theme'
+import { Colors, Spacing } from '@/constants/theme'
 
 interface Props {
   children?: React.ReactNode
@@ -30,7 +30,7 @@ export default function Toggle({ children, on, onPress, height = 24 }: Props) {
   }, [on, v])
 
   const trackStyle = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(v.value, [0, 1], [Colors.borderHi, Colors.work]),
+    backgroundColor: interpolateColor(v.value, [0, 1], [Colors.borderSubtle, Colors.work]),
   }))
 
   const thumbStyle = useAnimatedStyle(() => ({

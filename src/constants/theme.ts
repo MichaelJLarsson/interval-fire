@@ -1,90 +1,96 @@
-// ─── Colour tokens ────────────────────────────────────────────────────────────
-export const BaseColors = {
-  fireOrange: '#ff3d3d',
-  fireOrangeLight: '#ff5050',
-  eucalyptus: '#00e5a0',
-  eucalyptusAlt: '#00B9D5',
-  brass: '#ffc300',
-  lavender: '#b388ff',
-  white: '#f0f0f0',
-  black: '#0d0d0d',
+// ─── Color helpers ─────────────────────────────────────────────────────────────
+function alpha(hex: string, opacity: number): string {
+  return `${hex}${Math.round(opacity * 255)
+    .toString(16)
+    .padStart(2, '0')}`
+}
+
+// ─── Brand palette ────────────────────────────────────────────────────────────
+// Raw hues from which tints, tones, and semantic tokens derive.
+const fire = '#ff3d3d'
+const fireHi = '#ff5050'
+const mint = '#00e5a0'
+const sky = '#00b9d5'
+const brass = '#ffc300'
+const plum = '#b388ff'
+
+export const Brand = { fire, fireHi, mint, sky, brass, plum } as const
+
+// ─── Neutral scale (light → dark) ─────────────────────────────────────────────
+export const Neutral = {
+  50: '#f0f0f0',
+  100: '#e0e0e0',
+  200: '#aaaaaa',
+  300: '#888888',
+  400: '#666666',
+  500: '#555555',
+  600: '#444444',
+  700: '#353535',
+  800: '#2e2e2e',
+  900: '#181818',
+  950: '#0d0d0d',
 } as const
 
-export const Grey = {
-  white: BaseColors.white,
-  grey100: BaseColors.white,
-  grey200: '#e0e0e0',
-  grey300: '#aaa',
-  grey400: '#888',
-  grey500: '#666',
-  grey600: '#555',
-  grey700: '#444',
-  grey800: '#353535',
-  grey900: '#2e2e2e',
-  grey950: '#181818',
-  black: BaseColors.black,
-} as const
-
+// ─── Semantic color tokens ─────────────────────────────────────────────────────
 export const Colors = {
-  // Background layers
-  bg: BaseColors.black,
-  surface: Grey.grey950,
-  border: Grey.grey700,
-  borderHi: Grey.grey900,
-  divider: Grey.grey700,
+  // Surfaces
+  bg: Neutral[950],
+  surface: Neutral[900],
 
-  // Background gradient (applied per-screen, not a token value)
-  // linear-gradient(to bottom, #560000 0%, #000 ~22%)
+  // Borders & dividers
+  border: Neutral[600],
+  borderSubtle: Neutral[800],
+  divider: Neutral[600],
+
+  // Background gradient (fire-tinted, applied per-screen)
   gradientStart: '#560000',
   gradientEnd: '#000000',
 
   // Phase accents
-  work: BaseColors.fireOrange,
-  workLight: BaseColors.fireOrangeLight,
-  rest: BaseColors.eucalyptus,
-  restAlt: BaseColors.eucalyptusAlt,
-  prep: BaseColors.brass,
-  strength: BaseColors.lavender,
+  work: fire,
+  workLight: fireHi,
+  rest: mint,
+  restAlt: sky,
+  prep: brass,
+  strength: plum,
 
-  // Phase tint backgrounds
-  workBgTint: 'rgba(255,61,61,0.15)',
-  workBorder: 'rgba(255,61,61,0.33)',
-  workBgButton: 'rgba(255,61,61,0.30)',
+  // Phase tint backgrounds (derived from brand hues)
+  workBgTint: alpha(fire, 0.15),
+  workBorder: alpha(fire, 0.33),
+  workBgButton: alpha(fire, 0.3),
+  workIconBg: alpha(fire, 0.16),
   restBgTint: '#213d35',
-  restIconBg: 'rgba(0,229,160,0.16)',
-  restCheckBg: 'rgba(0,229,160,0.09)',
-  prepIconBg: 'rgba(255,195,0,0.16)',
-  plumIconBg: 'rgba(179,136,255,0.16)',
+  restIconBg: alpha(mint, 0.16),
+  restCheckBg: alpha(mint, 0.09),
+  prepIconBg: alpha(brass, 0.16),
+  plumIconBg: alpha(plum, 0.16),
   streakBanner: '#350000',
   streakBorder: '#7e0000',
 
-  // Text
-  textHi: BaseColors.white,
-  textMid: Grey.grey200,
-  textLo: Grey.grey300,
-  textMuted: Grey.grey400,
-  textDim: Grey.grey500,
-  textFaint: Grey.grey600,
-  textGhost: Grey.grey500,
-  inputPlaceholder: Grey.grey500,
+  // Text hierarchy
+  textHi: Neutral[50],
+  textMid: Neutral[100],
+  textLo: Neutral[200],
+  textMuted: Neutral[300],
+  textFaint: Neutral[500],
+  inputPlaceholder: Neutral[400],
 
   // Chart
-  barTrack: Grey.grey800,
-  barFill: Grey.grey700,
-  barToday: BaseColors.fireOrange,
-  metaChip: Grey.grey800,
+  barTrack: Neutral[700],
+  barFill: Neutral[600],
+  barToday: fire,
+  metaChip: Neutral[700],
 
-  // Round progress (timer)
-  progressDone: Grey.grey400,
-  progressActive: BaseColors.fireOrange,
-  progressPending: Grey.grey700,
+  // Timer ring progress
+  progressDone: Neutral[300],
+  progressActive: fire,
+  progressPending: Neutral[600],
 
-  // Kcal / history
-  textKcal: Grey.grey500,
-  kcalValue: BaseColors.fireOrange,
+  // Kcal
+  kcalValue: fire,
 
-  // Misc
-  white: '#ffffff',
+  // Utility
+  white: Neutral[50],
 } as const
 
 // ─── Typography ───────────────────────────────────────────────────────────────
@@ -97,7 +103,6 @@ export const Fonts = {
 } as const
 
 // ─── Font sizes ───────────────────────────────────────────────────────────────
-// Scale follows DESIGN_SYSTEM.md §2 Type Scale.
 export const FontSizes = {
   displayXL: 96, // Timer countdown digits
   displayLg: 40, // "Workout Complete!" headline
