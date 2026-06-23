@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.planeBlack,
+    backgroundColor: Colors.surface,
     borderRadius: Radii.xl,
     paddingHorizontal: 18,
     paddingVertical: 16,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: Radii.sm,
-    backgroundColor: Colors.planeBlack,
+    backgroundColor: Colors.surface,
     borderWidth: 1.5,
     borderColor: Colors.border,
     alignItems: 'center',

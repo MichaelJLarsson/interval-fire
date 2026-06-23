@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.work,
   },
   outline: {
-    backgroundColor: Colors.offBlack,
+    backgroundColor: Colors.surface,
     borderWidth: 1,
     borderColor: Colors.work,
   },

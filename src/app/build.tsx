@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
   toggleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.planeBlack,
+    backgroundColor: Colors.surface,
     borderRadius: Radii.xl,
     paddingHorizontal: 18,
     paddingVertical: 16,
@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
   },
   nameInput: {
     flex: 1,
-    backgroundColor: Colors.planeBlack,
+    backgroundColor: Colors.surface,
     borderWidth: 1,
     borderColor: '#7c7c7c',
     borderRadius: Radii.md,
@@ -468,7 +468,7 @@ const styles = StyleSheet.create({
     height: 54,
     paddingHorizontal: 18,
     borderRadius: Radii.md,
-    backgroundColor: Colors.offBlack,
+    backgroundColor: Colors.surface,
     borderWidth: 1,
     borderColor: Colors.work,
     alignItems: 'center',

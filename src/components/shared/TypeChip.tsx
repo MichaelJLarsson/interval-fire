@@ -40,7 +40,7 @@ export default function TypeChip({ label, icon, selected = false, accent = 'work
 
   const selectedColors = selected
     ? { backgroundColor: accentStyle.bg, borderColor: accentStyle.border }
-    : { backgroundColor: Colors.planeBlack, borderColor: Colors.border };
+    : { backgroundColor: Colors.surface, borderColor: Colors.border };
 
   return (
     <Animated.View style={[{ flex: 1 }, scaleStyle]}>

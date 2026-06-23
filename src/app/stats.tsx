@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   sectionLabelSpacing: { marginBottom: 14 },
 
   chartCard: {
-    backgroundColor: Colors.planeBlack,
+    backgroundColor: Colors.surface,
     borderRadius: Radii.lg,
     paddingHorizontal: 17,
     paddingVertical: 19,
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   barDayToday: { color: Colors.work },
 
   pbCard: {
-    backgroundColor: Colors.planeBlack,
+    backgroundColor: Colors.surface,
     borderRadius: Radii.lg,
     paddingHorizontal: 17,
     paddingVertical: 4,

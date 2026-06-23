@@ -29,7 +29,7 @@ export default function SummaryCard({ label, value, variant = 'default', style }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: Colors.planeBlack,
+    backgroundColor: Colors.surface,
     borderRadius: Radii.lg,
     paddingHorizontal: 16,
     paddingVertical: 19,

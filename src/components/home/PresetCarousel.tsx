@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   card: {
     width: CARD_W,
     minHeight: 187,
-    backgroundColor: Colors.planeBlack,
+    backgroundColor: Colors.surface,
     borderRadius: Radii.xl,
     padding: 16,
     paddingTop: 14,

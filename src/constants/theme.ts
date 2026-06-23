@@ -2,9 +2,7 @@
 export const Colors = {
   // Background layers
   bg: '#0d0d0d',
-  surface: '#1e1e1e',
-  offBlack: '#151515',
-  planeBlack: '#181818',
+  surface: '#181818',
   border: '#505050',
   borderHi: '#2e2e2e',
   divider: '#444',
