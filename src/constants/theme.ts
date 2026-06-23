@@ -9,6 +9,7 @@ function alpha(hex: string, opacity: number): string {
 // Raw hues from which tints, tones, and semantic tokens derive.
 const fire = '#ff3d3d'
 const fireHi = '#ff5050'
+const fireAlt = '#FF873D'
 const mint = '#00e5a0'
 const sky = '#00b9d5'
 const brass = '#ffc300'
@@ -49,6 +50,7 @@ export const Colors = {
   // Phase accents
   work: fire,
   workLight: fireHi,
+  workAlt: fireAlt,
   rest: mint,
   restAlt: sky,
   prep: brass,
