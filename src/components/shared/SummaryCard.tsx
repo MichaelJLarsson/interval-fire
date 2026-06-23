@@ -6,7 +6,7 @@ import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
 type Variant = 'default' | 'eucalyptus' | 'white';
 
 const VALUE_COLORS: Record<Variant, string> = {
-  default:    Colors.workSoft,
+  default:    Colors.workLight,
   eucalyptus: Colors.rest,
   white:      Colors.textHi,
 };

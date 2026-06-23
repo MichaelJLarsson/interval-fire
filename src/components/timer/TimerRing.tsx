@@ -35,7 +35,7 @@ export const PHASE_COLORS = {
 
 // [gradStart (12 o'clock, arc beginning), gradEnd (arc tip at full progress)]
 const PHASE_GRADIENT: Record<string, [string, string]> = {
-  work: [Colors.workAlt, Colors.work],
+  work: [Colors.workLight, Colors.work],
   rest: [Colors.restAlt, Colors.rest],
   prep: [Colors.prep,    Colors.prep],
 };

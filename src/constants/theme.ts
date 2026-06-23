@@ -14,9 +14,7 @@ export const Colors = {
 
   // Phase accents
   work: '#ff3d3d',
-  workLight: '#ff6060',
-  workSoft: '#ff5050',
-  workAlt: '#ff6d3d',
+  workLight: '#ff5050',
   rest: '#00e5a0',
   restAlt: '#00B9D5',
   prep: '#ffc300',
