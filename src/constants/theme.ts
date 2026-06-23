@@ -47,9 +47,7 @@ export const Colors = {
   strength: BaseColors.lavender,
 
   // Phase tint backgrounds
-  workBgTint: 'rgba(255,61,61,0.13)',
-  workBgTint2: 'rgba(255,61,61,0.15)',
-  workBgTint3: 'rgba(255,61,61,0.19)',
+  workBgTint: 'rgba(255,61,61,0.15)',
   workBorder: 'rgba(255,61,61,0.33)',
   workBgButton: 'rgba(255,61,61,0.30)',
   restBgTint: '#213d35',

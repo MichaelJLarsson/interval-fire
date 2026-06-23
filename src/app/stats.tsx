@@ -103,7 +103,7 @@ export default function StatsScreen() {
                 title: 'Longest streak',
                 sub: 'Consecutive days',
                 value: `${streak}d`,
-                iconBg: Colors.workBgTint2,
+                iconBg: Colors.workBgTint,
                 valueColor: Colors.workLight,
                 icon: <TrophyIcon />,
               },

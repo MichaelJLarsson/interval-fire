@@ -1,21 +1,21 @@
-import React from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import React from 'react'
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
-import { Colors, FontSizes, Radii } from '@/constants/theme';
+import { Colors, FontSizes, Radii } from '@/constants/theme'
 
 interface Props {
-  label: string;
-  phase: 'work' | 'rest';
-  style?: ViewStyle;
+  label: string
+  phase: 'work' | 'rest'
+  style?: ViewStyle
 }
 
 export default function PhasePill({ label, phase, style }: Props) {
-  const isWork = phase === 'work';
+  const isWork = phase === 'work'
   return (
     <View style={[styles.pill, isWork ? styles.work : styles.rest, style]}>
       <Text style={[styles.text, { color: isWork ? '#ff7070' : Colors.rest }]}>{label}</Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   work: {
-    backgroundColor: Colors.workBgTint2,
+    backgroundColor: Colors.workBgTint,
   },
   rest: {
     backgroundColor: Colors.restBgTint,
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textTransform: 'uppercase',
   },
-});
+})
