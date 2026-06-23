@@ -12,16 +12,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated'
-import Svg, {
-  Circle,
-  ClipPath,
-  Defs,
-  G,
-  LinearGradient,
-  Path,
-  Stop,
-  Text as SvgText,
-} from 'react-native-svg'
+import Svg, { Circle, Defs, LinearGradient, Stop, Text as SvgText } from 'react-native-svg'
 
 import { Colors, Fonts, FontSizes } from '@/constants/theme'
 
@@ -31,12 +22,7 @@ const STROKE = 9
 const DOT_RADIUS = 11
 export const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 const CENTER = SIZE / 2
-const ARC_SEGMENTS = 120
-const CLIP_R = RADIUS + STROKE + 2
-const SEGMENT_ANGLE = (2 * Math.PI) / ARC_SEGMENTS
-
 const AnimatedCircle = Animated.createAnimatedComponent(Circle)
-const AnimatedPath = Animated.createAnimatedComponent(Path)
 
 export const PHASE_COLORS = {
   work: Colors.work,
@@ -49,44 +35,6 @@ const PHASE_GRADIENT: Record<string, [string, string]> = {
   work: [Colors.workAlt, Colors.work],
   rest: [Colors.restAlt, Colors.rest],
   prep: [Colors.prep, Colors.prep],
-}
-
-function parseHex(hex: string): [number, number, number] {
-  const h = hex.replace('#', '')
-  const n = parseInt(h, 16)
-  return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
-}
-
-function lerpColor(a: string, b: string, t: number): string {
-  const [r1, g1, b1] = parseHex(a)
-  const [r2, g2, b2] = parseHex(b)
-  return `rgb(${Math.round(r1 + (r2 - r1) * t)},${Math.round(g1 + (g2 - g1) * t)},${Math.round(b1 + (b2 - b1) * t)})`
-}
-
-// Arc segment paths are geometry-only, computed once at module load
-const SEGMENT_PATHS = Array.from({ length: ARC_SEGMENTS }, (_, i) => {
-  const start = -Math.PI / 2 + i * SEGMENT_ANGLE
-  const end = start + SEGMENT_ANGLE + 0.01 // tiny overlap prevents anti-aliasing seams
-  const x1 = CENTER + RADIUS * Math.cos(start)
-  const y1 = CENTER + RADIUS * Math.sin(start)
-  const x2 = CENTER + RADIUS * Math.cos(end)
-  const y2 = CENTER + RADIUS * Math.sin(end)
-  return `M ${x1} ${y1} A ${RADIUS} ${RADIUS} 0 0 1 ${x2} ${y2}`
-})
-
-// Pie-sector clip path from 12 o'clock clockwise by `angle` radians
-function sectorPath(angle: number): string {
-  'worklet'
-  if (angle <= 0) return `M ${CENTER} ${CENTER}`
-  const capped = angle >= 2 * Math.PI - 0.001 ? 2 * Math.PI - 0.001 : angle
-  const sa = -Math.PI / 2
-  const ea = sa + capped
-  const large = capped > Math.PI ? 1 : 0
-  const x1 = CENTER + CLIP_R * Math.cos(sa)
-  const y1 = CENTER + CLIP_R * Math.sin(sa)
-  const x2 = CENTER + CLIP_R * Math.cos(ea)
-  const y2 = CENTER + CLIP_R * Math.sin(ea)
-  return `M ${CENTER} ${CENTER} L ${x1} ${y1} A ${CLIP_R} ${CLIP_R} 0 ${large} 1 ${x2} ${y2} Z`
 }
 
 interface Props {
@@ -148,11 +96,7 @@ export default function TimerRing({
     transform: [{ scale: scale.value }],
   }))
 
-  // Animated clip path reveals the gradient arc up to the current progress angle
-  const clipProps = useAnimatedProps(() => {
-    const p = 1 - dashOffset.value / CIRCUMFERENCE
-    return { d: sectorPath(p * 2 * Math.PI) }
-  })
+  const arcProps = useAnimatedProps(() => ({ strokeDashoffset: dashOffset.value }))
 
   // Dot at the arc tip, derived from the same dashOffset
   const dotAngle = useDerivedValue(() => {
@@ -168,23 +112,10 @@ export default function TimerRing({
 
   const [gradStart, gradEnd] = PHASE_GRADIENT[phase] ?? [color, color]
 
-  // Angular gradient: each segment has the color fixed at its angle around the ring
-  const segmentColors = Array.from({ length: ARC_SEGMENTS }, (_, i) =>
-    lerpColor(gradStart, gradEnd, i / (ARC_SEGMENTS - 1)),
-  )
-  // Dot color matches the angular gradient at the tip's current angular position
-  const dotColor = lerpColor(gradStart, gradEnd, progress)
-
   return (
     <View style={styles.container}>
       <Animated.View style={[StyleSheet.absoluteFill, styles.svgWrap, svgStyle]}>
         <Svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
-          <Defs>
-            <ClipPath id="progressClip">
-              <AnimatedPath animatedProps={clipProps} />
-            </ClipPath>
-          </Defs>
-
           {/* Track ring */}
           <Circle
             cx={CENTER}
@@ -195,26 +126,26 @@ export default function TimerRing({
             strokeWidth={STROKE}
           />
 
-          {/* Angular gradient arc, revealed by animated clip sector */}
-          <G clipPath="url(#progressClip)">
-            {segmentColors.map((segColor, i) => (
-              <Path
-                key={i}
-                d={SEGMENT_PATHS[i]}
-                stroke={segColor}
-                strokeWidth={STROKE}
-                fill="none"
-                strokeLinecap="butt"
-              />
-            ))}
-          </G>
+          {/* Solid arc */}
+          <AnimatedCircle
+            cx={CENTER}
+            cy={CENTER}
+            r={RADIUS}
+            fill="none"
+            stroke={color}
+            strokeWidth={STROKE}
+            strokeDasharray={CIRCUMFERENCE}
+            animatedProps={arcProps}
+            strokeLinecap="butt"
+            transform={`rotate(-90, ${CENTER}, ${CENTER})`}
+          />
 
           {/* Glow halo (outer) */}
-          <AnimatedCircle animatedProps={dotRing2Props} r={26} fill={dotColor} opacity={0.1} />
+          <AnimatedCircle animatedProps={dotRing2Props} r={26} fill={color} opacity={0.1} />
           {/* Glow halo (inner) */}
-          <AnimatedCircle animatedProps={dotRing1Props} r={16} fill={dotColor} opacity={0.28} />
+          <AnimatedCircle animatedProps={dotRing1Props} r={16} fill={color} opacity={0.28} />
           {/* Solid dot at arc tip */}
-          <AnimatedCircle animatedProps={dotCoreProps} r={DOT_RADIUS} fill={dotColor} />
+          <AnimatedCircle animatedProps={dotCoreProps} r={DOT_RADIUS} fill={color} />
         </Svg>
       </Animated.View>
 
