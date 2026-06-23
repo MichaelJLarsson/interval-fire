@@ -56,8 +56,7 @@ export const Colors = {
 
   // Phase tint backgrounds (derived from brand hues)
   workBgTint: alpha(fire, 0.15),
-  workBorder: alpha(fire, 0.33),
-  workBgButton: alpha(fire, 0.3),
+  workSubtle: alpha(fire, 0.3),
   workIconBg: alpha(fire, 0.16),
   restBgTint: '#213d35',
   restIconBg: alpha(mint, 0.16),

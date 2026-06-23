@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
   },
 
   editBtn: {
-    backgroundColor: Colors.workBgButton,
+    backgroundColor: Colors.workSubtle,
     borderRadius: 7,
     paddingHorizontal: 16,
     paddingVertical: 8,
