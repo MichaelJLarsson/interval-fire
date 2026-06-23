@@ -1,81 +1,80 @@
 // ─── Colour tokens ────────────────────────────────────────────────────────────
 export const Colors = {
   // Background layers
-  bg: "#0d0d0d",
-  surface: "#1e1e1e",
-  surfaceLo: "#181818",
-  offBlack: "#151515",
-  planeBlack: "#262626",
-  border: "#505050",
-  borderHi: "#2e2e2e",
-  divider: "#444",
+  bg: '#0d0d0d',
+  surface: '#1e1e1e',
+  offBlack: '#151515',
+  planeBlack: '#181818',
+  border: '#505050',
+  borderHi: '#2e2e2e',
+  divider: '#444',
 
   // Background gradient (applied per-screen, not a token value)
   // linear-gradient(to bottom, #560000 0%, #000 ~22%)
-  gradientStart: "#560000",
-  gradientEnd: "#000000",
+  gradientStart: '#560000',
+  gradientEnd: '#000000',
 
   // Phase accents
-  work: "#ff3d3d",
-  workLight: "#ff6060",
-  workSoft: "#ff5050",
-  workAlt: "#ff6d3d",
-  rest: "#00e5a0",
-  restAlt: "#00B9D5",
-  prep: "#ffc300",
-  strength: "#b388ff",
+  work: '#ff3d3d',
+  workLight: '#ff6060',
+  workSoft: '#ff5050',
+  workAlt: '#ff6d3d',
+  rest: '#00e5a0',
+  restAlt: '#00B9D5',
+  prep: '#ffc300',
+  strength: '#b388ff',
 
   // Phase tint backgrounds
-  workBgTint: "rgba(255,61,61,0.13)",
-  workBgTint2: "rgba(255,61,61,0.15)",
-  workBgTint3: "rgba(255,61,61,0.19)",
-  workBorder: "rgba(255,61,61,0.33)",
-  workBgButton: "rgba(255,61,61,0.30)",
-  restBgTint: "#213d35",
-  restIconBg: "rgba(0,229,160,0.16)",
-  restCheckBg: "rgba(0,229,160,0.09)",
-  prepIconBg: "rgba(255,195,0,0.16)",
-  plumIconBg: "rgba(179,136,255,0.16)",
-  streakBanner: "#350000",
-  streakBorder: "#7e0000",
+  workBgTint: 'rgba(255,61,61,0.13)',
+  workBgTint2: 'rgba(255,61,61,0.15)',
+  workBgTint3: 'rgba(255,61,61,0.19)',
+  workBorder: 'rgba(255,61,61,0.33)',
+  workBgButton: 'rgba(255,61,61,0.30)',
+  restBgTint: '#213d35',
+  restIconBg: 'rgba(0,229,160,0.16)',
+  restCheckBg: 'rgba(0,229,160,0.09)',
+  prepIconBg: 'rgba(255,195,0,0.16)',
+  plumIconBg: 'rgba(179,136,255,0.16)',
+  streakBanner: '#350000',
+  streakBorder: '#7e0000',
 
   // Text
-  textHi: "#f0f0f0",
-  textMid: "#e0e0e0",
-  textLo: "#aaa",
-  textMuted: "#888",
-  textDim: "#666",
-  textFaint: "#555",
-  textGhost: "#737373",
-  inputPlaceholder: "#6b6b6b",
+  textHi: '#f0f0f0',
+  textMid: '#e0e0e0',
+  textLo: '#aaa',
+  textMuted: '#888',
+  textDim: '#666',
+  textFaint: '#555',
+  textGhost: '#737373',
+  inputPlaceholder: '#6b6b6b',
 
   // Chart
-  barTrack: "#353535",
-  barFill: "#4b4b4b",
-  barToday: "#ff3d3d",
-  metaChip: "#373737",
+  barTrack: '#353535',
+  barFill: '#4b4b4b',
+  barToday: '#ff3d3d',
+  metaChip: '#373737',
 
   // Round progress (timer)
-  progressDone: "#919191",
-  progressActive: "#ff3d3d",
-  progressPending: "#4c4242",
+  progressDone: '#919191',
+  progressActive: '#ff3d3d',
+  progressPending: '#4c4242',
 
   // Kcal / history
-  textKcal: "#777",
-  kcalValue: "#ff5555",
+  textKcal: '#777',
+  kcalValue: '#ff5555',
 
   // Misc
-  white: "#ffffff",
-} as const;
+  white: '#ffffff',
+} as const
 
 // ─── Typography ───────────────────────────────────────────────────────────────
 export const Fonts = {
-  condensed: "BarlowSemiCondensed_800ExtraBold",
-  condensedBold: "BarlowSemiCondensed_700Bold",
-  condensedMedium: "BarlowSemiCondensed_500Medium",
-  body: "Barlow_400Regular",
-  bodySemiBold: "Barlow_600SemiBold",
-} as const;
+  condensed: 'BarlowSemiCondensed_800ExtraBold',
+  condensedBold: 'BarlowSemiCondensed_700Bold',
+  condensedMedium: 'BarlowSemiCondensed_500Medium',
+  body: 'Barlow_400Regular',
+  bodySemiBold: 'Barlow_600SemiBold',
+} as const
 
 // ─── Font sizes ───────────────────────────────────────────────────────────────
 // Scale follows DESIGN_SYSTEM.md §2 Type Scale.
@@ -90,7 +89,7 @@ export const FontSizes = {
   body: 14, // History titles, setting labels, inputs
   caption: 12, // Sub-labels, metadata, secondary body
   label: 10, // Uppercase section labels, chips, pills
-} as const;
+} as const
 
 // ─── Spacing ──────────────────────────────────────────────────────────────────
 export const Spacing = {
@@ -103,7 +102,7 @@ export const Spacing = {
   xl: 24,
   xxl: 28,
   xxxl: 36,
-} as const;
+} as const
 
 // ─── Border radii ─────────────────────────────────────────────────────────────
 export const Radii = {
@@ -113,4 +112,4 @@ export const Radii = {
   xl: 14,
   pill: 20,
   full: 999,
-} as const;
+} as const

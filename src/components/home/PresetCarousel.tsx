@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useRef } from 'react'
+import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 
 import Animated, {
   Easing,
@@ -9,67 +9,63 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-} from 'react-native-reanimated';
-import Svg, { Polygon } from 'react-native-svg';
+} from 'react-native-reanimated'
+import Svg, { Polygon } from 'react-native-svg'
 
-import PhasePill from '@/components/shared/PhasePill';
-import { formatTime, Preset, TYPE_LABELS } from '@/constants/presets';
-import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
+import PhasePill from '@/components/shared/PhasePill'
+import { formatTime, Preset, TYPE_LABELS } from '@/constants/presets'
+import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme'
 
-const { width: SCREEN_W } = Dimensions.get('window');
-const CARD_W = SCREEN_W - Spacing.screenH * 2;
-const CARD_GAP = 12;
+const { width: SCREEN_W } = Dimensions.get('window')
+const CARD_W = SCREEN_W - Spacing.screenH * 2
+const CARD_GAP = 12
 
 interface Props {
-  presets: Preset[];
-  selectedId: string;
-  onSelect: (preset: Preset) => void;
-  onPlay: (preset: Preset) => void;
-  onEdit: (preset: Preset) => void;
+  presets: Preset[]
+  selectedId: string
+  onSelect: (preset: Preset) => void
+  onPlay: (preset: Preset) => void
+  onEdit: (preset: Preset) => void
 }
 
 interface PresetCardProps {
-  item: Preset;
-  active: boolean;
-  dragging: SharedValue<number>;
-  onSelect: (preset: Preset) => void;
-  onPlay: (preset: Preset) => void;
-  onEdit: (preset: Preset) => void;
+  item: Preset
+  active: boolean
+  dragging: SharedValue<number>
+  onSelect: (preset: Preset) => void
+  onPlay: (preset: Preset) => void
+  onEdit: (preset: Preset) => void
 }
 
 function usePressScale() {
-  const scale = useSharedValue(1);
+  const scale = useSharedValue(1)
   const animStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
-  }));
+  }))
   const onPressIn = useCallback(() => {
-    scale.value = withTiming(0.95, { duration: 100 });
-  }, [scale]);
+    scale.value = withTiming(0.95, { duration: 100 })
+  }, [scale])
   const onPressOut = useCallback(() => {
-    scale.value = withTiming(1, { duration: 100 });
-  }, [scale]);
-  return { animStyle, onPressIn, onPressOut };
+    scale.value = withTiming(1, { duration: 100 })
+  }, [scale])
+  return { animStyle, onPressIn, onPressOut }
 }
 
 function PresetCard({ item, active, dragging, onSelect, onPlay, onEdit }: PresetCardProps) {
-  const progress = useSharedValue(active ? 1 : 0);
-  const playPress = usePressScale();
-  const editPress = usePressScale();
+  const progress = useSharedValue(active ? 1 : 0)
+  const playPress = usePressScale()
+  const editPress = usePressScale()
 
   useEffect(() => {
-    progress.value = withTiming(active ? 1 : 0, { duration: 180 });
-  }, [active, progress]);
+    progress.value = withTiming(active ? 1 : 0, { duration: 180 })
+  }, [active, progress])
 
   const animatedStyle = useAnimatedStyle(() => {
-    const show = progress.value * (1 - dragging.value);
+    const show = progress.value * (1 - dragging.value)
     return {
-      borderColor: interpolateColor(
-        show,
-        [0, 1],
-        ['rgba(255,61,61,0)', Colors.work]
-      ),
-    };
-  });
+      borderColor: interpolateColor(show, [0, 1], ['rgba(255,61,61,0)', Colors.work]),
+    }
+  })
 
   return (
     <Animated.View style={[styles.card, animatedStyle]}>
@@ -108,7 +104,9 @@ function PresetCard({ item, active, dragging, onSelect, onPlay, onEdit }: Preset
                 <Text style={styles.metaText}>{item.rounds} rounds</Text>
               </View>
               <View style={styles.metaChip}>
-                <Text style={styles.metaText}>{formatTime(item.rounds * (item.workSecs + item.restSecs))} min</Text>
+                <Text style={styles.metaText}>
+                  {formatTime(item.rounds * (item.workSecs + item.restSecs))} min
+                </Text>
               </View>
             </View>
           </View>
@@ -126,74 +124,65 @@ function PresetCard({ item, active, dragging, onSelect, onPlay, onEdit }: Preset
         </View>
       </Pressable>
     </Animated.View>
-  );
+  )
 }
 
-const DOT_SIZE = 6;
-const DOT_ACTIVE_W = 18;
+const DOT_SIZE = 6
+const DOT_ACTIVE_W = 18
 
 function AnimatedDot({ index, scrollX }: { index: number; scrollX: SharedValue<number> }) {
-  const snapInterval = CARD_W + CARD_GAP;
+  const snapInterval = CARD_W + CARD_GAP
 
   const animStyle = useAnimatedStyle(() => {
-    const progress = scrollX.value / snapInterval;
-    const diff = Math.abs(progress - index);
+    const progress = scrollX.value / snapInterval
+    const diff = Math.abs(progress - index)
 
-    const width = interpolate(
-      diff,
-      [0, 1],
-      [DOT_ACTIVE_W, DOT_SIZE],
-      'clamp'
-    );
+    const width = interpolate(diff, [0, 1], [DOT_ACTIVE_W, DOT_SIZE], 'clamp')
 
-    const backgroundColor = interpolateColor(
-      diff,
-      [0, 1],
-      [Colors.work, Colors.divider]
-    );
+    const backgroundColor = interpolateColor(diff, [0, 1], [Colors.work, Colors.divider])
 
-    return { width, backgroundColor };
-  });
+    return { width, backgroundColor }
+  })
 
-  return <Animated.View style={[styles.dot, animStyle]} />;
+  return <Animated.View style={[styles.dot, animStyle]} />
 }
 
 export default function PresetCarousel({ presets, selectedId, onSelect, onPlay, onEdit }: Props) {
-  const flatRef = useRef<FlatList>(null);
-  const cardScale = useSharedValue(1);
-  const dragging = useSharedValue(0);
-  const scrollX = useSharedValue(0);
-  const lastSnappedIndex = useRef(0);
+  const flatRef = useRef<FlatList>(null)
+  const cardScale = useSharedValue(1)
+  const dragging = useSharedValue(0)
+  const scrollX = useSharedValue(0)
+  const lastSnappedIndex = useRef(0)
 
   const onScroll = (e: any) => {
-    const offsetX = e.nativeEvent.contentOffset.x;
-    scrollX.value = offsetX;
-    const idx = Math.round(offsetX / (CARD_W + CARD_GAP));
-    const clamped = Math.max(0, Math.min(presets.length - 1, idx));
+    const offsetX = e.nativeEvent.contentOffset.x
+    scrollX.value = offsetX
+    const idx = Math.round(offsetX / (CARD_W + CARD_GAP))
+    const clamped = Math.max(0, Math.min(presets.length - 1, idx))
     if (clamped !== lastSnappedIndex.current) {
-      lastSnappedIndex.current = clamped;
-      onSelect(presets[clamped]);
+      lastSnappedIndex.current = clamped
+      onSelect(presets[clamped])
     }
-  };
+  }
 
   const onScrollBeginDrag = () => {
-    cardScale.value = withTiming(0.96, { duration: 150 });
-    dragging.value = withTiming(1, { duration: 150 });
-  };
+    cardScale.value = withTiming(0.96, { duration: 150 })
+    dragging.value = withTiming(1, { duration: 150 })
+  }
 
   const onScrollEndDrag = () => {
-    cardScale.value = withTiming(1, { duration: 250, easing: Easing.out(Easing.quad) });
-    dragging.value = withTiming(0, { duration: 250, easing: Easing.out(Easing.quad) });
-  };
+    cardScale.value = withTiming(1, { duration: 250, easing: Easing.out(Easing.quad) })
+    dragging.value = withTiming(0, { duration: 250, easing: Easing.out(Easing.quad) })
+  }
 
   const onMomentumScrollEnd = () => {
-    cardScale.value = withTiming(1, { duration: 250, easing: Easing.out(Easing.quad) });
-    dragging.value = withTiming(0, { duration: 250, easing: Easing.out(Easing.quad) });
-  };
+    cardScale.value = withTiming(1, { duration: 250, easing: Easing.out(Easing.quad) })
+    dragging.value = withTiming(0, { duration: 250, easing: Easing.out(Easing.quad) })
+  }
 
   const scaleStyle = useAnimatedStyle(() => ({
     transform: [{ scale: cardScale.value }],
-  }));
+  }))
 
   return (
     <View>
@@ -233,14 +222,14 @@ export default function PresetCarousel({ presets, selectedId, onSelect, onPlay, 
         ))}
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   card: {
     width: CARD_W,
     minHeight: 187,
-    backgroundColor: Colors.surface,
+    backgroundColor: Colors.planeBlack,
     borderRadius: Radii.xl,
     padding: 16,
     paddingTop: 14,
@@ -341,4 +330,4 @@ const styles = StyleSheet.create({
     height: 6,
     borderRadius: 3,
   },
-});
+})
