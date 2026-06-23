@@ -1,11 +1,37 @@
 // ─── Colour tokens ────────────────────────────────────────────────────────────
+export const BaseColors = {
+  fireOrange: '#ff3d3d',
+  fireOrangeLight: '#ff5050',
+  eucalyptus: '#00e5a0',
+  eucalyptusAlt: '#00B9D5',
+  brass: '#ffc300',
+  lavender: '#b388ff',
+  white: '#f0f0f0',
+  black: '#0d0d0d',
+} as const
+
+export const Grey = {
+  white: BaseColors.white,
+  grey100: BaseColors.white,
+  grey200: '#e0e0e0',
+  grey300: '#aaa',
+  grey400: '#888',
+  grey500: '#666',
+  grey600: '#555',
+  grey700: '#444',
+  grey800: '#353535',
+  grey900: '#2e2e2e',
+  grey950: '#181818',
+  black: BaseColors.black,
+} as const
+
 export const Colors = {
   // Background layers
-  bg: '#0d0d0d',
-  surface: '#181818',
-  border: '#505050',
-  borderHi: '#2e2e2e',
-  divider: '#444',
+  bg: BaseColors.black,
+  surface: Grey.grey950,
+  border: Grey.grey700,
+  borderHi: Grey.grey900,
+  divider: Grey.grey700,
 
   // Background gradient (applied per-screen, not a token value)
   // linear-gradient(to bottom, #560000 0%, #000 ~22%)
@@ -13,12 +39,12 @@ export const Colors = {
   gradientEnd: '#000000',
 
   // Phase accents
-  work: '#ff3d3d',
-  workLight: '#ff5050',
-  rest: '#00e5a0',
-  restAlt: '#00B9D5',
-  prep: '#ffc300',
-  strength: '#b388ff',
+  work: BaseColors.fireOrange,
+  workLight: BaseColors.fireOrangeLight,
+  rest: BaseColors.eucalyptus,
+  restAlt: BaseColors.eucalyptusAlt,
+  prep: BaseColors.brass,
+  strength: BaseColors.lavender,
 
   // Phase tint backgrounds
   workBgTint: 'rgba(255,61,61,0.13)',
@@ -35,29 +61,29 @@ export const Colors = {
   streakBorder: '#7e0000',
 
   // Text
-  textHi: '#f0f0f0',
-  textMid: '#e0e0e0',
-  textLo: '#aaa',
-  textMuted: '#888',
-  textDim: '#666',
-  textFaint: '#555',
-  textGhost: '#737373',
-  inputPlaceholder: '#6b6b6b',
+  textHi: BaseColors.white,
+  textMid: Grey.grey200,
+  textLo: Grey.grey300,
+  textMuted: Grey.grey400,
+  textDim: Grey.grey500,
+  textFaint: Grey.grey600,
+  textGhost: Grey.grey500,
+  inputPlaceholder: Grey.grey500,
 
   // Chart
-  barTrack: '#353535',
-  barFill: '#4b4b4b',
-  barToday: '#ff3d3d',
-  metaChip: '#373737',
+  barTrack: Grey.grey800,
+  barFill: Grey.grey700,
+  barToday: BaseColors.fireOrange,
+  metaChip: Grey.grey800,
 
   // Round progress (timer)
-  progressDone: '#919191',
-  progressActive: '#ff3d3d',
-  progressPending: '#4c4242',
+  progressDone: Grey.grey400,
+  progressActive: BaseColors.fireOrange,
+  progressPending: Grey.grey700,
 
   // Kcal / history
-  textKcal: '#777',
-  kcalValue: '#ff5555',
+  textKcal: Grey.grey500,
+  kcalValue: BaseColors.fireOrange,
 
   // Misc
   white: '#ffffff',
