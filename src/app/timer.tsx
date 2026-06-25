@@ -103,10 +103,10 @@ export default function TimerScreen() {
               id="cornerGlow"
               cx={windowWidth}
               cy={windowHeight / 1.25}
-              r={windowWidth * 1.1}
+              r={windowWidth / 1.25}
               gradientUnits="userSpaceOnUse"
             >
-              <Stop offset="0%" stopColor={phaseColor} stopOpacity={0.35} />
+              <Stop offset="0%" stopColor={phaseColor} stopOpacity={0.28} />
               <Stop offset="65%" stopColor={phaseColor} stopOpacity={0.1} />
               <Stop offset="100%" stopColor={phaseColor} stopOpacity={0} />
             </RadialGradient>
