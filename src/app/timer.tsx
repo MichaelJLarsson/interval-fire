@@ -62,7 +62,7 @@ export default function TimerScreen() {
   }
 
   const { skip } = useTimer(handleComplete)
-  const { width, height } = useWindowDimensions()
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
   if (!active) return null
 
@@ -95,14 +95,15 @@ export default function TimerScreen() {
       locations={[0, 0.22]}
       style={styles.gradient}
     >
+      {/* Radial background gradient */}
       <View style={StyleSheet.absoluteFill} pointerEvents="none">
-        <Svg width={width} height={height}>
+        <Svg width={windowWidth} height={windowHeight}>
           <Defs>
             <RadialGradient
               id="cornerGlow"
-              cx={width}
-              cy={height}
-              r={width * 1.1}
+              cx={windowWidth}
+              cy={windowHeight / 1.25}
+              r={windowWidth * 1.1}
               gradientUnits="userSpaceOnUse"
             >
               <Stop offset="0%" stopColor={phaseColor} stopOpacity={0.35} />
@@ -110,7 +111,7 @@ export default function TimerScreen() {
               <Stop offset="100%" stopColor={phaseColor} stopOpacity={0} />
             </RadialGradient>
           </Defs>
-          <Rect x={0} y={0} width={width} height={height} fill="url(#cornerGlow)" />
+          <Rect x={0} y={0} width={windowWidth} height={windowHeight} fill="url(#cornerGlow)" />
         </Svg>
       </View>
       <Pressable style={styles.screen} onPress={handleTap}>
