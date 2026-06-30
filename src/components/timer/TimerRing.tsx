@@ -34,7 +34,7 @@ export const PHASE_COLORS = {
 const PHASE_GRADIENT: Record<string, [string, string]> = {
   work: [Colors.workAlt, Colors.work],
   rest: [Colors.restAlt, Colors.rest],
-  prep: [Colors.prep, Colors.prep],
+  prep: [Colors.prepAlt, Colors.prep],
 }
 
 interface Props {
@@ -161,9 +161,9 @@ export default function TimerRing({
           <LinearGradient
             id="timerTextGrad"
             x1={CENTER}
-            y1={CENTER - 55}
+            y1={CENTER - 40}
             x2={CENTER}
-            y2={CENTER + 25}
+            y2={CENTER + 40}
             gradientUnits="userSpaceOnUse"
           >
             <Stop offset="0%" stopColor={gradStart} />
@@ -173,7 +173,7 @@ export default function TimerRing({
 
         <SvgText
           x={CENTER}
-          y={149}
+          y={164}
           textAnchor="middle"
           fontFamily={Fonts.condensed}
           fontSize={FontSizes.displayXL}
@@ -185,7 +185,7 @@ export default function TimerRing({
 
         <SvgText
           x={CENTER}
-          y={188}
+          y={184}
           textAnchor="middle"
           fontFamily={Fonts.bodySemiBold}
           fontSize={13}

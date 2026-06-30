@@ -13,9 +13,10 @@ const fireAlt = '#FF873D'
 const mint = '#00e5a0'
 const sky = '#00b9d5'
 const brass = '#ffc300'
+const brassAlt = '#FFFB7A'
 const plum = '#b388ff'
 
-export const Brand = { fire, fireHi, mint, sky, brass, plum } as const
+export const Brand = { fire, fireHi, mint, sky, brass, brassAlt, plum } as const
 
 // ─── Neutral scale (light → dark) ─────────────────────────────────────────────
 export const Neutral = {
@@ -54,6 +55,7 @@ export const Colors = {
   rest: mint,
   restAlt: sky,
   prep: brass,
+  prepAlt: brassAlt,
   strength: plum,
 
   // Phase tint backgrounds (derived from brand hues)
