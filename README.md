@@ -25,6 +25,18 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## Formatting & linting
+
+This project uses [Prettier](https://prettier.io) for code formatting and ESLint for linting, configured in `.prettierrc` and `eslint.config.js` respectively.
+
+```bash
+npm run format        # format all files in place
+npm run format:check  # check formatting without writing (CI-friendly)
+npm run lint          # run ESLint
+```
+
+A **pre-commit hook** (managed with [Husky](https://typicode.github.io/husky) + [lint-staged](https://github.com/lint-staged/lint-staged)) runs automatically on `git commit`: it runs `eslint --fix` and `prettier --write` on staged `.js/.jsx/.ts/.tsx` files, and `prettier --write` on staged `.json/.md/.yml/.yaml/.css` files, then re-stages the fixed versions. The hook is installed automatically via the `prepare` script when you run `npm install`. If a file has a lint error that can't be auto-fixed, the commit is blocked until you fix it.
+
 ## Audio cues
 
 The timer plays two kinds of sounds: spoken **voice announcements** (pre-rendered ElevenLabs MP3s) and synthesized **beeps** (WAV tones). Both are bundled assets — there's no runtime TTS or network call.
