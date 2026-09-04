@@ -80,6 +80,7 @@ export default function BuildScreen() {
 
   const [p, setP] = useState<Preset>(() => existingPreset ?? { ...DEFAULT })
   const initialPresetRef = useRef<Preset>(existingPreset ?? { ...DEFAULT })
+  const skipRemovePromptRef = useRef(false)
   const isEditing = !!existingPreset
   const [isNameEditing, setIsNameEditing] = useState(!isEditing)
   const nameInputRef = useRef<TextInput>(null)
@@ -138,11 +139,13 @@ export default function BuildScreen() {
 
   const handleSave = () => {
     persist()
+    skipRemovePromptRef.current = true
     router.back()
   }
 
   const handleSaveStart = () => {
     const saved = persist()
+    skipRemovePromptRef.current = true
     startWorkout(saved)
     router.dismiss()
     router.push('/timer')
@@ -160,6 +163,10 @@ export default function BuildScreen() {
     p.cooldownSecs !== initial.cooldownSecs
 
   usePreventRemove(hasUnsavedChanges, ({ data }) => {
+    if (skipRemovePromptRef.current) {
+      navigation.dispatch(data.action)
+      return
+    }
     Alert.alert('Save changes?', 'You have unsaved changes to this workout.', [
       {
         text: 'Discard',
