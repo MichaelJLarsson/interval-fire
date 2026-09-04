@@ -1,20 +1,20 @@
-import { WorkoutRecord } from '@/store/historyStore';
+import { WorkoutRecord } from '@/store/historyStore'
 
 // Mock activities matching the Figma design spec (home screen "Recent" section).
 // Used as a fallback when the user has no real history yet.
 function daysAgo(n: number): number {
-  const d = new Date();
-  d.setDate(d.getDate() - n);
-  d.setHours(9, 0, 0, 0);
-  return d.getTime();
+  const d = new Date()
+  d.setDate(d.getDate() - n)
+  d.setHours(9, 0, 0, 0)
+  return d.getTime()
 }
 
 // Compute how many days back the most recent weekday label should be.
 // e.g. "last Monday" = most recent past Monday (not today even if today is Mon).
 function daysBackToWeekday(target: number): number {
-  const today = new Date().getDay();
-  const diff = (today - target + 7) % 7;
-  return diff === 0 ? 7 : diff;
+  const today = new Date().getDay()
+  const diff = (today - target + 7) % 7
+  return diff === 0 ? 7 : diff
 }
 
 export const MOCK_HISTORY: WorkoutRecord[] = [
@@ -63,17 +63,17 @@ export const MOCK_HISTORY: WorkoutRecord[] = [
     roundsCompleted: 8,
     kcalBurned: 310,
   },
-];
+]
 
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 export function formatRelativeDate(ts: number): string {
-  const now = new Date();
-  const then = new Date(ts);
-  const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-  const diffDays = Math.round((startOfDay(now) - startOfDay(then)) / 86400000);
-  if (diffDays <= 0) return 'Today';
-  if (diffDays === 1) return 'Yesterday';
-  if (diffDays < 7) return WEEKDAYS[then.getDay()];
-  return then.toLocaleDateString();
+  const now = new Date()
+  const then = new Date(ts)
+  const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()
+  const diffDays = Math.round((startOfDay(now) - startOfDay(then)) / 86400000)
+  if (diffDays <= 0) return 'Today'
+  if (diffDays === 1) return 'Yesterday'
+  if (diffDays < 7) return WEEKDAYS[then.getDay()]
+  return then.toLocaleDateString()
 }

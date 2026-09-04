@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg'
 
-type Props = { color?: string; size?: number };
+type Props = { color?: string; size?: number }
 
 export default function TrophyIcon({ color = '#FF3D3D', size = 18 }: Props) {
   return (
@@ -12,5 +12,5 @@ export default function TrophyIcon({ color = '#FF3D3D', size = 18 }: Props) {
         fill={color}
       />
     </Svg>
-  );
+  )
 }

@@ -1,11 +1,11 @@
-import React from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import React from 'react'
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
-import { Colors, FontSizes, Radii } from '@/constants/theme';
+import { Colors, FontSizes, Radii } from '@/constants/theme'
 
 interface Props {
-  streak: number;
-  style?: ViewStyle;
+  streak: number
+  style?: ViewStyle
 }
 
 export default function StreakBanner({ streak, style }: Props) {
@@ -13,7 +13,7 @@ export default function StreakBanner({ streak, style }: Props) {
     <View style={[styles.banner, style]}>
       <Text style={styles.text}>🔥 {streak}-day streak - keep it up!</Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: Colors.work,
   },
-});
+})

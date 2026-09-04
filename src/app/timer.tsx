@@ -47,7 +47,7 @@ export default function TimerScreen() {
     }
   }, [active])
 
-  const handleComplete = (preset: Preset, elapsedSecs: number) => {
+  const handleComplete = (preset: Preset, elapsedSecs: number, roundsCompleted: number) => {
     setFlashPhase('finish')
     setTimeout(() => {
       router.replace({
@@ -55,7 +55,7 @@ export default function TimerScreen() {
         params: {
           name: preset.name,
           elapsedSecs: String(elapsedSecs),
-          rounds: String(active?.round ?? preset.rounds),
+          rounds: String(roundsCompleted),
         },
       })
     }, 650)

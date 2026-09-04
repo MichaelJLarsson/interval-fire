@@ -1,21 +1,21 @@
-import React from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import React from 'react'
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
-import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
+import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme'
 
-type Variant = 'default' | 'eucalyptus' | 'white';
+type Variant = 'default' | 'eucalyptus' | 'white'
 
 const VALUE_COLORS: Record<Variant, string> = {
-  default:    Colors.workLight,
+  default: Colors.workLight,
   eucalyptus: Colors.rest,
-  white:      Colors.textHi,
-};
+  white: Colors.textHi,
+}
 
 interface Props {
-  label: string;
-  value: string;
-  variant?: Variant;
-  style?: ViewStyle;
+  label: string
+  value: string
+  variant?: Variant
+  style?: ViewStyle
 }
 
 export default function SummaryCard({ label, value, variant = 'default', style }: Props) {
@@ -24,7 +24,7 @@ export default function SummaryCard({ label, value, variant = 'default', style }
       <Text style={styles.label}>{label}</Text>
       <Text style={[styles.value, { color: VALUE_COLORS[variant] }]}>{value}</Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -46,4 +46,4 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.condensedBold,
     fontSize: FontSizes.displaySm,
   },
-});
+})

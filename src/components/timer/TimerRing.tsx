@@ -49,6 +49,37 @@ interface Props {
 
 const offsetFor = (progress: number) => CIRCUMFERENCE * (1 - Math.max(0, Math.min(1, progress)))
 
+// Fixed slot widths for the countdown digits so the display doesn't shift
+// horizontally as narrower/wider glyphs (e.g. "1" vs "0") cycle through.
+const DIGIT_SLOT_WIDTH = 48
+const COLON_SLOT_WIDTH = 22
+
+function renderFixedWidthCountdown(text: string, centerX: number, y: number) {
+  const chars = text.split('')
+  const widths = chars.map((char) => (char === ':' ? COLON_SLOT_WIDTH : DIGIT_SLOT_WIDTH))
+  const totalWidth = widths.reduce((sum, width) => sum + width, 0)
+  let cursor = centerX - totalWidth / 2
+
+  return chars.map((char, index) => {
+    const slotWidth = widths[index]
+    const x = cursor + slotWidth / 2
+    cursor += slotWidth
+    return (
+      <SvgText
+        key={index}
+        x={x}
+        y={y}
+        textAnchor="middle"
+        fontFamily={Fonts.condensed}
+        fontSize={FontSizes.displayXL}
+        fill="url(#timerTextGrad)"
+      >
+        {char}
+      </SvgText>
+    )
+  })
+}
+
 export default function TimerRing({
   progress,
   color,
@@ -171,17 +202,7 @@ export default function TimerRing({
           </LinearGradient>
         </Defs>
 
-        <SvgText
-          x={CENTER}
-          y={164}
-          textAnchor="middle"
-          fontFamily={Fonts.condensed}
-          fontSize={FontSizes.displayXL}
-          fill="url(#timerTextGrad)"
-          letterSpacing={-2}
-        >
-          {countdownText}
-        </SvgText>
+        {renderFixedWidthCountdown(countdownText, CENTER, 164)}
 
         <SvgText
           x={CENTER}

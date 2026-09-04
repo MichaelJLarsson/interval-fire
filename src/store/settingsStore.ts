@@ -1,12 +1,12 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { create } from 'zustand';
-import { createJSONStorage,persist } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface SettingsState {
-  audioEnabled: boolean;
-  voiceEnabled: boolean;
-  setAudio: (v: boolean) => void;
-  setVoice: (v: boolean) => void;
+  audioEnabled: boolean
+  voiceEnabled: boolean
+  setAudio: (v: boolean) => void
+  setVoice: (v: boolean) => void
 }
 
 export const useSettingsStore = create<SettingsState>()(
@@ -20,6 +20,6 @@ export const useSettingsStore = create<SettingsState>()(
     {
       name: 'interval-fire-settings',
       storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
-);
+    },
+  ),
+)

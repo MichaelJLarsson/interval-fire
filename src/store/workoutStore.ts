@@ -1,29 +1,29 @@
-import { create } from 'zustand';
+import { create } from 'zustand'
 
-import { Preset } from '@/constants/presets';
+import { Preset } from '@/constants/presets'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-export type Phase = 'prep' | 'work' | 'rest';
+export type Phase = 'prep' | 'work' | 'rest'
 
 export interface ActiveWorkout {
-  preset: Preset;
-  phase: Phase;
-  round: number;          // 0 during prep, 1-based during intervals
-  secondsLeft: number;
-  totalSecsInPhase: number;
-  startTimestamp: number; // Date.now() at workout start — for elapsed time
-  isPaused: boolean;
+  preset: Preset
+  phase: Phase
+  round: number // 0 during prep, 1-based during intervals
+  secondsLeft: number
+  totalSecsInPhase: number
+  startTimestamp: number // Date.now() at workout start — for elapsed time
+  isPaused: boolean
 }
 
 interface WorkoutState {
-  active: ActiveWorkout | null;
+  active: ActiveWorkout | null
   // Actions
-  startWorkout: (preset: Preset) => void;
-  setPhase: (phase: Phase, secondsLeft: number, totalSecs: number, round?: number) => void;
-  tick: () => void;
-  pause: () => void;
-  resume: () => void;
-  stop: () => void;
+  startWorkout: (preset: Preset) => void
+  setPhase: (phase: Phase, secondsLeft: number, totalSecs: number, round?: number) => void
+  tick: () => void
+  pause: () => void
+  resume: () => void
+  stop: () => void
 }
 
 export const useWorkoutStore = create<WorkoutState>((set, get) => ({
@@ -58,13 +58,13 @@ export const useWorkoutStore = create<WorkoutState>((set, get) => ({
 
   tick: () =>
     set((state) => {
-      if (!state.active || state.active.isPaused) return state;
+      if (!state.active || state.active.isPaused) return state
       return {
         active: {
           ...state.active,
           secondsLeft: Math.max(0, state.active.secondsLeft - 1),
         },
-      };
+      }
     }),
 
   pause: () =>
@@ -78,4 +78,4 @@ export const useWorkoutStore = create<WorkoutState>((set, get) => ({
     })),
 
   stop: () => set({ active: null }),
-}));
+}))

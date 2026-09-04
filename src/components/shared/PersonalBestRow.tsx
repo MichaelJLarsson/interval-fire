@@ -1,34 +1,39 @@
-import React from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import React from 'react'
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
-import { Colors, Fonts, FontSizes } from '@/constants/theme';
+import { Colors, Fonts, FontSizes } from '@/constants/theme'
 
 interface Props {
-  icon: React.ReactNode;
-  iconBg: string;
-  title: string;
-  subtitle: string;
-  value: string;
-  valueColor: string;
-  showDivider?: boolean;
-  style?: ViewStyle;
+  icon: React.ReactNode
+  iconBg: string
+  title: string
+  subtitle: string
+  value: string
+  valueColor: string
+  showDivider?: boolean
+  style?: ViewStyle
 }
 
 export default function PersonalBestRow({
-  icon, iconBg, title, subtitle, value, valueColor, showDivider = true, style,
+  icon,
+  iconBg,
+  title,
+  subtitle,
+  value,
+  valueColor,
+  showDivider = true,
+  style,
 }: Props) {
   return (
     <View style={[styles.row, showDivider && styles.divider, style]}>
-      <View style={[styles.iconWrap, { backgroundColor: iconBg }]}>
-        {icon}
-      </View>
+      <View style={[styles.iconWrap, { backgroundColor: iconBg }]}>{icon}</View>
       <View style={styles.info}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
       </View>
       <Text style={[styles.value, { color: valueColor }]}>{value}</Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -66,4 +71,4 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.displaySm,
     textAlign: 'right',
   },
-});
+})
