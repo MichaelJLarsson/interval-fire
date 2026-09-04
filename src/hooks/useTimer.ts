@@ -12,7 +12,9 @@ import { useHaptics } from './useHaptics'
 
 const COUNTDOWN_PHRASES: Record<number, VoicePhrase> = { 1: 'one', 2: 'two', 3: 'three' }
 
-export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => void) {
+export function useTimer(
+  onComplete: (preset: Preset, elapsedSecs: number, roundsCompleted: number) => void,
+) {
   const { active, tick, setPhase, stop } = useWorkoutStore()
   const { addRecord } = useHistoryStore()
   const { playBeep, playTick, speak } = useAudio()
@@ -56,7 +58,7 @@ export function useTimer(onComplete: (preset: Preset, elapsedSecs: number) => vo
         stop()
         playBeep('finish')
         speak('complete')
-        onComplete(preset, elapsedSecs)
+        onComplete(preset, elapsedSecs, round)
         return true
       }
       setPhase('rest', preset.restSecs, preset.restSecs)
