@@ -1,18 +1,25 @@
-import React from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import React from 'react'
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
-import { Colors, Fonts, FontSizes } from '@/constants/theme';
+import { Colors, Fonts, FontSizes } from '@/constants/theme'
 
 interface Props {
-  title: string;
-  subtitle: string;
-  value: string;
-  unit?: string;
-  showDivider?: boolean;
-  style?: ViewStyle;
+  title: string
+  subtitle: string
+  value: string
+  unit?: string
+  showDivider?: boolean
+  style?: ViewStyle
 }
 
-export default function HistoryRow({ title, subtitle, value, unit = 'kcal', showDivider = true, style }: Props) {
+export default function HistoryRow({
+  title,
+  subtitle,
+  value,
+  unit = 'kcal',
+  showDivider = true,
+  style,
+}: Props) {
   return (
     <View style={[styles.row, showDivider && styles.divider, style]}>
       <View style={styles.info}>
@@ -24,7 +31,7 @@ export default function HistoryRow({ title, subtitle, value, unit = 'kcal', show
         <Text style={styles.unit}>{unit}</Text>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -64,4 +71,4 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginTop: 2,
   },
-});
+})

@@ -1,75 +1,62 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  Animated,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import { useFocusEffect, useRouter } from 'expo-router';
+import React, { useEffect, useRef, useState } from 'react'
+import { Animated, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { useFocusEffect, useRouter } from 'expo-router'
 
-import PresetCarousel from '@/components/home/PresetCarousel';
-import CTAButton from '@/components/shared/CTAButton';
-import FireIcon from '@/components/shared/FireIcon';
-import GradientScreen from '@/components/shared/GradientScreen';
-import HistoryRow from '@/components/shared/HistoryRow';
-import SectionLabel from '@/components/shared/SectionLabel';
-import StreakPill from '@/components/shared/StreakPill';
-import { formatRelativeDate } from '@/constants/mockHistory';
-import { Preset, TYPE_LABELS } from '@/constants/presets';
-import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme';
-import { computeStreak, useHistoryStore } from '@/store/historyStore';
-import { usePresetsStore } from '@/store/presetsStore';
-import { useWorkoutStore } from '@/store/workoutStore';
+import PresetCarousel from '@/components/home/PresetCarousel'
+import CTAButton from '@/components/shared/CTAButton'
+import FireIcon from '@/components/shared/FireIcon'
+import GradientScreen from '@/components/shared/GradientScreen'
+import HistoryRow from '@/components/shared/HistoryRow'
+import SectionLabel from '@/components/shared/SectionLabel'
+import StreakPill from '@/components/shared/StreakPill'
+import { formatRelativeDate } from '@/constants/mockHistory'
+import { Preset, TYPE_LABELS } from '@/constants/presets'
+import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme'
+import { computeStreak, useHistoryStore } from '@/store/historyStore'
+import { usePresetsStore } from '@/store/presetsStore'
+import { useWorkoutStore } from '@/store/workoutStore'
 
 export default function HomeScreen() {
-  const router = useRouter();
-  const { startWorkout } = useWorkoutStore();
-  const { records } = useHistoryStore();
-  const presets = usePresetsStore((s) => s.presets);
-  const [selectedId, setSelectedId] = useState<string | null>(presets[0]?.id ?? null);
+  const router = useRouter()
+  const { startWorkout } = useWorkoutStore()
+  const { records } = useHistoryStore()
+  const presets = usePresetsStore((s) => s.presets)
+  const [selectedId, setSelectedId] = useState<string | null>(presets[0]?.id ?? null)
 
   useEffect(() => {
     if (presets.length === 0) {
-      if (selectedId !== null) setSelectedId(null);
+      if (selectedId !== null) setSelectedId(null)
     } else if (!presets.some((p) => p.id === selectedId)) {
-      setSelectedId(presets[0].id);
+      setSelectedId(presets[0].id)
     }
-  }, [presets, selectedId]);
+  }, [presets, selectedId])
 
-  const scrollRef = useRef<ScrollView>(null);
-  const moreStatsScale = useRef(new Animated.Value(1)).current;
-  const streak = computeStreak(records);
+  const scrollRef = useRef<ScrollView>(null)
+  const moreStatsScale = useRef(new Animated.Value(1)).current
+  const streak = computeStreak(records)
 
   useFocusEffect(
     React.useCallback(() => {
-      scrollRef.current?.scrollTo({ y: 0, animated: false });
-    }, [])
-  );
+      scrollRef.current?.scrollTo({ y: 0, animated: false })
+    }, []),
+  )
 
   const handlePlay = (preset: Preset) => {
-    startWorkout(preset);
-    router.push('/timer');
-  };
+    startWorkout(preset)
+    router.push('/timer')
+  }
 
   const handleEdit = (preset: Preset) => {
-    router.push({ pathname: '/build', params: { presetId: preset.id } });
-  };
+    router.push({ pathname: '/build', params: { presetId: preset.id } })
+  }
 
   return (
     <GradientScreen>
-      <ScrollView
-        ref={scrollRef}
-        style={styles.scroll}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView ref={scrollRef} style={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
           <FireIcon size={64} color={Colors.work} strokeColor={Colors.bg} />
-          {streak > 0 && (
-            <StreakPill label={`${streak}-day streak`} />
-          )}
+          {streak > 0 && <StreakPill label={`${streak}-day streak`} />}
         </View>
 
         {/* Quick start */}
@@ -97,13 +84,15 @@ export default function HomeScreen() {
         </View>
 
         {/* Recent */}
-        <SectionLabel style={[styles.sectionLabel, { marginTop: 0, marginBottom: 2 }]}>Recent</SectionLabel>
+        <SectionLabel style={[styles.sectionLabel, { marginTop: 0, marginBottom: 2 }]}>
+          Recent
+        </SectionLabel>
         <View style={styles.historyList}>
           {records.length === 0 ? (
             <Text style={styles.emptyRecent}>Complete a workout to see your recent activity.</Text>
           ) : (
             records.slice(0, 3).map((r, i, arr) => {
-              const mins = Math.round(r.durationSecs / 60);
+              const mins = Math.round(r.durationSecs / 60)
               return (
                 <HistoryRow
                   key={r.id}
@@ -112,7 +101,7 @@ export default function HomeScreen() {
                   value={String(r.kcalBurned)}
                   showDivider={i < arr.length - 1}
                 />
-              );
+              )
             })
           )}
         </View>
@@ -123,8 +112,20 @@ export default function HomeScreen() {
             <Pressable
               style={styles.moreStatsBtn}
               onPress={() => router.push('/stats')}
-              onPressIn={() => Animated.timing(moreStatsScale, { toValue: 0.95, duration: 100, useNativeDriver: true }).start()}
-              onPressOut={() => Animated.timing(moreStatsScale, { toValue: 1, duration: 100, useNativeDriver: true }).start()}
+              onPressIn={() =>
+                Animated.timing(moreStatsScale, {
+                  toValue: 0.95,
+                  duration: 100,
+                  useNativeDriver: true,
+                }).start()
+              }
+              onPressOut={() =>
+                Animated.timing(moreStatsScale, {
+                  toValue: 1,
+                  duration: 100,
+                  useNativeDriver: true,
+                }).start()
+              }
             >
               <Text style={styles.moreStatsText}>MORE STATS</Text>
             </Pressable>
@@ -133,7 +134,7 @@ export default function HomeScreen() {
         <View style={{ height: 20 }} />
       </ScrollView>
     </GradientScreen>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -215,4 +216,4 @@ const styles = StyleSheet.create({
     color: Colors.textLo,
     marginTop: 6,
   },
-});
+})

@@ -49,13 +49,13 @@ export default function CompleteScreen() {
   const checkScale = useSharedValue(0)
   const checkOpacity = useSharedValue(0)
   const contentOpacity = useSharedValue(0)
-  
+
   const [explosions, setExplosions] = useState<Explosion[]>([])
 
   const triggerExplosion = useCallback(() => {
     const id = Date.now()
     setExplosions((prev) => [...prev, { id }])
-    
+
     // Re-trigger the spring animation for the checkmark
     checkScale.value = 0.8
     checkScale.value = withSpring(1, { damping: 10, stiffness: 200 })
@@ -86,9 +86,10 @@ export default function CompleteScreen() {
     <GradientScreen style={styles.inner}>
       {/* Checkmark */}
       <View style={styles.checkContainer}>
-        <Pressable onPress={triggerExplosion} style={({ pressed }) => [
-          { transform: [{ scale: pressed ? 0.92 : 1 }] }
-        ]}>
+        <Pressable
+          onPress={triggerExplosion}
+          style={({ pressed }) => [{ transform: [{ scale: pressed ? 0.92 : 1 }] }]}
+        >
           <Animated.View style={[styles.checkWrap, checkStyle]}>
             <Svg width={90} height={90} viewBox="0 0 90 90">
               <Circle

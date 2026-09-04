@@ -9,16 +9,16 @@
 
 ### Backgrounds
 
-| Token        | Hex         | Usage                                      |
-| ------------ | ----------- | ------------------------------------------ |
-| `bg`         | `#0d0d0d`   | App background (below gradient)            |
-| `surface`    | `#1e1e1e`   | Summary cards, chart backgrounds           |
-| `surfaceLo`  | `#181818`   | Subtle surface variant                     |
-| `offBlack`   | `#151515`   | Ghost/outline button fill                  |
-| `planeBlack` | `#262626`   | Setting rows, text inputs, stepper buttons |
-| `border`     | `#505050`   | Stepper/button borders                     |
-| `borderHi`   | `#2e2e2e`   | Subtle dividers                            |
-| `divider`    | `#444`      | Dividers                                   |
+| Token        | Hex       | Usage                                      |
+| ------------ | --------- | ------------------------------------------ |
+| `bg`         | `#0d0d0d` | App background (below gradient)            |
+| `surface`    | `#1e1e1e` | Summary cards, chart backgrounds           |
+| `surfaceLo`  | `#181818` | Subtle surface variant                     |
+| `offBlack`   | `#151515` | Ghost/outline button fill                  |
+| `planeBlack` | `#262626` | Setting rows, text inputs, stepper buttons |
+| `border`     | `#505050` | Stepper/button borders                     |
+| `borderHi`   | `#2e2e2e` | Subtle dividers                            |
+| `divider`    | `#444`    | Dividers                                   |
 
 ### Background Gradient
 
@@ -32,59 +32,59 @@ Applied to the screen root, fading from deep red to black.
 
 ### Phase Accents
 
-| Token       | Hex         | Usage                                  |
-| ----------- | ----------- | -------------------------------------- |
-| `work`      | `#ff3d3d`   | Work phase, primary CTA fills          |
-| `workLight` | `#ff6060`   | Work phase lighter variant, card text  |
-| `workSoft`  | `#ff5050`   | Summary data values (work-related)     |
-| `rest`      | `#00e5a0`   | Rest phase, "eucalyptus" accent        |
-| `prep`      | `#ffc300`   | Prep/countdown phase, "clock" accent   |
-| `strength`  | `#b388ff`   | Strength/kcal accent, "plum"           |
+| Token       | Hex       | Usage                                 |
+| ----------- | --------- | ------------------------------------- |
+| `work`      | `#ff3d3d` | Work phase, primary CTA fills         |
+| `workLight` | `#ff6060` | Work phase lighter variant, card text |
+| `workSoft`  | `#ff5050` | Summary data values (work-related)    |
+| `rest`      | `#00e5a0` | Rest phase, "eucalyptus" accent       |
+| `prep`      | `#ffc300` | Prep/countdown phase, "clock" accent  |
+| `strength`  | `#b388ff` | Strength/kcal accent, "plum"          |
 
 ### Phase Accent Backgrounds (16% opacity tints)
 
-| Token          | Value                    | Usage                        |
-| -------------- | ------------------------ | ---------------------------- |
-| `workBgTint`   | `rgba(255,61,61, 0.13)`  | Streak pill bg, work pill bg |
-| `workBgTint2`  | `rgba(255,61,61, 0.15)`  | Phase pill (red)             |
-| `workBgTint3`  | `rgba(255,61,61, 0.19)`  | Selected type chip bg        |
-| `workBorder`   | `rgba(255,61,61, 0.33)`  | Streak pill border           |
-| `workBgButton` | `rgba(255,61,61, 0.30)`  | Edit button bg               |
-| `restBgTint`   | `#213d35`                | Phase pill (green)           |
-| `restIconBg`   | `rgba(0,229,160, 0.16)`  | Personal best icon bg        |
-| `restCheckBg`  | `rgba(0,229,160, 0.09)`  | Completion checkmark bg      |
-| `prepIconBg`   | `rgba(255,195,0, 0.16)`  | Personal best icon bg        |
-| `plumIconBg`   | `rgba(179,136,255, 0.16)`| Personal best icon bg        |
-| `streakBanner` | `#350000`                | Streak banner bg             |
-| `streakBorder` | `#7e0000`                | Streak banner border         |
+| Token          | Value                     | Usage                        |
+| -------------- | ------------------------- | ---------------------------- |
+| `workBgTint`   | `rgba(255,61,61, 0.13)`   | Streak pill bg, work pill bg |
+| `workBgTint2`  | `rgba(255,61,61, 0.15)`   | Phase pill (red)             |
+| `workBgTint3`  | `rgba(255,61,61, 0.19)`   | Selected type chip bg        |
+| `workBorder`   | `rgba(255,61,61, 0.33)`   | Streak pill border           |
+| `workBgButton` | `rgba(255,61,61, 0.30)`   | Edit button bg               |
+| `restBgTint`   | `#213d35`                 | Phase pill (green)           |
+| `restIconBg`   | `rgba(0,229,160, 0.16)`   | Personal best icon bg        |
+| `restCheckBg`  | `rgba(0,229,160, 0.09)`   | Completion checkmark bg      |
+| `prepIconBg`   | `rgba(255,195,0, 0.16)`   | Personal best icon bg        |
+| `plumIconBg`   | `rgba(179,136,255, 0.16)` | Personal best icon bg        |
+| `streakBanner` | `#350000`                 | Streak banner bg             |
+| `streakBorder` | `#7e0000`                 | Streak banner border         |
 
 ### Text
 
-| Token              | Hex       | Usage                                      |
-| ------------------ | --------- | ------------------------------------------ |
-| `textHi`           | `#f0f0f0` | Primary text, headings, button labels      |
-G| `textLo`           | `#aaa`    | Secondary text (sub-labels, metadata)      |
-| `textDim`          | `#666`    | Disabled / very subtle text                |
-| `textFaint`        | `#555`    | Faintest text                              |
-| `textGhost`        | `#737373` | "Tap anywhere" hint text                   |
-| `inputPlaceholder` | `#6b6b6b` | Text input placeholder                     |
+| Token              | Hex       | Usage                                 |
+| ------------------ | --------- | ------------------------------------- |
+| `textHi`           | `#f0f0f0` | Primary text, headings, button labels |
+| G                  | `textLo`  | `#aaa`                                | Secondary text (sub-labels, metadata) |
+| `textDim`          | `#666`    | Disabled / very subtle text           |
+| `textFaint`        | `#555`    | Faintest text                         |
+| `textGhost`        | `#737373` | "Tap anywhere" hint text              |
+| `inputPlaceholder` | `#6b6b6b` | Text input placeholder                |
 
 ### Chart Colors
 
-| Token         | Hex       | Usage                      |
-| ------------- | --------- | -------------------------- |
-| `barTrack`    | `#353535` | Bar chart background track |
-| `barFill`     | `#4b4b4b` | Bar chart filled portion   |
-| `barToday`    | `#ff3d3d` | Today's bar accent         |
-| `metaChip`    | `#373737` | Info chips (rounds, time)  |
+| Token      | Hex       | Usage                      |
+| ---------- | --------- | -------------------------- |
+| `barTrack` | `#353535` | Bar chart background track |
+| `barFill`  | `#4b4b4b` | Bar chart filled portion   |
+| `barToday` | `#ff3d3d` | Today's bar accent         |
+| `metaChip` | `#373737` | Info chips (rounds, time)  |
 
 ### Round Progress Bar (Timer)
 
-| Token              | Hex       | Usage               |
-| ------------------ | --------- | -------------------- |
-| `progressDone`     | `#919191` | Completed rounds     |
-| `progressActive`   | `#ff3d3d` | Current round        |
-| `progressPending`  | `#4c4242` | Upcoming rounds      |
+| Token             | Hex       | Usage            |
+| ----------------- | --------- | ---------------- |
+| `progressDone`    | `#919191` | Completed rounds |
+| `progressActive`  | `#ff3d3d` | Current round    |
+| `progressPending` | `#4c4242` | Upcoming rounds  |
 
 ---
 
@@ -92,10 +92,10 @@ G| `textLo`           | `#aaa`    | Secondary text (sub-labels, metadata)      |
 
 ### Font Families
 
-| Token       | Family                  | Usage                                |
-| ----------- | ----------------------- | ------------------------------------ |
-| `condensed` | Barlow Semi Condensed   | Display headings, timer digits, CTAs |
-| `body`      | Inter                   | Body text, labels, sub-labels        |
+| Token       | Family                | Usage                                |
+| ----------- | --------------------- | ------------------------------------ |
+| `condensed` | Barlow Semi Condensed | Display headings, timer digits, CTAs |
+| `body`      | Inter                 | Body text, labels, sub-labels        |
 
 > Resolved: Codebase now uses `@expo-google-fonts/barlow-semi-condensed` to match Figma. Font tokens: `BarlowSemiCondensed_800ExtraBold`, `BarlowSemiCondensed_700Bold`, `BarlowSemiCondensed_500Medium`.
 
@@ -103,18 +103,18 @@ G| `textLo`           | `#aaa`    | Secondary text (sub-labels, metadata)      |
 
 Consolidated scale exported as `FontSizes` from `src/constants/theme.ts`.
 
-| Token       | Size  | Typical Usage                                                             |
-| ----------- | ----- | ------------------------------------------------------------------------- |
-| `displayXL` | 82px  | Timer countdown digits                                                    |
-| `displayLg` | 40px  | "Workout Complete!" headline                                              |
-| `displayMd` | 36px  | Preset card title ("TABATA CLASSIC")                                      |
-| `displaySm` | 30px  | Summary data values, logo                                                 |
-| `headingLg` | 26px  | Screen titles ("Build Workout", "Your Stats")                             |
-| `headingMd` | 20px  | CTA button text, timer workout name                                       |
-| `bodyXl`    | 18px  | Kcal values in history, emphasized body                                   |
-| `body`      | 14px  | History titles, setting labels, inputs, streak text, edit button          |
-| `caption`   | 12px  | Sub-labels, metadata lines, secondary body                                |
-| `label`     | 10px  | Uppercase section headers, pills, chips, type chip labels                 |
+| Token       | Size | Typical Usage                                                    |
+| ----------- | ---- | ---------------------------------------------------------------- |
+| `displayXL` | 82px | Timer countdown digits                                           |
+| `displayLg` | 40px | "Workout Complete!" headline                                     |
+| `displayMd` | 36px | Preset card title ("TABATA CLASSIC")                             |
+| `displaySm` | 30px | Summary data values, logo                                        |
+| `headingLg` | 26px | Screen titles ("Build Workout", "Your Stats")                    |
+| `headingMd` | 20px | CTA button text, timer workout name                              |
+| `bodyXl`    | 18px | Kcal values in history, emphasized body                          |
+| `body`      | 14px | History titles, setting labels, inputs, streak text, edit button |
+| `caption`   | 12px | Sub-labels, metadata lines, secondary body                       |
+| `label`     | 10px | Uppercase section headers, pills, chips, type chip labels        |
 
 ### Label Convention
 
@@ -138,26 +138,26 @@ All `label`-style text is **UPPERCASE** with `letterSpacing: 1.5px`. Used for se
 
 ### Card Padding
 
-| Component      | Padding          |
-| -------------- | ---------------- |
-| Summary card   | 16px H, 19px V   |
-| Setting row    | 18px H, 16px V   |
-| Text input     | 17px H           |
-| CTA button     | 31px H, 16-17px V|
-| Ghost button   | 17px H, 13px V   |
+| Component    | Padding           |
+| ------------ | ----------------- |
+| Summary card | 16px H, 19px V    |
+| Setting row  | 18px H, 16px V    |
+| Text input   | 17px H            |
+| CTA button   | 31px H, 16-17px V |
+| Ghost button | 17px H, 13px V    |
 
 ---
 
 ## 4. Border Radii
 
-| Token  | Value  | Usage                                                   |
-| ------ | ------ | ------------------------------------------------------- |
-| `sm`   | 8px    | Phase pills, stepper buttons, round progress bar, chips |
-| `md`   | 12px   | Type chips, text input, streak banner                   |
-| `lg`   | 13px   | Summary cards, chart container, PB container            |
-| `xl`   | 14px   | Setting rows, CTA buttons                               |
-| `pill` | 20px   | Streak pill                                              |
-| `full` | 999px  | Circular elements (timer ring, play button)             |
+| Token  | Value | Usage                                                   |
+| ------ | ----- | ------------------------------------------------------- |
+| `sm`   | 8px   | Phase pills, stepper buttons, round progress bar, chips |
+| `md`   | 12px  | Type chips, text input, streak banner                   |
+| `lg`   | 13px  | Summary cards, chart container, PB container            |
+| `xl`   | 14px  | Setting rows, CTA buttons                               |
+| `pill` | 20px  | Streak pill                                             |
+| `full` | 999px | Circular elements (timer ring, play button)             |
 
 ---
 
@@ -369,12 +369,12 @@ A record/achievement list item with icon.
 
 **Icon background colors per stat:**
 
-| Stat             | Icon Bg                       | Value Color |
-| ---------------- | ----------------------------- | ----------- |
-| Longest streak   | `rgba(255,61,61, 0.16)`      | `#ff6060`   |
-| Most rounds      | `rgba(0,229,160, 0.16)`      | `#00e5a0`   |
-| Longest workout  | `rgba(255,195,0, 0.16)`      | `#ffc300`   |
-| Most kcal        | `rgba(179,136,255, 0.16)`    | `#b388ff`   |
+| Stat            | Icon Bg                   | Value Color |
+| --------------- | ------------------------- | ----------- |
+| Longest streak  | `rgba(255,61,61, 0.16)`   | `#ff6060`   |
+| Most rounds     | `rgba(0,229,160, 0.16)`   | `#00e5a0`   |
+| Longest workout | `rgba(255,195,0, 0.16)`   | `#ffc300`   |
+| Most kcal       | `rgba(179,136,255, 0.16)` | `#b388ff`   |
 
 **Used on:** Stats screen
 
@@ -393,10 +393,10 @@ Workout type selector chip.
 
 **States:**
 
-| State    | Background                    | Border              | Text/Icon Color |
-| -------- | ----------------------------- | -------------------- | --------------- |
-| Default  | `#262626`                     | 1px solid `#505050`  | `#f0f0f0`       |
-| Selected | `rgba(255,61,61, 0.19)`       | 1px solid `#ff3d3d`  | `#ff3d3d`       |
+| State    | Background              | Border              | Text/Icon Color |
+| -------- | ----------------------- | ------------------- | --------------- |
+| Default  | `#262626`               | 1px solid `#505050` | `#f0f0f0`       |
+| Selected | `rgba(255,61,61, 0.19)` | 1px solid `#ff3d3d` | `#ff3d3d`       |
 
 **Used on:** Build screen (HIIT / Running / Cardio / Strength)
 
@@ -476,11 +476,11 @@ Segmented progress indicator showing round completion.
 
 **Segment states:**
 
-| State    | Color     |
-| -------- | --------- |
-| Done     | `#919191` |
-| Active   | `#ff3d3d` |
-| Pending  | `#4c4242` |
+| State   | Color     |
+| ------- | --------- |
+| Done    | `#919191` |
+| Active  | `#ff3d3d` |
+| Pending | `#4c4242` |
 
 **Used on:** Timer screen (chrome mode)
 
@@ -568,26 +568,26 @@ All screens share:
 
 ## 7. Existing Code Mapping
 
-| Design Component       | Code File                              | Status  |
-| ---------------------- | -------------------------------------- | ------- |
-| Color tokens           | `src/constants/theme.ts`                     | Done    |
-| Spacing / Radii        | `src/constants/theme.ts`                     | Done    |
-| Timer Ring             | `src/components/timer/TimerRing.tsx`         | Done    |
-| Chrome Overlay         | `src/components/timer/ChromeOverlay.tsx`     | Done    |
-| Preset Carousel        | `src/components/home/PresetCarousel.tsx`     | Done    |
-| Stepper                | `src/components/build/Stepper.tsx`           | Done    |
-| Flash Overlay          | `src/components/shared/FlashOverlay.tsx`     | Done    |
-| Fire Icon              | `src/components/shared/FireIcon.tsx`         | Done    |
-| Summary Card           | `src/components/shared/SummaryCard.tsx`      | Done    |
-| CTA Button             | `src/components/shared/CTAButton.tsx`        | Done    |
-| Streak Pill            | `src/components/shared/StreakPill.tsx`       | Done    |
-| Phase Pill             | `src/components/shared/PhasePill.tsx`        | Done    |
-| Section Label          | `src/components/shared/SectionLabel.tsx`     | Done    |
-| History Row            | `src/components/shared/HistoryRow.tsx`       | Done    |
-| Personal Best Row      | `src/components/shared/PersonalBestRow.tsx`  | Done    |
-| Type Chip              | `src/components/shared/TypeChip.tsx`         | Done    |
-| Streak Banner          | `src/components/shared/StreakBanner.tsx`     | Done    |
-| Screen Title           | `src/components/shared/ScreenTitle.tsx`      | Done    |
+| Design Component  | Code File                                   | Status |
+| ----------------- | ------------------------------------------- | ------ |
+| Color tokens      | `src/constants/theme.ts`                    | Done   |
+| Spacing / Radii   | `src/constants/theme.ts`                    | Done   |
+| Timer Ring        | `src/components/timer/TimerRing.tsx`        | Done   |
+| Chrome Overlay    | `src/components/timer/ChromeOverlay.tsx`    | Done   |
+| Preset Carousel   | `src/components/home/PresetCarousel.tsx`    | Done   |
+| Stepper           | `src/components/build/Stepper.tsx`          | Done   |
+| Flash Overlay     | `src/components/shared/FlashOverlay.tsx`    | Done   |
+| Fire Icon         | `src/components/shared/FireIcon.tsx`        | Done   |
+| Summary Card      | `src/components/shared/SummaryCard.tsx`     | Done   |
+| CTA Button        | `src/components/shared/CTAButton.tsx`       | Done   |
+| Streak Pill       | `src/components/shared/StreakPill.tsx`      | Done   |
+| Phase Pill        | `src/components/shared/PhasePill.tsx`       | Done   |
+| Section Label     | `src/components/shared/SectionLabel.tsx`    | Done   |
+| History Row       | `src/components/shared/HistoryRow.tsx`      | Done   |
+| Personal Best Row | `src/components/shared/PersonalBestRow.tsx` | Done   |
+| Type Chip         | `src/components/shared/TypeChip.tsx`        | Done   |
+| Streak Banner     | `src/components/shared/StreakBanner.tsx`    | Done   |
+| Screen Title      | `src/components/shared/ScreenTitle.tsx`     | Done   |
 
 ---
 

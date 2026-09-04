@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg'
 
 type Props = {
-  color?: string;
-  size?: number;
-};
+  color?: string
+  size?: number
+}
 
 export default function DumbbellIcon({ color = '#f0f0f0', size = 18 }: Props) {
   return (
@@ -45,5 +45,5 @@ export default function DumbbellIcon({ color = '#f0f0f0', size = 18 }: Props) {
         strokeLinejoin="round"
       />
     </Svg>
-  );
+  )
 }

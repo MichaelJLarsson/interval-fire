@@ -1,15 +1,15 @@
-import React from 'react';
-import { StyleSheet, Text, TextStyle } from 'react-native';
+import React from 'react'
+import { StyleSheet, Text, TextStyle } from 'react-native'
 
-import { Colors, FontSizes } from '@/constants/theme';
+import { Colors, FontSizes } from '@/constants/theme'
 
 interface Props {
-  children: string;
-  style?: TextStyle;
+  children: string
+  style?: TextStyle
 }
 
 export default function SectionLabel({ children, style }: Props) {
-  return <Text style={[styles.label, style]}>{children}</Text>;
+  return <Text style={[styles.label, style]}>{children}</Text>
 }
 
 const styles = StyleSheet.create({
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
     letterSpacing: 1.5,
     color: Colors.textMuted,
   },
-});
+})

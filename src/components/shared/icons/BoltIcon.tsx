@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg'
 
-type Props = { color?: string; size?: number };
+type Props = { color?: string; size?: number }
 
 export default function BoltIcon({ color = '#B388FF', size = 20 }: Props) {
   return (
-    <Svg width={size * 17 / 23} height={size} viewBox="0 0 17 23" fill="none">
+    <Svg width={(size * 17) / 23} height={size} viewBox="0 0 17 23" fill="none">
       <Path
         d="M4.35939 12.0359H3.82982C2.11782 12.0359 1.26182 12.0358 0.896952 11.4651C0.532083 10.8945 0.879737 10.0994 1.57504 8.50929L3.6654 3.72876C4.29758 2.283 4.61367 1.56011 5.22688 1.15505C5.84009 0.75 6.61834 0.75 8.17499 0.75H10.5858C12.4768 0.75 13.4222 0.75 13.7788 1.37457C14.1354 1.99915 13.6664 2.83352 12.7282 4.50226L11.4914 6.70218C11.025 7.53177 10.7918 7.94656 10.795 8.2861C10.7993 8.72736 11.0313 9.13389 11.4062 9.35649C11.6947 9.52787 12.1646 9.52787 13.1047 9.52787C14.293 9.52787 14.8873 9.52787 15.1967 9.73589C15.5987 10.0061 15.8092 10.4896 15.7354 10.9737C15.6787 11.3464 15.279 11.7932 14.4796 12.687L8.09295 19.8277C6.83849 21.2302 6.21126 21.9315 5.79007 21.7096C5.36887 21.4876 5.57114 20.5625 5.97565 18.7122L6.76811 15.0878C7.07607 13.679 7.23011 12.9745 6.85972 12.5052C6.48934 12.0359 5.77934 12.0359 4.35939 12.0359Z"
         stroke={color}
@@ -14,5 +14,5 @@ export default function BoltIcon({ color = '#B388FF', size = 20 }: Props) {
         strokeLinejoin="round"
       />
     </Svg>
-  );
+  )
 }

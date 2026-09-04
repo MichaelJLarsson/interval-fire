@@ -1,19 +1,19 @@
-import React, { useRef } from 'react';
-import { Animated,Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
+import React, { useRef } from 'react'
+import { Animated, Pressable, StyleSheet, Text, ViewStyle } from 'react-native'
 
-import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme';
+import { Colors, Fonts, FontSizes, Radii } from '@/constants/theme'
 
 interface Props {
-  label: string;
-  variant?: 'filled' | 'outline';
-  icon?: React.ReactNode;
-  onPress: () => void;
-  style?: ViewStyle;
+  label: string
+  variant?: 'filled' | 'outline'
+  icon?: React.ReactNode
+  onPress: () => void
+  style?: ViewStyle
 }
 
 export default function CTAButton({ label, variant = 'filled', icon, onPress, style }: Props) {
-  const isFilled = variant === 'filled';
-  const scale = useRef(new Animated.Value(1)).current;
+  const isFilled = variant === 'filled'
+  const scale = useRef(new Animated.Value(1)).current
 
   const onPressIn = () => {
     Animated.spring(scale, {
@@ -21,8 +21,8 @@ export default function CTAButton({ label, variant = 'filled', icon, onPress, st
       useNativeDriver: true,
       speed: 50,
       bounciness: 4,
-    }).start();
-  };
+    }).start()
+  }
 
   const onPressOut = () => {
     Animated.spring(scale, {
@@ -30,8 +30,8 @@ export default function CTAButton({ label, variant = 'filled', icon, onPress, st
       useNativeDriver: true,
       speed: 30,
       bounciness: 6,
-    }).start();
-  };
+    }).start()
+  }
 
   return (
     <Animated.View style={[{ transform: [{ scale }] }, style]}>
@@ -45,7 +45,7 @@ export default function CTAButton({ label, variant = 'filled', icon, onPress, st
         <Text style={[styles.text, !isFilled && styles.textOutline]}>{label}</Text>
       </Pressable>
     </Animated.View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -78,4 +78,4 @@ const styles = StyleSheet.create({
   textOutline: {
     color: Colors.work,
   },
-});
+})

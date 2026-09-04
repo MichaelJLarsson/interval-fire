@@ -6,14 +6,7 @@ import { useSettingsStore } from '@/store/settingsStore'
 type BeepType = 'high' | 'low' | 'finish'
 
 export type VoicePhrase =
-  | 'prep'
-  | 'work'
-  | 'rest'
-  | 'last_round'
-  | 'three'
-  | 'two'
-  | 'one'
-  | 'complete'
+  'prep' | 'work' | 'rest' | 'last_round' | 'three' | 'two' | 'one' | 'complete'
 
 const VOICE_ASSETS: Record<VoicePhrase, ReturnType<typeof require>> = {
   prep: require('@/assets/voice/prep.mp3'),

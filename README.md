@@ -37,7 +37,7 @@ The timer plays two kinds of sounds: spoken **voice announcements** (pre-rendere
    const PHRASES: Record<string, string> = {
      // …existing entries
      warmup: 'Warm up!',
-   };
+   }
    ```
 
    The key (`warmup`) becomes the filename and code identifier; the value is the literal text ElevenLabs will speak.
@@ -48,17 +48,17 @@ The timer plays two kinds of sounds: spoken **voice announcements** (pre-rendere
    ELEVENLABS_API_KEY=sk_xxxxx npx ts-node scripts/generate-voices.ts
    ```
 
-   This writes `assets/voice/warmup.mp3`. To swap the voice for *all* phrases, change `VOICE_ID` at the top of the script (browse voices at <https://elevenlabs.io/voice-library>) and re-run.
+   This writes `assets/voice/warmup.mp3`. To swap the voice for _all_ phrases, change `VOICE_ID` at the top of the script (browse voices at <https://elevenlabs.io/voice-library>) and re-run.
 
 3. **Wire it into the app.** In `src/hooks/useAudio.ts`, add the key to both the `VoicePhrase` union and the `VOICE_ASSETS` map:
 
    ```ts
-   export type VoicePhrase = /* … */ | 'warmup';
+   export type VoicePhrase = /* … */ 'warmup'
 
    const VOICE_ASSETS: Record<VoicePhrase, ReturnType<typeof require>> = {
      // …existing entries
      warmup: require('@/assets/voice/warmup.mp3'),
-   };
+   }
    ```
 
 4. **Trigger it.** Call `speak('warmup')` from wherever the cue should fire — typically `src/hooks/useTimer.ts`. `speak()` is a no-op when the user's `voiceEnabled` setting is off, so you don't need to gate it yourself.
@@ -84,13 +84,13 @@ Beeps are synthesized programmatically — no API key required.
 
 ### Where the cues fire
 
-| Cue | When |
-| --- | --- |
-| `speak('prep')` | On workout start |
-| `speak('three' \| 'two' \| 'one')` | Last 3 seconds of the prep phase |
-| `playTick()` | Last 4 seconds (3, 2, 1, 0) of every work/rest phase |
-| `speak('work' \| 'rest' \| 'last_round')` | Phase transitions |
-| `speak('complete')` | Workout finished |
+| Cue                                       | When                                                 |
+| ----------------------------------------- | ---------------------------------------------------- |
+| `speak('prep')`                           | On workout start                                     |
+| `speak('three' \| 'two' \| 'one')`        | Last 3 seconds of the prep phase                     |
+| `playTick()`                              | Last 4 seconds (3, 2, 1, 0) of every work/rest phase |
+| `speak('work' \| 'rest' \| 'last_round')` | Phase transitions                                    |
+| `speak('complete')`                       | Workout finished                                     |
 
 All voice cues (including the prep 3-2-1 countdown) respect the `voiceEnabled` setting; all beeps (including the work/rest 3-second warning ticks) respect `audioEnabled`.
 

@@ -1,12 +1,12 @@
-import React from 'react';
-import { StyleSheet, Text, ViewStyle } from 'react-native';
+import React from 'react'
+import { StyleSheet, Text, ViewStyle } from 'react-native'
 
-import { Colors, Fonts, FontSizes } from '@/constants/theme';
+import { Colors, Fonts, FontSizes } from '@/constants/theme'
 
 interface Props {
-  line1: string;
-  line2: string;
-  style?: ViewStyle;
+  line1: string
+  line2: string
+  style?: ViewStyle
 }
 
 export default function ScreenTitle({ line1, line2, style }: Props) {
@@ -16,7 +16,7 @@ export default function ScreenTitle({ line1, line2, style }: Props) {
       {'\n'}
       <Text style={styles.accent}>{line2}</Text>
     </Text>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   accent: {
     color: Colors.work,
   },
-});
+})
