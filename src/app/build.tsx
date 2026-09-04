@@ -9,8 +9,9 @@ import {
   TextInput,
   View,
 } from 'react-native'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router'
 
+import { usePreventRemove } from '@react-navigation/native'
 import Animated, {
   Easing,
   runOnJS,
@@ -64,6 +65,7 @@ const TYPES: { key: WorkoutType; label: string; accent: ChipAccent }[] = [
 
 export default function BuildScreen() {
   const router = useRouter()
+  const navigation = useNavigation()
   const { startWorkout } = useWorkoutStore()
   const { audioEnabled, voiceEnabled, setAudio, setVoice } = useSettingsStore()
 
@@ -77,6 +79,7 @@ export default function BuildScreen() {
   const deletePreset = usePresetsStore((s) => s.deletePreset)
 
   const [p, setP] = useState<Preset>(() => existingPreset ?? { ...DEFAULT })
+  const initialPresetRef = useRef<Preset>(existingPreset ?? { ...DEFAULT })
   const isEditing = !!existingPreset
   const [isNameEditing, setIsNameEditing] = useState(!isEditing)
   const nameInputRef = useRef<TextInput>(null)
@@ -144,6 +147,35 @@ export default function BuildScreen() {
     router.dismiss()
     router.push('/timer')
   }
+
+  const initial = initialPresetRef.current
+  const hasUnsavedChanges =
+    p.name !== initial.name ||
+    p.type !== initial.type ||
+    p.workSecs !== initial.workSecs ||
+    p.restSecs !== initial.restSecs ||
+    p.rounds !== initial.rounds ||
+    p.prepSecs !== initial.prepSecs ||
+    p.warmupSecs !== initial.warmupSecs ||
+    p.cooldownSecs !== initial.cooldownSecs
+
+  usePreventRemove(hasUnsavedChanges, ({ data }) => {
+    Alert.alert('Save changes?', 'You have unsaved changes to this workout.', [
+      {
+        text: 'Discard',
+        style: 'destructive',
+        onPress: () => navigation.dispatch(data.action),
+      },
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Save',
+        onPress: () => {
+          persist()
+          navigation.dispatch(data.action)
+        },
+      },
+    ])
+  })
 
   const handleDelete = () => {
     if (!isEditing || !presetId) return
@@ -272,6 +304,10 @@ export default function BuildScreen() {
                 placeholderTextColor={Colors.inputPlaceholder}
                 maxLength={24}
                 autoFocus={isEditing && isNameEditing}
+                autoCorrect={false}
+                autoComplete="off"
+                spellCheck={false}
+                textContentType="none"
               />
               {isEditing && (
                 <Pressable
@@ -502,7 +538,6 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.condensedBold,
     fontSize: FontSizes.headingMd,
     color: Colors.textHi,
-    textTransform: 'uppercase',
     letterSpacing: -0.4,
   },
   nameDisplay: {
@@ -515,7 +550,6 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.condensedBold,
     fontSize: FontSizes.headingMd,
     color: Colors.textHi,
-    textTransform: 'uppercase',
     letterSpacing: -0.4,
     flexShrink: 1,
   },
