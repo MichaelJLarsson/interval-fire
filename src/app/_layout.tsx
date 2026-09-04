@@ -1,18 +1,20 @@
-import { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
+import { StyleSheet } from 'react-native'
+import { Stack } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
+import { StatusBar } from 'expo-status-bar'
 
-import { Barlow_400Regular, Barlow_600SemiBold } from '@expo-google-fonts/barlow';
-import {   BarlowSemiCondensed_500Medium,
+import { Barlow_400Regular, Barlow_600SemiBold } from '@expo-google-fonts/barlow'
+import {
+  BarlowSemiCondensed_500Medium,
   BarlowSemiCondensed_700Bold,
   BarlowSemiCondensed_800ExtraBold,
-useFonts,
-} from '@expo-google-fonts/barlow-semi-condensed';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+  useFonts,
+} from '@expo-google-fonts/barlow-semi-condensed'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
-SplashScreen.preventAutoHideAsync();
+import AppSplashScreen from '@/components/shared/AppSplashScreen'
+
+SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -21,26 +23,30 @@ export default function RootLayout() {
     BarlowSemiCondensed_800ExtraBold,
     Barlow_400Regular,
     Barlow_600SemiBold,
-  });
+  })
 
-  useEffect(() => {
-    if (fontsLoaded) SplashScreen.hideAsync();
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) return null;
+  if (!fontsLoaded) {
+    return <AppSplashScreen onLayout={() => SplashScreen.hideAsync()} />
+  }
 
   return (
     <GestureHandlerRootView style={styles.root}>
       <StatusBar style="light" />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#0d0d0d' } }}>
         <Stack.Screen name="index" />
-        <Stack.Screen name="build" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
-        <Stack.Screen name="stats" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
-        <Stack.Screen name="timer"    options={{ animation: 'fade', gestureEnabled: false }} />
+        <Stack.Screen
+          name="build"
+          options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
+        />
+        <Stack.Screen
+          name="stats"
+          options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
+        />
+        <Stack.Screen name="timer" options={{ animation: 'fade', gestureEnabled: false }} />
         <Stack.Screen name="complete" options={{ animation: 'fade' }} />
       </Stack>
     </GestureHandlerRootView>
-  );
+  )
 }
 
-const styles = StyleSheet.create({ root: { flex: 1 } });
+const styles = StyleSheet.create({ root: { flex: 1 } })
