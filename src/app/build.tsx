@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react'
 import {
   Alert,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -39,6 +40,7 @@ import {
   WorkoutType,
 } from '@/constants/presets'
 import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme'
+import { requestAppleHealthAuthorization } from '@/lib/appleHealth'
 import { estimateKcal } from '@/store/historyStore'
 import { usePresetsStore } from '@/store/presetsStore'
 import { useSettingsStore } from '@/store/settingsStore'
@@ -67,7 +69,14 @@ export default function BuildScreen() {
   const router = useRouter()
   const navigation = useNavigation()
   const { startWorkout } = useWorkoutStore()
-  const { audioEnabled, voiceEnabled, setAudio, setVoice } = useSettingsStore()
+  const {
+    audioEnabled,
+    voiceEnabled,
+    syncToAppleHealth,
+    setAudio,
+    setVoice,
+    setSyncToAppleHealth,
+  } = useSettingsStore()
 
   const params = useLocalSearchParams<{ presetId?: string }>()
   const presetId = typeof params.presetId === 'string' ? params.presetId : undefined
@@ -90,6 +99,26 @@ export default function BuildScreen() {
   const [contentHeight, setContentHeight] = useState(0)
   const open = useSharedValue(0)
   const chevronRotation = useSharedValue(0)
+
+  const handleToggleAppleHealth = useCallback(
+    (v: boolean) => {
+      if (!v) {
+        setSyncToAppleHealth(false)
+        return
+      }
+      requestAppleHealthAuthorization().then((granted) => {
+        if (granted) {
+          setSyncToAppleHealth(true)
+        } else {
+          Alert.alert(
+            'Health access needed',
+            'Enable Health permissions for Interval Fire in Settings to sync workouts.',
+          )
+        }
+      })
+    },
+    [setSyncToAppleHealth],
+  )
 
   const toggleMore = useCallback(() => {
     const timingConfig = { duration: 300, easing: Easing.out(Easing.ease) }
@@ -405,6 +434,29 @@ export default function BuildScreen() {
                   />
                 </View>
               ))}
+
+              {Platform.OS === 'ios' && (
+                <>
+                  {/* Health */}
+                  <SectionLabel style={{ marginTop: Spacing.xxl, ...styles.sectionLabelSpacing }}>
+                    Health
+                  </SectionLabel>
+                  <View style={styles.toggleRow}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.toggleLabel}>Sync to Apple Health</Text>
+                      <Text style={styles.toggleSub}>
+                        Save completed workouts to the Health app
+                      </Text>
+                    </View>
+                    <Switch
+                      value={syncToAppleHealth}
+                      onValueChange={handleToggleAppleHealth}
+                      trackColor={{ false: '#2c2c2c', true: Colors.work }}
+                      thumbColor={Colors.white}
+                    />
+                  </View>
+                </>
+              )}
             </View>
           </Animated.View>
         )}

@@ -36,7 +36,15 @@
           }
         }
       ],
-      "expo-audio"
+      "expo-audio",
+      [
+        "@kingstinct/react-native-healthkit",
+        {
+          "NSHealthShareUsageDescription": "Interval Fire reads your Health permissions to save completed workouts.",
+          "NSHealthUpdateUsageDescription": "Interval Fire saves completed workouts to Apple Health.",
+          "background": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
