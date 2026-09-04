@@ -23,7 +23,7 @@ export default function AppSplashScreen({ onLayout }: Props) {
   useEffect(() => {
     opacity.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.quad) })
     scale.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.back(1.2)) })
-  }, [])
+  }, [opacity, scale])
 
   const flameAnimatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
