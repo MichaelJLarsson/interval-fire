@@ -29,7 +29,7 @@ import XIcon from '@/components/shared/icons/XIcon'
 import ScreenTitle from '@/components/shared/ScreenTitle'
 import SectionLabel from '@/components/shared/SectionLabel'
 import SummaryCard from '@/components/shared/SummaryCard'
-import TypeChip, { ChipAccent } from '@/components/shared/TypeChip'
+import TypeChip from '@/components/shared/TypeChip'
 import WorkoutTypeIcon from '@/components/shared/WorkoutTypeIcon'
 import {
   formatTime,
@@ -38,6 +38,7 @@ import {
   stepWarmup,
   totalSecs,
   WorkoutType,
+  WORKOUT_TYPE_META,
 } from '@/constants/presets'
 import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme'
 import { requestAppleHealthAuthorization } from '@/lib/appleHealth'
@@ -58,12 +59,6 @@ const DEFAULT: Preset = {
   cooldownSecs: 0,
 }
 
-const TYPES: { key: WorkoutType; label: string; accent: ChipAccent }[] = [
-  { key: 'hiit', label: 'HIIT', accent: 'work' },
-  { key: 'running', label: 'Running', accent: 'prep' },
-  { key: 'cardio', label: 'Cardio', accent: 'rest' },
-  { key: 'strength', label: 'Strength', accent: 'strength' },
-]
 
 export default function BuildScreen() {
   const router = useRouter()
@@ -251,21 +246,24 @@ export default function BuildScreen() {
         <View style={styles.section}>
           <SectionLabel style={styles.sectionLabelSpacing}>Type</SectionLabel>
           <View style={styles.typeGrid}>
-            {TYPES.map(({ key, label, accent }) => (
-              <TypeChip
-                key={key}
-                label={label}
-                accent={accent}
-                selected={p.type === key}
-                onPress={() => update({ type: key })}
-                icon={
-                  <WorkoutTypeIcon
-                    type={key}
-                    color={p.type === key ? Colors[accent] : Colors.textLo}
-                  />
-                }
-              />
-            ))}
+            {(Object.keys(WORKOUT_TYPE_META) as WorkoutType[]).map((key) => {
+              const { label, accent } = WORKOUT_TYPE_META[key]
+              return (
+                <TypeChip
+                  key={key}
+                  label={label}
+                  accent={accent}
+                  selected={p.type === key}
+                  onPress={() => update({ type: key })}
+                  icon={
+                    <WorkoutTypeIcon
+                      type={key}
+                      color={p.type === key ? Colors[accent] : Colors.textLo}
+                    />
+                  }
+                />
+              )
+            })}
           </View>
         </View>
 
