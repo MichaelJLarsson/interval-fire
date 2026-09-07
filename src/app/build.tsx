@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react'
 import {
   Alert,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -28,7 +29,7 @@ import XIcon from '@/components/shared/icons/XIcon'
 import ScreenTitle from '@/components/shared/ScreenTitle'
 import SectionLabel from '@/components/shared/SectionLabel'
 import SummaryCard from '@/components/shared/SummaryCard'
-import TypeChip, { ChipAccent } from '@/components/shared/TypeChip'
+import TypeChip from '@/components/shared/TypeChip'
 import WorkoutTypeIcon from '@/components/shared/WorkoutTypeIcon'
 import {
   formatTime,
@@ -37,8 +38,10 @@ import {
   stepWarmup,
   totalSecs,
   WorkoutType,
+  WORKOUT_TYPE_META,
 } from '@/constants/presets'
 import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme'
+import { requestAppleHealthAuthorization } from '@/lib/appleHealth'
 import { estimateKcal } from '@/store/historyStore'
 import { usePresetsStore } from '@/store/presetsStore'
 import { useSettingsStore } from '@/store/settingsStore'
@@ -56,18 +59,19 @@ const DEFAULT: Preset = {
   cooldownSecs: 0,
 }
 
-const TYPES: { key: WorkoutType; label: string; accent: ChipAccent }[] = [
-  { key: 'hiit', label: 'HIIT', accent: 'work' },
-  { key: 'running', label: 'Running', accent: 'prep' },
-  { key: 'cardio', label: 'Cardio', accent: 'rest' },
-  { key: 'strength', label: 'Strength', accent: 'strength' },
-]
 
 export default function BuildScreen() {
   const router = useRouter()
   const navigation = useNavigation()
   const { startWorkout } = useWorkoutStore()
-  const { audioEnabled, voiceEnabled, setAudio, setVoice } = useSettingsStore()
+  const {
+    audioEnabled,
+    voiceEnabled,
+    syncToAppleHealth,
+    setAudio,
+    setVoice,
+    setSyncToAppleHealth,
+  } = useSettingsStore()
 
   const params = useLocalSearchParams<{ presetId?: string }>()
   const presetId = typeof params.presetId === 'string' ? params.presetId : undefined
@@ -90,6 +94,26 @@ export default function BuildScreen() {
   const [contentHeight, setContentHeight] = useState(0)
   const open = useSharedValue(0)
   const chevronRotation = useSharedValue(0)
+
+  const handleToggleAppleHealth = useCallback(
+    (v: boolean) => {
+      if (!v) {
+        setSyncToAppleHealth(false)
+        return
+      }
+      requestAppleHealthAuthorization().then((granted) => {
+        if (granted) {
+          setSyncToAppleHealth(true)
+        } else {
+          Alert.alert(
+            'Health access needed',
+            'Enable Health permissions for Interval Fire in Settings to sync workouts.',
+          )
+        }
+      })
+    },
+    [setSyncToAppleHealth],
+  )
 
   const toggleMore = useCallback(() => {
     const timingConfig = { duration: 300, easing: Easing.out(Easing.ease) }
@@ -222,21 +246,24 @@ export default function BuildScreen() {
         <View style={styles.section}>
           <SectionLabel style={styles.sectionLabelSpacing}>Type</SectionLabel>
           <View style={styles.typeGrid}>
-            {TYPES.map(({ key, label, accent }) => (
-              <TypeChip
-                key={key}
-                label={label}
-                accent={accent}
-                selected={p.type === key}
-                onPress={() => update({ type: key })}
-                icon={
-                  <WorkoutTypeIcon
-                    type={key}
-                    color={p.type === key ? Colors[accent] : Colors.textLo}
-                  />
-                }
-              />
-            ))}
+            {(Object.keys(WORKOUT_TYPE_META) as WorkoutType[]).map((key) => {
+              const { label, accent } = WORKOUT_TYPE_META[key]
+              return (
+                <TypeChip
+                  key={key}
+                  label={label}
+                  accent={accent}
+                  selected={p.type === key}
+                  onPress={() => update({ type: key })}
+                  icon={
+                    <WorkoutTypeIcon
+                      type={key}
+                      color={p.type === key ? Colors[accent] : Colors.textLo}
+                    />
+                  }
+                />
+              )
+            })}
           </View>
         </View>
 
@@ -400,11 +427,34 @@ export default function BuildScreen() {
                   <Switch
                     value={val}
                     onValueChange={set}
-                    trackColor={{ false: '#2c2c2c', true: Colors.work }}
+                    trackColor={{ false: Colors.borderSubtle, true: Colors.work }}
                     thumbColor={Colors.white}
                   />
                 </View>
               ))}
+
+              {Platform.OS === 'ios' && (
+                <>
+                  {/* Health */}
+                  <SectionLabel style={{ marginTop: Spacing.xxl, ...styles.sectionLabelSpacing }}>
+                    Health
+                  </SectionLabel>
+                  <View style={styles.toggleRow}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.toggleLabel}>Sync to Apple Health</Text>
+                      <Text style={styles.toggleSub}>
+                        Save completed workouts to the Health app
+                      </Text>
+                    </View>
+                    <Switch
+                      value={syncToAppleHealth}
+                      onValueChange={handleToggleAppleHealth}
+                      trackColor={{ false: Colors.borderSubtle, true: Colors.work }}
+                      thumbColor={Colors.white}
+                    />
+                  </View>
+                </>
+              )}
             </View>
           </Animated.View>
         )}
@@ -538,7 +588,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.surface,
     borderWidth: 1,
-    borderColor: '#7c7c7c',
+    borderColor: Colors.textMuted,
     borderRadius: Radii.md,
     height: 54,
     paddingHorizontal: 17,

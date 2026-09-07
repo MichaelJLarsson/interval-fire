@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef } from 'react'
 
 import { Preset } from '@/constants/presets'
+import { saveWorkoutToAppleHealth } from '@/lib/appleHealth'
 import { estimateKcal, useHistoryStore } from '@/store/historyStore'
+import { useSettingsStore } from '@/store/settingsStore'
 import { useWorkoutStore } from '@/store/workoutStore'
 
 import { useAudio, VoicePhrase } from './useAudio'
@@ -55,6 +57,9 @@ export function useTimer(
           ),
         }
         addRecord(record)
+        if (useSettingsStore.getState().syncToAppleHealth) {
+          saveWorkoutToAppleHealth(record, active.startTimestamp).catch(() => {})
+        }
         stop()
         playBeep('finish')
         speak('complete')
