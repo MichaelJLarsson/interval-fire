@@ -429,7 +429,7 @@ export default function BuildScreen() {
                   <Switch
                     value={val}
                     onValueChange={set}
-                    trackColor={{ false: '#2c2c2c', true: Colors.work }}
+                    trackColor={{ false: Colors.borderSubtle, true: Colors.work }}
                     thumbColor={Colors.white}
                   />
                 </View>
@@ -451,7 +451,7 @@ export default function BuildScreen() {
                     <Switch
                       value={syncToAppleHealth}
                       onValueChange={handleToggleAppleHealth}
-                      trackColor={{ false: '#2c2c2c', true: Colors.work }}
+                      trackColor={{ false: Colors.borderSubtle, true: Colors.work }}
                       thumbColor={Colors.white}
                     />
                   </View>
@@ -590,7 +590,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.surface,
     borderWidth: 1,
-    borderColor: '#7c7c7c',
+    borderColor: Colors.textMuted,
     borderRadius: Radii.md,
     height: 54,
     paddingHorizontal: 17,
