@@ -158,4 +158,34 @@ Mark each case `- [x]` when it passes, or add a ✗ and note inline for failures
 
 ---
 
-**Progress: ___ / 74 passed**
+## 10. Apple Health Integration (iOS only)
+
+### 10a. Permissions
+
+- [ ] 10.1 First completion on iOS — HealthKit permission prompt shown
+- [ ] 10.2 Grant permissions — prompt dismisses, sync proceeds
+- [ ] 10.3 Deny permissions — prompt dismisses, no error shown, app continues normally
+- [ ] 10.4 Subsequent workouts — no permission prompt re-appears if already granted
+
+### 10b. Sync on completion
+
+- [ ] 10.5 Complete HIIT workout — appears in Health app as "High Intensity Interval Training"
+- [ ] 10.6 Complete Running workout — appears in Health app as "Running"
+- [ ] 10.7 Complete Cardio workout — appears in Health app as "Mixed Cardio"
+- [ ] 10.8 Complete Strength workout — appears in Health app as "Traditional Strength Training"
+- [ ] 10.9 Workout duration — elapsed time in Health matches actual workout duration
+- [ ] 10.10 Start/end timestamps — date and time in Health correct
+- [ ] 10.11 Active energy burned — kcal value in Health matches app estimate
+- [ ] 10.12 Multiple workouts same day — all appear in Health app, no duplicates or overwrites
+
+### 10c. Edge cases
+
+- [ ] 10.13 Sync fails silently — completion screen still shows normally, no error alert
+- [ ] 10.14 Canceled workout — not synced to Health
+- [ ] 10.15 Paused then resumed — syncs with total elapsed time, not split
+- [ ] 10.16 Android device — no sync attempted, no permission prompts shown
+- [ ] 10.17 Health app not installed (iOS) — sync silently skips, no crash
+
+---
+
+**Progress: ___ / 87 passed**

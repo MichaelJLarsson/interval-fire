@@ -8,11 +8,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
+import { WorkoutTypeAccent } from '@/constants/presets'
 import { Colors, FontSizes, Radii } from '@/constants/theme'
 
 import AnimatedChipIcon from './AnimatedChipIcon'
 
-export type ChipAccent = 'work' | 'prep' | 'rest' | 'strength'
+export type ChipAccent = WorkoutTypeAccent
 
 const ACCENT_STYLES: Record<ChipAccent, { bg: string; border: string; text: string }> = {
   work: { bg: Colors.workIconBg, border: Colors.work, text: Colors.work },

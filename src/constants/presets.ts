@@ -1,5 +1,15 @@
 export type WorkoutType = 'hiit' | 'running' | 'cardio' | 'strength'
 
+export type WorkoutTypeAccent = 'work' | 'prep' | 'rest' | 'strength'
+
+export const WORKOUT_TYPE_META: Record<WorkoutType, { label: string; accent: WorkoutTypeAccent }> =
+  {
+    hiit: { label: 'HIIT', accent: 'work' },
+    running: { label: 'Running', accent: 'prep' },
+    cardio: { label: 'Cardio', accent: 'rest' },
+    strength: { label: 'Strength', accent: 'strength' },
+  }
+
 export interface Preset {
   id: string
   name: string
@@ -59,12 +69,9 @@ export const STARTER_PRESETS: Preset[] = [
   },
 ]
 
-export const TYPE_LABELS: Record<WorkoutType, string> = {
-  hiit: 'HIIT',
-  running: 'Running',
-  cardio: 'Cardio',
-  strength: 'Strength',
-}
+export const TYPE_LABELS: Record<WorkoutType, string> = Object.fromEntries(
+  (Object.keys(WORKOUT_TYPE_META) as WorkoutType[]).map((k) => [k, WORKOUT_TYPE_META[k].label]),
+) as Record<WorkoutType, string>
 
 // Smart time stepping: 5s increments up to 60s, then 15s beyond
 export function stepTime(current: number, direction: 1 | -1): number {
