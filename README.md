@@ -1,6 +1,8 @@
-# Welcome to your Expo app 👋
+# Interval Fire 🔥
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native interval/HIIT timer app built with [Expo](https://expo.dev) SDK 55, [expo-router](https://docs.expo.dev/router/introduction) (file-based routing), and TypeScript (strict mode).
+
+Build custom HIIT, running, cardio, and strength interval workouts, run them with a drift-corrected full-screen timer (audio cues, voice announcements, haptics), and track history, streaks, and stats — with completed workouts synced to Apple Health on iOS.
 
 ## Get started
 
@@ -13,7 +15,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 2. Start the app
 
    ```bash
-   npx expo start
+   npm start
    ```
 
 In the output, you'll find options to open the app in a
@@ -23,7 +25,37 @@ In the output, you'll find options to open the app in a
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Or target a platform directly:
+
+```bash
+npm run ios       # build and run on iOS simulator
+npm run android   # build and run on Android emulator
+npm run web       # start web dev server
+```
+
+> Apple Health sync (see below) requires a native build (`npm run ios`) — it isn't available in Expo Go.
+
+You can start developing by editing the files inside the **src** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## Architecture
+
+See [CLAUDE.md](./CLAUDE.md) for the full architecture reference (routing, state stores, timer engine, design system, component organization, conventions). The short version:
+
+- **Routing** (`src/app/`) — a flat Stack navigator: `index` (Home), `build` (workout builder modal), `stats` (stats dashboard modal), `timer` (full-screen timer), `complete` (post-workout summary).
+- **State** (`src/store/`) — four Zustand stores: `workoutStore` (active workout, not persisted), `historyStore`, `settingsStore`, and `presetsStore` (all persisted via AsyncStorage).
+- **Timer engine** (`src/hooks/useTimer.ts`) — a drift-corrected `setTimeout` loop driving phase transitions, audio/haptic cues, and history/Health sync on completion.
+- **Design system** (`src/constants/theme.ts`, [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md)) — dark theme only, Barlow/BarlowSemiCondensed type, a token-based spacing/radius scale.
+
+## Testing
+
+Unit tests run on [Jest](https://jestjs.io) via `jest-expo`. Tests live in `__tests__/` subdirectories adjacent to the code they test; mocks for `async-storage`, `expo-haptics`, `expo-speech`, and `@kingstinct/react-native-healthkit` are in `src/__mocks__/`.
+
+```bash
+npm test                                          # run the full suite
+npx jest src/store/__tests__/workoutStore.test.ts # run a single test file
+```
+
+For manual, on-device QA, follow [TEST_PROTOCOL.md](./TEST_PROTOCOL.md) — a checklist covering app launch, every screen, audio/haptics, state persistence, and Apple Health sync.
 
 ## Formatting & linting
 
@@ -36,6 +68,18 @@ npm run lint          # run ESLint
 ```
 
 A **pre-commit hook** (managed with [Husky](https://typicode.github.io/husky) + [lint-staged](https://github.com/lint-staged/lint-staged)) runs automatically on `git commit`: it runs `eslint --fix` and `prettier --write` on staged `.js/.jsx/.ts/.tsx` files, and `prettier --write` on staged `.json/.md/.yml/.yaml/.css` files, then re-stages the fixed versions. The hook is installed automatically via the `prepare` script when you run `npm install`. If a file has a lint error that can't be auto-fixed, the commit is blocked until you fix it.
+
+## Apple Health integration
+
+iOS-only. Completed workouts are written to HealthKit via `src/lib/appleHealth.ts` — the workout's type (mapped to a `WorkoutActivityType`), start/end timestamps, and estimated active energy burned. The first sync attempt triggers the system HealthKit authorization prompt; a denied or unavailable permission fails silently and never blocks the completion flow.
+
+Because it depends on the native HealthKit module, this only works in a development build or a release build on a real device or simulator — not in Expo Go:
+
+```bash
+npm run ios
+```
+
+See TEST_PROTOCOL.md § 10 for the manual test checklist covering permissions, activity-type mapping, and sync edge cases.
 
 ## Audio cues
 
@@ -106,32 +150,11 @@ Beeps are synthesized programmatically — no API key required.
 
 All voice cues (including the prep 3-2-1 countdown) respect the `voiceEnabled` setting; all beeps (including the work/rest 3-second warning ticks) respect `audioEnabled`.
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
 ## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+To learn more about developing this project with Expo, look at the following resources:
 
 - [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [expo-router documentation](https://docs.expo.dev/router/introduction/): File-based routing used throughout `src/app/`.
+- [Zustand documentation](https://zustand.docs.pmnd.rs/): State management used in `src/store/`.
+- [react-native-reanimated documentation](https://docs.swmansion.com/react-native-reanimated/): Animations (timer ring, flash overlay, etc.).
