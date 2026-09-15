@@ -127,8 +127,8 @@ export default function TimerScreen() {
           text: 'Stop',
           style: 'destructive',
           onPress: () => {
-            stop()
             router.replace('/')
+            stop()
           },
         },
       ],
