@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { StyleSheet } from 'react-native'
 import { Stack } from 'expo-router'
+import * as ScreenOrientation from 'expo-screen-orientation'
 import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
 
@@ -24,6 +26,10 @@ export default function RootLayout() {
     Barlow_400Regular,
     Barlow_600SemiBold,
   })
+
+  useEffect(() => {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
+  }, [])
 
   if (!fontsLoaded) {
     return <AppSplashScreen onLayout={() => SplashScreen.hideAsync()} />

@@ -14,7 +14,7 @@ Mark each case `- [x]` when it passes, or add a ✗ and note inline for failures
 - [ ] 1.2 Home header — Fire icon and streak pill (if streak > 0) visible
 - [ ] 1.3 Preset carousel — at least the 4 starter presets shown
 - [ ] 1.4 Recent section — history rows visible (mock data seeded)
-- [ ] 1.5 Portrait lock — rotating device keeps portrait orientation
+- [ ] 1.5 Portrait lock — rotating device on Home keeps portrait orientation (Timer screen is the only exception, see 5.28-5.31)
 
 ---
 
@@ -105,6 +105,10 @@ Mark each case `- [x]` when it passes, or add a ✗ and note inline for failures
 - [ ] 5.25 Audio disabled — no beeps during workout
 - [ ] 5.26 Voice disabled — no spoken announcements
 - [ ] 5.27 Haptics — subtle vibration on each phase change
+- [ ] 5.28 Rotate device to landscape during workout — Timer screen rotates and remains usable (ring, controls, countdown visible)
+- [ ] 5.29 Rotate back to portrait during workout — Timer screen rotates back correctly
+- [ ] 5.30 Complete a workout while in landscape — app returns to portrait automatically on the Complete screen
+- [ ] 5.31 Stop workout (via Stop button) while in landscape — Home screen returns to portrait automatically
 
 ---
 

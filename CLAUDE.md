@@ -35,7 +35,7 @@ The app uses a flat Stack navigator (no tab bar). All screens live directly unde
 - `index.tsx` — Home: preset carousel, recent workouts, streak
 - `build.tsx` — Workout builder modal (create/edit presets)
 - `stats.tsx` — Stats dashboard modal
-- `timer.tsx` — Full-screen timer (fade transition, gesture disabled while running)
+- `timer.tsx` — Full-screen timer (fade transition, gesture disabled while running, allows landscape via `useOrientationLock`)
 - `complete.tsx` — Post-workout summary (fade transition, receives `name`/`elapsedSecs`/`rounds` via `useLocalSearchParams`)
 
 Build and stats are presented as `slide_from_bottom` modals. The root `_layout.tsx` loads fonts and wraps everything in `GestureHandlerRootView`.
@@ -112,7 +112,7 @@ Enforced by `eslint-plugin-simple-import-sort`. Always group imports in this ord
 - Never abbreviate style keys, const names, or variable names. Use full descriptive names (`buttonSmall` not `btnSm`, `headerAnimatedStyle` not `headStyle`, `footer` not `foot`).
 - React Compiler enabled (`experiments.reactCompiler: true` in `app.json`) — avoid manual `useMemo`/`useCallback` where the compiler handles it.
 - Typed routes enabled (`experiments.typedRoutes: true`) — use typed `router.push` / `<Link href>` paths.
-- Portrait orientation only.
+- Portrait orientation only, except the Timer screen, which allows free rotation into landscape (`useOrientationLock`); every other screen re-locks to portrait on entry/exit.
 - Derived/computed values (streak, weekly minutes, kcal) are standalone selector functions, not embedded in store state.
 - Mock history data is loaded by default in `historyStore` for local development; clearing AsyncStorage removes it.
 - Animations use `react-native-reanimated` (spring + timing); the `FlashOverlay` component fires on every phase transition.

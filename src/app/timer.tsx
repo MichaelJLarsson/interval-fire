@@ -12,12 +12,14 @@ import TimerRing, { PHASE_COLORS } from '@/components/timer/TimerRing'
 import { Preset } from '@/constants/presets'
 import { Colors, FontSizes } from '@/constants/theme'
 import { useChromeVisibility } from '@/hooks/useChromeVisibility'
+import { useOrientationLock } from '@/hooks/useOrientationLock'
 import { useTimer } from '@/hooks/useTimer'
 import { useSettingsStore } from '@/store/settingsStore'
 import { Phase, useWorkoutStore } from '@/store/workoutStore'
 
 export default function TimerScreen() {
   const router = useRouter()
+  useOrientationLock()
   const { active, pause, resume, stop } = useWorkoutStore()
   const { audioEnabled, voiceEnabled, setAudio, setVoice } = useSettingsStore()
   const {
