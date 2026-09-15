@@ -91,14 +91,20 @@ export default function TimerScreen() {
   const phaseLabel = phase === 'prep' ? 'GET READY' : phase === 'work' ? 'WORK' : 'REST'
   const roundLabel = phase === 'prep' ? 'Preparing…' : `Round ${round} of ${preset.rounds}`
 
-  const nextText =
-    phase === 'prep'
-      ? `Next: Work ${mm}:${String(preset.workSecs % 60).padStart(2, '0')}`
-      : phase === 'work'
-        ? round >= preset.rounds
+  let nextText: string
+  switch (phase) {
+    case 'prep':
+      nextText = `Next: Work ${mm}:${String(preset.workSecs % 60).padStart(2, '0')}`
+      break
+    case 'work':
+      nextText =
+        round >= preset.rounds
           ? 'Last round!'
           : `Next: Rest ${Math.floor(preset.restSecs / 60)}:${String(preset.restSecs % 60).padStart(2, '0')}`
-        : `Next: Work ${Math.floor(preset.workSecs / 60)}:${String(preset.workSecs % 60).padStart(2, '0')} · Round ${round + 1}`
+      break
+    default:
+      nextText = `Next: Work ${Math.floor(preset.workSecs / 60)}:${String(preset.workSecs % 60).padStart(2, '0')} · Round ${round + 1}`
+  }
 
   const handleTap = () => showChrome()
 
