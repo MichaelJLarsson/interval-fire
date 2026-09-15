@@ -45,6 +45,7 @@ interface Props {
   isPaused: boolean
   countdownText: string
   phaseLabel: string
+  size?: number
 }
 
 const offsetFor = (progress: number) => CIRCUMFERENCE * (1 - Math.max(0, Math.min(1, progress)))
@@ -88,6 +89,7 @@ export default function TimerRing({
   isPaused,
   countdownText,
   phaseLabel,
+  size = SIZE,
 }: Props) {
   const scale = useSharedValue(1)
   const dashOffset = useSharedValue(offsetFor(progress))
@@ -144,9 +146,9 @@ export default function TimerRing({
   const [gradStart, gradEnd] = PHASE_GRADIENT[phase] ?? [color, color]
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { width: size, height: size }]}>
       <Animated.View style={[StyleSheet.absoluteFill, styles.svgWrap, svgStyle]}>
-        <Svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
+        <Svg width={size} height={size} viewBox={`0 0 ${SIZE} ${SIZE}`}>
           {/* Track ring */}
           <Circle
             cx={CENTER}
@@ -183,8 +185,8 @@ export default function TimerRing({
       {/* Non-pulsing text layer — never scales */}
       <Svg
         style={StyleSheet.absoluteFill}
-        width={SIZE}
-        height={SIZE}
+        width={size}
+        height={size}
         viewBox={`0 0 ${SIZE} ${SIZE}`}
         pointerEvents="none"
       >
@@ -221,6 +223,6 @@ export default function TimerRing({
 }
 
 const styles = StyleSheet.create({
-  container: { width: SIZE, height: SIZE, alignItems: 'center', justifyContent: 'center' },
+  container: { alignItems: 'center', justifyContent: 'center' },
   svgWrap: { alignItems: 'center', justifyContent: 'center' },
 })

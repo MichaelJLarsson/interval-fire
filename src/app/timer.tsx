@@ -8,9 +8,10 @@ import { Defs, RadialGradient, Rect, Stop, Svg } from 'react-native-svg'
 
 import FlashOverlay from '@/components/shared/FlashOverlay'
 import ChromeOverlay from '@/components/timer/ChromeOverlay'
+import LandscapeControls from '@/components/timer/LandscapeControls'
 import TimerRing, { PHASE_COLORS } from '@/components/timer/TimerRing'
 import { Preset } from '@/constants/presets'
-import { Colors, FontSizes } from '@/constants/theme'
+import { Colors, FontSizes, Spacing } from '@/constants/theme'
 import { useChromeVisibility } from '@/hooks/useChromeVisibility'
 import { useOrientationLock } from '@/hooks/useOrientationLock'
 import { useTimer } from '@/hooks/useTimer'
@@ -65,6 +66,7 @@ export default function TimerScreen() {
 
   const { skip } = useTimer(handleComplete)
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
+  const isLandscape = windowWidth > windowHeight
 
   if (!active) return null
 
@@ -89,7 +91,59 @@ export default function TimerScreen() {
   const phaseLabel = phase === 'prep' ? 'GET READY' : phase === 'work' ? 'WORK' : 'REST'
   const roundLabel = phase === 'prep' ? 'Preparing…' : `Round ${round} of ${preset.rounds}`
 
+  const nextText =
+    phase === 'prep'
+      ? `Next: Work ${mm}:${String(preset.workSecs % 60).padStart(2, '0')}`
+      : phase === 'work'
+        ? round >= preset.rounds
+          ? 'Last round!'
+          : `Next: Rest ${Math.floor(preset.restSecs / 60)}:${String(preset.restSecs % 60).padStart(2, '0')}`
+        : `Next: Work ${Math.floor(preset.workSecs / 60)}:${String(preset.workSecs % 60).padStart(2, '0')} · Round ${round + 1}`
+
   const handleTap = () => showChrome()
+
+  const handleStop = () => {
+    if (!active) return
+    const wasPaused = active.isPaused
+    if (!wasPaused) pause()
+    Alert.alert(
+      'Stop workout?',
+      'Your progress will be lost.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => {
+            if (!wasPaused) resume()
+          },
+        },
+        {
+          text: 'Stop',
+          style: 'destructive',
+          onPress: () => {
+            stop()
+            router.replace('/')
+          },
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () => {
+          if (!wasPaused) resume()
+        },
+      },
+    )
+  }
+
+  const handlePauseResume = () => {
+    if (isPaused) {
+      resume()
+    } else {
+      pause()
+    }
+  }
+
+  const handleSkip = () => skip()
 
   return (
     <LinearGradient
@@ -117,93 +171,88 @@ export default function TimerScreen() {
         </Svg>
       </View>
       <Pressable style={styles.screen} onPress={handleTap}>
-        {/* Always-visible core */}
-        <View style={styles.core} pointerEvents="none">
-          <TimerRing
-            progress={progress}
-            color={phaseColor}
-            isPulsing={isPulsing}
-            phase={phase}
-            isPaused={isPaused}
-            countdownText={countdownText}
-            phaseLabel={phaseLabel}
-          />
-        </View>
+        {isLandscape ? (
+          <View style={styles.landscapeRow}>
+            <View style={styles.landscapeRingHalf}>
+              <View style={styles.landscapeRingBox}>
+                <TimerRing
+                  progress={progress}
+                  color={phaseColor}
+                  isPulsing={isPulsing}
+                  phase={phase}
+                  isPaused={isPaused}
+                  countdownText={countdownText}
+                  phaseLabel={phaseLabel}
+                  size={320}
+                />
+                <Text style={styles.landscapeNextText}>{nextText}</Text>
+              </View>
+            </View>
 
-        <Text style={styles.nextText}>
-          {phase === 'prep'
-            ? `Next: Work ${mm}:${String(preset.workSecs % 60).padStart(2, '0')}`
-            : phase === 'work'
-              ? round >= preset.rounds
-                ? 'Last round!'
-                : `Next: Rest ${Math.floor(preset.restSecs / 60)}:${String(preset.restSecs % 60).padStart(2, '0')}`
-              : `Next: Work ${Math.floor(preset.workSecs / 60)}:${String(preset.workSecs % 60).padStart(2, '0')} · Round ${round + 1}`}
-        </Text>
+            <LandscapeControls
+              workoutName={preset.name}
+              phaseBadge={phaseLabel}
+              phaseColor={phaseColor}
+              roundLabel={roundLabel}
+              dots={dots}
+              audioOn={audioEnabled}
+              voiceOn={voiceEnabled}
+              onToggleAudio={() => setAudio(!audioEnabled)}
+              onToggleVoice={() => setVoice(!voiceEnabled)}
+              onStop={handleStop}
+              onPauseResume={handlePauseResume}
+              onSkip={handleSkip}
+              isPaused={isPaused}
+            />
+          </View>
+        ) : (
+          <>
+            {/* Always-visible core */}
+            <View style={styles.core} pointerEvents="none">
+              <TimerRing
+                progress={progress}
+                color={phaseColor}
+                isPulsing={isPulsing}
+                phase={phase}
+                isPaused={isPaused}
+                countdownText={countdownText}
+                phaseLabel={phaseLabel}
+              />
+            </View>
 
-        {/* Chrome overlay */}
-        <ChromeOverlay
-          visible={chromeVisible}
-          workoutName={preset.name}
-          phaseBadge={phaseLabel}
-          phaseColor={phaseColor}
-          roundLabel={roundLabel}
-          dots={dots}
-          audioOn={audioEnabled}
-          voiceOn={voiceEnabled}
-          onToggleAudio={() => {
-            setAudio(!audioEnabled)
-            resetChromeTimer()
-          }}
-          onToggleVoice={() => {
-            setVoice(!voiceEnabled)
-            resetChromeTimer()
-          }}
-          onStop={() => {
-            if (!active) return
-            const wasPaused = active.isPaused
-            if (!wasPaused) pause()
-            Alert.alert(
-              'Stop workout?',
-              'Your progress will be lost.',
-              [
-                {
-                  text: 'Cancel',
-                  style: 'cancel',
-                  onPress: () => {
-                    if (!wasPaused) resume()
-                  },
-                },
-                {
-                  text: 'Stop',
-                  style: 'destructive',
-                  onPress: () => {
-                    stop()
-                    router.replace('/')
-                  },
-                },
-              ],
-              {
-                cancelable: true,
-                onDismiss: () => {
-                  if (!wasPaused) resume()
-                },
-              },
-            )
-          }}
-          onPauseResume={() => {
-            if (isPaused) {
-              resume()
-            } else {
-              pause()
-            }
-            resetChromeTimer()
-          }}
-          onSkip={() => {
-            skip()
-            resetChromeTimer()
-          }}
-          isPaused={isPaused}
-        />
+            <Text style={styles.nextText}>{nextText}</Text>
+
+            {/* Chrome overlay */}
+            <ChromeOverlay
+              visible={chromeVisible}
+              workoutName={preset.name}
+              phaseBadge={phaseLabel}
+              phaseColor={phaseColor}
+              roundLabel={roundLabel}
+              dots={dots}
+              audioOn={audioEnabled}
+              voiceOn={voiceEnabled}
+              onToggleAudio={() => {
+                setAudio(!audioEnabled)
+                resetChromeTimer()
+              }}
+              onToggleVoice={() => {
+                setVoice(!voiceEnabled)
+                resetChromeTimer()
+              }}
+              onStop={handleStop}
+              onPauseResume={() => {
+                handlePauseResume()
+                resetChromeTimer()
+              }}
+              onSkip={() => {
+                handleSkip()
+                resetChromeTimer()
+              }}
+              isPaused={isPaused}
+            />
+          </>
+        )}
 
         {/* Phase change flash */}
         <FlashOverlay phase={flashPhase} />
@@ -217,4 +266,22 @@ const styles = StyleSheet.create({
   screen: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   core: { alignItems: 'center', justifyContent: 'center' },
   nextText: { marginTop: 26, fontSize: FontSizes.body, color: Colors.textLo, fontWeight: '600' },
+  landscapeRow: { flex: 1, flexDirection: 'row', alignSelf: 'stretch' },
+  landscapeRingHalf: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: Spacing.screenH,
+  },
+  landscapeRingBox: { width: 320, height: 320 },
+  landscapeNextText: {
+    position: 'absolute',
+    top: 216,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+    fontSize: FontSizes.body,
+    color: Colors.textLo,
+    fontWeight: '600',
+  },
 })
