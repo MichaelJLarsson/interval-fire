@@ -11,7 +11,7 @@ import ChromeOverlay from '@/components/timer/ChromeOverlay'
 import LandscapeControls from '@/components/timer/LandscapeControls'
 import TimerRing, { PHASE_COLORS } from '@/components/timer/TimerRing'
 import { Preset } from '@/constants/presets'
-import { Colors, FontSizes, Spacing } from '@/constants/theme'
+import { Colors, Fonts, FontSizes, Spacing } from '@/constants/theme'
 import { useChromeVisibility } from '@/hooks/useChromeVisibility'
 import { useOrientationLock } from '@/hooks/useOrientationLock'
 import { useTimer } from '@/hooks/useTimer'
@@ -180,6 +180,7 @@ export default function TimerScreen() {
         {isLandscape ? (
           <View style={styles.landscapeRow}>
             <View style={styles.landscapeRingHalf}>
+              <Text style={[styles.landscapePhaseLabel, { color: phaseColor }]}>{phaseLabel}</Text>
               <View style={styles.landscapeRingBox}>
                 <TimerRing
                   progress={progress}
@@ -189,6 +190,7 @@ export default function TimerScreen() {
                   isPaused={isPaused}
                   countdownText={countdownText}
                   phaseLabel={phaseLabel}
+                  showPhaseLabel={false}
                   size={320}
                 />
                 <Text style={styles.landscapeNextText}>{nextText}</Text>
@@ -280,6 +282,13 @@ const styles = StyleSheet.create({
     padding: Spacing.screenH,
   },
   landscapeRingBox: { width: 320, height: 320 },
+  landscapePhaseLabel: {
+    fontFamily: Fonts.bodySemiBold,
+    fontSize: FontSizes.caption,
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+    marginBottom: Spacing.md,
+  },
   landscapeNextText: {
     position: 'absolute',
     top: 216,

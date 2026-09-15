@@ -46,6 +46,7 @@ interface Props {
   countdownText: string
   phaseLabel: string
   size?: number
+  showPhaseLabel?: boolean
 }
 
 const offsetFor = (progress: number) => CIRCUMFERENCE * (1 - Math.max(0, Math.min(1, progress)))
@@ -90,6 +91,7 @@ export default function TimerRing({
   countdownText,
   phaseLabel,
   size = SIZE,
+  showPhaseLabel = true,
 }: Props) {
   const scale = useSharedValue(1)
   const dashOffset = useSharedValue(offsetFor(progress))
@@ -206,17 +208,19 @@ export default function TimerRing({
 
         {renderFixedWidthCountdown(countdownText, CENTER, 164)}
 
-        <SvgText
-          x={CENTER}
-          y={184}
-          textAnchor="middle"
-          fontFamily={Fonts.bodySemiBold}
-          fontSize={13}
-          fill={Colors.textLo}
-          letterSpacing={2}
-        >
-          {phaseLabel.toUpperCase()}
-        </SvgText>
+        {showPhaseLabel && (
+          <SvgText
+            x={CENTER}
+            y={184}
+            textAnchor="middle"
+            fontFamily={Fonts.bodySemiBold}
+            fontSize={13}
+            fill={Colors.textLo}
+            letterSpacing={2}
+          >
+            {phaseLabel.toUpperCase()}
+          </SvgText>
+        )}
       </Svg>
     </View>
   )
