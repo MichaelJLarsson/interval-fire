@@ -121,7 +121,8 @@ export default function TimerScreen() {
   const handleStopConfirm = () => {
     setStopConfirmVisible(false)
     router.replace('/')
-    stop()
+    // Delay stop() so active stays non-null while the navigation fade captures the outgoing frame.
+    setTimeout(() => stop(), 400)
   }
 
   const handleStopCancel = () => {
