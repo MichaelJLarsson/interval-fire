@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Alert, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native'
+import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native'
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useRouter } from 'expo-router'
@@ -11,7 +11,7 @@ import ChromeOverlay from '@/components/timer/ChromeOverlay'
 import LandscapeControls from '@/components/timer/LandscapeControls'
 import TimerRing, { PHASE_COLORS } from '@/components/timer/TimerRing'
 import { Preset } from '@/constants/presets'
-import { Colors, Fonts, FontSizes, Spacing } from '@/constants/theme'
+import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme'
 import { useChromeVisibility } from '@/hooks/useChromeVisibility'
 import { useOrientationLock } from '@/hooks/useOrientationLock'
 import { useTimer } from '@/hooks/useTimer'
@@ -28,6 +28,9 @@ export default function TimerScreen() {
     show: showChrome,
     resetTimer: resetChromeTimer,
   } = useChromeVisibility()
+
+  const [stopConfirmVisible, setStopConfirmVisible] = React.useState(false)
+  const stopWasPausedRef = useRef(false)
 
   // Track phase changes for flash
   const lastPhaseRef = useRef<Phase | 'finish' | null>(null)
@@ -110,35 +113,20 @@ export default function TimerScreen() {
 
   const handleStop = () => {
     if (!active) return
-    const wasPaused = active.isPaused
-    if (!wasPaused) pause()
-    Alert.alert(
-      'Stop workout?',
-      'Your progress will be lost.',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-          onPress: () => {
-            if (!wasPaused) resume()
-          },
-        },
-        {
-          text: 'Stop',
-          style: 'destructive',
-          onPress: () => {
-            router.replace('/')
-            stop()
-          },
-        },
-      ],
-      {
-        cancelable: true,
-        onDismiss: () => {
-          if (!wasPaused) resume()
-        },
-      },
-    )
+    stopWasPausedRef.current = active.isPaused
+    if (!active.isPaused) pause()
+    setStopConfirmVisible(true)
+  }
+
+  const handleStopConfirm = () => {
+    setStopConfirmVisible(false)
+    router.replace('/')
+    stop()
+  }
+
+  const handleStopCancel = () => {
+    setStopConfirmVisible(false)
+    if (!stopWasPausedRef.current) resume()
   }
 
   const handlePauseResume = () => {
@@ -265,6 +253,23 @@ export default function TimerScreen() {
         {/* Phase change flash */}
         <FlashOverlay phase={flashPhase} />
       </Pressable>
+
+      {stopConfirmVisible && (
+        <Pressable style={styles.confirmBackdrop} onPress={handleStopCancel}>
+          <View style={styles.confirmCard} onStartShouldSetResponder={() => true}>
+            <Text style={styles.confirmTitle}>Stop workout?</Text>
+            <Text style={styles.confirmMessage}>Your progress will be lost.</Text>
+            <View style={styles.confirmButtons}>
+              <Pressable style={styles.confirmCancelButton} onPress={handleStopCancel}>
+                <Text style={styles.confirmCancelText}>Cancel</Text>
+              </Pressable>
+              <Pressable style={styles.confirmStopButton} onPress={handleStopConfirm}>
+                <Text style={styles.confirmStopText}>Stop</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Pressable>
+      )}
     </LinearGradient>
   )
 }
@@ -298,5 +303,60 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.body,
     color: Colors.textLo,
     fontWeight: '600',
+  },
+  confirmBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  confirmCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: Radii.lg,
+    padding: Spacing.xl,
+    width: 280,
+    gap: Spacing.md,
+  },
+  confirmTitle: {
+    fontFamily: Fonts.condensed,
+    fontSize: FontSizes.headingMd,
+    color: Colors.textHi,
+    textAlign: 'center',
+  },
+  confirmMessage: {
+    fontFamily: Fonts.body,
+    fontSize: FontSizes.body,
+    color: Colors.textLo,
+    textAlign: 'center',
+  },
+  confirmButtons: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+    marginTop: Spacing.sm,
+  },
+  confirmCancelButton: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: Radii.pill,
+    paddingVertical: Spacing.md,
+    alignItems: 'center',
+  },
+  confirmCancelText: {
+    color: Colors.textMid,
+    fontFamily: Fonts.bodySemiBold,
+    fontSize: FontSizes.body,
+  },
+  confirmStopButton: {
+    flex: 1,
+    backgroundColor: Colors.work,
+    borderRadius: Radii.pill,
+    paddingVertical: Spacing.md,
+    alignItems: 'center',
+  },
+  confirmStopText: {
+    color: Colors.textHi,
+    fontFamily: Fonts.bodySemiBold,
+    fontSize: FontSizes.body,
   },
 })
