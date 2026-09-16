@@ -36,7 +36,7 @@ The app uses a flat Stack navigator (no tab bar). All screens live directly unde
 - `build.tsx` — Workout builder modal (create/edit presets)
 - `stats.tsx` — Stats dashboard modal
 - `timer.tsx` — Full-screen timer (fade transition, gesture disabled while running, allows landscape via `useOrientationLock`)
-- `complete.tsx` — Post-workout summary (fade transition, receives `name`/`elapsedSecs`/`rounds` via `useLocalSearchParams`, allows landscape via `useOrientationLock`)
+- `complete.tsx` — Post-workout summary (slide-from-right transition, receives `name`/`elapsedSecs`/`rounds` via `useLocalSearchParams`, allows landscape via `useOrientationLock`)
 
 Build and stats are presented as `slide_from_bottom` modals. The root `_layout.tsx` loads fonts and wraps everything in `GestureHandlerRootView`.
 

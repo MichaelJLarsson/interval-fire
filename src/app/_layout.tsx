@@ -49,7 +49,10 @@ export default function RootLayout() {
           options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
         />
         <Stack.Screen name="timer" options={{ animation: 'fade', gestureEnabled: false }} />
-        <Stack.Screen name="complete" options={{ animation: 'fade' }} />
+        <Stack.Screen
+          name="complete"
+          options={{ animation: 'slide_from_right', animationTypeForReplace: 'push' }}
+        />
       </Stack>
     </GestureHandlerRootView>
   )

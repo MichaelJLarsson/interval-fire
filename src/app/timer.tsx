@@ -21,7 +21,7 @@ import { Phase, useWorkoutStore } from '@/store/workoutStore'
 
 export default function TimerScreen() {
   const router = useRouter()
-  useOrientationLock()
+  const { skipRelock } = useOrientationLock()
   const { active, pause, resume, stop } = useWorkoutStore()
   const { audioEnabled, voiceEnabled, setAudio, setVoice } = useSettingsStore()
   const {
@@ -57,6 +57,7 @@ export default function TimerScreen() {
   const handleComplete = (preset: Preset, elapsedSecs: number, roundsCompleted: number) => {
     setFlashPhase('finish')
     freezeLandscape()
+    skipRelock()
     setTimeout(() => {
       router.replace({
         pathname: '/complete',
