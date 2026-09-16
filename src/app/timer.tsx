@@ -13,6 +13,7 @@ import TimerRing, { PHASE_COLORS } from '@/components/timer/TimerRing'
 import { Preset } from '@/constants/presets'
 import { Colors, Fonts, FontSizes, Radii, Spacing } from '@/constants/theme'
 import { useChromeVisibility } from '@/hooks/useChromeVisibility'
+import { useLandscapeLayout } from '@/hooks/useLandscapeLayout'
 import { useOrientationLock } from '@/hooks/useOrientationLock'
 import { useTimer } from '@/hooks/useTimer'
 import { useSettingsStore } from '@/store/settingsStore'
@@ -69,7 +70,7 @@ export default function TimerScreen() {
 
   const { skip } = useTimer(handleComplete)
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
-  const isLandscape = windowWidth > windowHeight
+  const { isLandscape, freezeLandscape } = useLandscapeLayout()
 
   if (!active) return null
 
@@ -120,6 +121,7 @@ export default function TimerScreen() {
 
   const handleStopConfirm = () => {
     setStopConfirmVisible(false)
+    freezeLandscape()
     router.replace('/')
     // Delay stop() so active stays non-null while the navigation fade captures the outgoing frame.
     setTimeout(() => stop(), 400)
