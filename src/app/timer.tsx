@@ -56,6 +56,7 @@ export default function TimerScreen() {
 
   const handleComplete = (preset: Preset, elapsedSecs: number, roundsCompleted: number) => {
     setFlashPhase('finish')
+    freezeLandscape()
     setTimeout(() => {
       router.replace({
         pathname: '/complete',
